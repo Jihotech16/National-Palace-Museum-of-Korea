@@ -1,8 +1,8 @@
 // 활동지 순서 정의
 export const ACTIVITY_ORDER = {
   mindmap: 1,
-  nature: 2,
-  seal: 3,
+  seal: 2,
+  nature: 3,
   animal: 4,
   portrait: 5,
   science: 6,

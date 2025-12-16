@@ -45,19 +45,19 @@ function Home({ user }) {
       order: 1
     },
     {
-      id: 'nature',
-      title: '다섯 가지 자연물',
-      description: '2층 조선의 국왕실 - 자연물 그림 찾기',
-      path: '/activity/nature',
-      icon: '🌿',
-      order: 2
-    },
-    {
       id: 'seal',
       title: '어보',
       description: '2층 조선의 국왕실 - 어보와 어보 상자 관찰',
       path: '/activity/seal',
       icon: '🪙',
+      order: 2
+    },
+    {
+      id: 'nature',
+      title: '다섯 가지 자연물',
+      description: '2층 조선의 국왕실 - 자연물 그림 찾기',
+      path: '/activity/nature',
+      icon: '🌿',
       order: 3
     },
     {

@@ -3,6 +3,9 @@ export const ANSWERS = {
   nature: {
     artifactName: '일월오봉도',
     natures: ['해', '달', '물', '소나무', '산봉우리'] // 일월오봉도에 그려진 다섯 가지 자연물
+  },
+  seal: {
+    sealAnswer: '의례' // 어보는 조선왕실의 의례를 위해 제작된 인장
   }
   // 다른 활동지의 정답도 여기에 추가 가능
 }
