@@ -12,44 +12,20 @@ function Login() {
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
 
-  // 학교 목록 (필요에 따라 수정 가능)
-  const schools = [
-    { value: '1', label: '학교 1' },
-    { value: '2', label: '학교 2' },
-    { value: '3', label: '학교 3' },
-  ]
-
-  // 학년 목록
-  const grades = Array.from({ length: 6 }, (_, i) => ({
-    value: String(i + 1),
-    label: `${i + 1}학년`
-  }))
-
-  // 반 목록 (1반부터 10반까지)
-  const classes = Array.from({ length: 10 }, (_, i) => ({
-    value: String(i + 1).padStart(2, '0'),
-    label: `${i + 1}반`
-  }))
-
-  // 번호 목록 (1번부터 50번까지)
-  const numbers = Array.from({ length: 50 }, (_, i) => ({
-    value: String(i + 1).padStart(2, '0'),
-    label: `${i + 1}번`
-  }))
-
-  const handleBack = () => {
-    if (window.history.length > 1) {
-      navigate(-1)
-    }
-  }
-
   // 선택된 값들로부터 학번 생성 (학교 + 학년 + 반 + 번호)
   const generateStudentId = () => {
     if (!school || !grade || !classNum || !number) {
       return ''
     }
+    // 학교 이름을 숫자로 변환 (간단한 해시 방식)
+    // 또는 학교 이름의 첫 글자나 특정 규칙 사용
+    // 일단 "테스트학교"는 "1"로 매핑
+    const schoolCode = school === '테스트학교' ? '1' : '1'
+    
     // 형식: 학교(1자리) + 학년(1자리) + 반(2자리) + 번호(2자리) = 6자리
-    return `${school}${grade}${classNum}${number}`
+    const formattedClass = String(classNum).padStart(2, '0')
+    const formattedNumber = String(number).padStart(2, '0')
+    return `${schoolCode}${grade}${formattedClass}${formattedNumber}`
   }
 
   const handleSubmit = async (e) => {
@@ -58,7 +34,7 @@ function Login() {
     setLoading(true)
 
     if (!school || !grade || !classNum || !number) {
-      setError('모든 항목을 선택해주세요.')
+      setError('모든 항목을 입력해주세요.')
       setLoading(false)
       return
     }
@@ -89,99 +65,120 @@ function Login() {
   }
 
   return (
-    <div className="login-container">
-      <div className="login-card">
-        <div className="login-header">
-          <button className="back-button" onClick={handleBack}>
-            ← 뒤로
-          </button>
+    <div className="login-page">
+      <div className="login-page-bg-blur login-page-bg-blur-1"></div>
+      <div className="login-page-bg-blur login-page-bg-blur-2"></div>
+      
+      <div className="login-page-container">
+        <div className="login-page-header">
+          <div className="login-page-icon">
+            <span className="material-symbols-outlined">temple_buddhist</span>
+          </div>
+          <h1 className="login-page-title">Royal Archives</h1>
+          <p className="login-page-subtitle">
+            국립고궁박물관 탐험을 시작하려면<br/>학생 정보를 입력해주세요.
+          </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="login-form">
-          <div className="form-group">
-            <label htmlFor="school">학교</label>
-            <select
-              id="school"
-              value={school}
-              onChange={(e) => setSchool(e.target.value)}
-              className="form-select"
-              autoFocus
-            >
-              <option value="">학교를 선택하세요</option>
-              {schools.map((s) => (
-                <option key={s.value} value={s.value}>
-                  {s.label}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className="form-row">
-            <div className="form-group">
-              <label htmlFor="grade">학년</label>
-              <select
-                id="grade"
-                value={grade}
-                onChange={(e) => setGrade(e.target.value)}
-                className="form-select"
-              >
-                <option value="">학년을 선택하세요</option>
-                {grades.map((g) => (
-                  <option key={g.value} value={g.value}>
-                    {g.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="classNum">반</label>
-              <select
-                id="classNum"
-                value={classNum}
-                onChange={(e) => setClassNum(e.target.value)}
-                className="form-select"
-              >
-                <option value="">반을 선택하세요</option>
-                {classes.map((c) => (
-                  <option key={c.value} value={c.value}>
-                    {c.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="number">번호</label>
-              <select
-                id="number"
-                value={number}
-                onChange={(e) => setNumber(e.target.value)}
-                className="form-select"
-              >
-                <option value="">번호를 선택하세요</option>
-                {numbers.map((n) => (
-                  <option key={n.value} value={n.value}>
-                    {n.label}
-                  </option>
-                ))}
-              </select>
+        <form onSubmit={handleSubmit} className="login-page-form">
+          <div className="login-form-field">
+            <label className="login-form-label" htmlFor="school">학교</label>
+            <div className="login-input-wrapper">
+              <div className="login-input-icon">
+                <span className="material-symbols-outlined">school</span>
+              </div>
+              <input
+                className="login-input"
+                id="school"
+                type="text"
+                value={school}
+                onChange={(e) => setSchool(e.target.value)}
+                placeholder="학교 이름을 입력하세요"
+                autoComplete="organization"
+                autoFocus
+              />
             </div>
           </div>
 
-          {error && <div className="error-message">{error}</div>}
+          <div className="login-form-grid">
+            <div className="login-form-field">
+              <label className="login-form-label" htmlFor="grade">학년</label>
+              <div className="login-input-wrapper">
+                <div className="login-input-icon">
+                  <span className="material-symbols-outlined">workspace_premium</span>
+                </div>
+                <input
+                  className="login-input login-input-center"
+                  id="grade"
+                  type="number"
+                  value={grade}
+                  onChange={(e) => setGrade(e.target.value)}
+                  placeholder="1"
+                  min="1"
+                  max="6"
+                  autoComplete="off"
+                />
+              </div>
+            </div>
+
+            <div className="login-form-field">
+              <label className="login-form-label" htmlFor="classNum">반</label>
+              <div className="login-input-wrapper">
+                <div className="login-input-icon">
+                  <span className="material-symbols-outlined">meeting_room</span>
+                </div>
+                <input
+                  className="login-input login-input-center"
+                  id="classNum"
+                  type="number"
+                  value={classNum}
+                  onChange={(e) => setClassNum(e.target.value)}
+                  placeholder="3"
+                  min="1"
+                  max="10"
+                  autoComplete="off"
+                />
+              </div>
+            </div>
+
+            <div className="login-form-field">
+              <label className="login-form-label" htmlFor="number">번호</label>
+              <div className="login-input-wrapper">
+                <div className="login-input-icon">
+                  <span className="material-symbols-outlined">format_list_numbered</span>
+                </div>
+                <input
+                  className="login-input login-input-center"
+                  id="number"
+                  type="number"
+                  value={number}
+                  onChange={(e) => setNumber(e.target.value)}
+                  placeholder="15"
+                  min="1"
+                  max="50"
+                  autoComplete="off"
+                />
+              </div>
+            </div>
+          </div>
+
+          {error && <div className="login-error-message">{error}</div>}
 
           <button 
             type="submit" 
-            className="submit-button"
+            className="login-submit-button"
             disabled={loading}
           >
-            {loading ? '처리 중...' : '시작하기'}
+            <span>{loading ? '처리 중...' : '로그인'}</span>
+            <span className="material-symbols-outlined login-submit-icon">login</span>
           </button>
         </form>
 
-        <div className="login-info">
-          <p>💡 학교, 학년, 반, 번호를 선택하면 자동으로 로그인됩니다.</p>
+        <div className="login-page-footer">
+          <p className="login-page-footer-text">
+            도움이 필요하신가요? 
+            <a className="login-page-footer-link" href="#">사용 가이드 보기</a>
+          </p>
         </div>
       </div>
     </div>
@@ -189,4 +186,3 @@ function Login() {
 }
 
 export default Login
-

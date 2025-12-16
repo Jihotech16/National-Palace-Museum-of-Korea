@@ -1,21 +1,25 @@
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { saveActivityData, getActivityData } from '../../firebase/firestore'
-import { getNextActivityPath } from '../../utils/activityOrder'
+import { getNextActivityPath, getPreviousActivityPath, getActivityIdFromPath } from '../../utils/activityOrder'
 import { checkAnswer } from '../../utils/answerCheck'
-import ActivityLayout from '../../components/ActivityLayout'
 import CoverLayout from '../../components/CoverLayout'
+import ActivityFooter from '../../components/ActivityFooter'
 import sealImage from '../../image/태조추상시호금보.jpeg'
 import coverImage from '../../image/조선국왕표지.jpg'
-import './ActivityCommon.css'
+import './ActivitySeal.css'
 
 function ActivitySeal({ user }) {
   const navigate = useNavigate()
+  const location = useLocation()
   const [showCover, setShowCover] = useState(true)
   const [sealAnswer, setSealAnswer] = useState('')
   const [sealAnimalAnswer, setSealAnimalAnswer] = useState('')
   const [saved, setSaved] = useState(false)
   const [error, setError] = useState('')
+
+  const currentActivityId = getActivityIdFromPath(location.pathname)
+  const previousPath = currentActivityId ? getPreviousActivityPath(currentActivityId) : null
 
   useEffect(() => {
     loadData()
@@ -35,6 +39,14 @@ function ActivitySeal({ user }) {
     if (result.success && result.data) {
       setSealAnswer(result.data.sealAnswer || '')
       setSealAnimalAnswer(result.data.sealAnimalAnswer || '')
+    }
+  }
+
+  const handleBack = () => {
+    if (previousPath) {
+      navigate(previousPath)
+    } else {
+      navigate('/')
     }
   }
 
@@ -94,49 +106,64 @@ function ActivitySeal({ user }) {
   }
 
   return (
-    <ActivityLayout title="조선국왕">
-      <div className="activity-section">
-        <div className="seal-activity">
-          <h2 style={{ textAlign: 'center' }}>어보</h2>
-          <p className="activity-description">
-            어보는 조선왕실의 <input 
-              type="text" 
-              value={sealAnswer}
-              onChange={(e) => {
-                setSealAnswer(e.target.value)
-                setError('')
-              }}
-              placeholder="답을 입력하세요"
-              className="inline-input"
-            />를 위해 제작된 인장입니다.
-          </p>
+    <div className="activity-seal-container dark">
+      {/* Header */}
+      <header className="activity-seal-header">
+        <button 
+          className="activity-seal-back-btn" 
+          onClick={handleBack}
+        >
+          <span className="material-symbols-outlined">arrow_back</span>
+        </button>
+        <h1 className="activity-seal-title">조선국왕</h1>
+        <div style={{ width: '40px' }}></div>
+      </header>
 
-          <div className="input-group" style={{ marginTop: '24px' }}>
-            <label>왕의 어보(도장)에는 어떤 동물이 새겨져 있을까?</label>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginTop: '12px' }}>
+      {/* Main Content */}
+      <main className="activity-seal-main">
+        {/* Problem Card */}
+        <article className="activity-seal-problem-card">
+          {/* Image */}
+          <div className="activity-seal-image-wrapper">
+            <div 
+              className="activity-seal-image"
+              style={{ backgroundImage: `url(${sealImage})` }}
+            >
+              <div className="activity-seal-image-overlay"></div>
+              <div className="activity-seal-badge">
+                <span>문제 01</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Text Content */}
+          <div className="activity-seal-content">
+            <h2 className="activity-seal-problem-title">조선의 국왕</h2>
+            <div className="activity-seal-divider"></div>
+            <p className="activity-seal-description">
+              조선은 약 500년 동안 이어진 왕조로, 모두 17명의 국왕이 나라를 다스렸습니다. 이 가운데 조선의 4대 국왕은 <input 
+                type="text" 
+                value={sealAnswer}
+                onChange={(e) => {
+                  setSealAnswer(e.target.value)
+                  setError('')
+                }}
+                placeholder="답을 입력하세요"
+                className="activity-seal-inline-input"
+              />입니다.
+            </p>
+          </div>
+        </article>
+
+        {/* Animal Selection Card */}
+        <section className="activity-seal-animal-card">
+          <div className="activity-seal-animal-content">
+            <h3 className="activity-seal-animal-title">왕의 어보(도장)에는 어떤 동물이 새겨져 있을까?</h3>
+            <div className="activity-seal-options-grid">
               {['용', '봉황', '거북', '호랑이'].map((option, index) => (
                 <label 
                   key={index}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    padding: '8px 12px',
-                    border: '2px solid #e0e0e0',
-                    borderRadius: '8px',
-                    cursor: 'pointer',
-                    transition: 'border-color 0.3s',
-                    backgroundColor: sealAnimalAnswer === option ? '#f0f8ff' : 'white'
-                  }}
-                  onMouseEnter={(e) => {
-                    if (sealAnimalAnswer !== option) {
-                      e.currentTarget.style.borderColor = '#8B4513'
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    if (sealAnimalAnswer !== option) {
-                      e.currentTarget.style.borderColor = '#e0e0e0'
-                    }
-                  }}
+                  className={`activity-seal-option ${sealAnimalAnswer === option ? 'selected' : ''}`}
                 >
                   <input
                     type="radio"
@@ -147,26 +174,35 @@ function ActivitySeal({ user }) {
                       setSealAnimalAnswer(e.target.value)
                       setError('')
                     }}
-                    style={{ marginRight: '10px', width: '16px', height: '16px', cursor: 'pointer' }}
+                    className="activity-seal-radio"
                   />
-                  <span style={{ fontSize: '15px' }}>{option}</span>
+                  <span>{option}</span>
                 </label>
               ))}
             </div>
           </div>
+        </section>
 
-          {error && (
-            <div className="toast-error">
-              {error}
-            </div>
-          )}
+        {error && (
+          <div className="activity-seal-error">
+            {error}
+          </div>
+        )}
+      </main>
 
-          <button onClick={handleSave} className="save-button">
-            {saved ? '✓ 저장됨' : '저장하기'}
-          </button>
-        </div>
-      </div>
-    </ActivityLayout>
+      {/* Sticky Bottom Action Area */}
+      <ActivityFooter
+        answerValue={sealAnimalAnswer}
+        onAnswerChange={(value) => {
+          setSealAnimalAnswer(value)
+          setError('')
+        }}
+        onSubmit={handleSave}
+        saved={saved}
+        answerPlaceholder="동물의 이름을 입력하세요"
+        answerId="sealAnimalAnswer"
+      />
+    </div>
   )
 }
 

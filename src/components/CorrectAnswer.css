@@ -1,0 +1,435 @@
+.correct-answer-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  background-color: #0f0716;
+  color: #f3e8ff;
+  overflow: hidden;
+}
+
+/* 배경 효과 */
+.correct-answer-background-effects {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.correct-answer-bg-blur-1 {
+  position: absolute;
+  top: 25%;
+  left: 25%;
+  width: 256px;
+  height: 256px;
+  background-color: rgba(168, 85, 247, 0.1);
+  border-radius: 9999px;
+  filter: blur(80px);
+  animation: pulse 3s ease-in-out infinite;
+}
+
+.correct-answer-bg-blur-2 {
+  position: absolute;
+  bottom: 25%;
+  right: 25%;
+  width: 320px;
+  height: 320px;
+  background-color: rgba(251, 191, 36, 0.1);
+  border-radius: 9999px;
+  filter: blur(80px);
+  animation: pulse 3s ease-in-out infinite;
+  animation-delay: 1s;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* 메인 콘텐츠 */
+.correct-answer-content {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 3rem 1.5rem;
+}
+
+/* 축하 아이콘 */
+.correct-answer-icon-wrapper {
+  position: relative;
+  margin-bottom: 2rem;
+  animation: scaleIn 0.5s ease-out;
+}
+
+@keyframes scaleIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.correct-answer-celebration-icon {
+  width: 128px;
+  height: 128px;
+  border-radius: 9999px;
+  background: linear-gradient(to bottom right, #10b981, #a855f7, #fbbf24);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 25px 50px -12px rgba(168, 85, 247, 0.5);
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+.correct-answer-celebration-icon .material-symbols-outlined {
+  font-size: 60px;
+  color: white;
+}
+
+.fill-1 {
+  font-variation-settings: 'FILL' 1;
+}
+
+.correct-answer-star-1 {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 48px;
+  height: 48px;
+  background-color: #fbbf24;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+  animation: bounce 2s infinite;
+}
+
+.correct-answer-star-2 {
+  position: absolute;
+  bottom: -8px;
+  left: -8px;
+  width: 40px;
+  height: 40px;
+  background-color: #a855f7;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+  animation: bounce 2s infinite;
+  animation-delay: 0.3s;
+}
+
+.correct-answer-star-1 .material-symbols-outlined,
+.correct-answer-star-2 .material-symbols-outlined {
+  color: white;
+  font-size: 24px;
+}
+
+.correct-answer-star-2 .material-symbols-outlined {
+  font-size: 20px;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* 축하 메시지 */
+.correct-answer-message {
+  text-align: center;
+  margin-bottom: 2rem;
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.correct-answer-title {
+  font-size: 2.25rem;
+  font-family: 'Gowun Batang', serif;
+  font-weight: 700;
+  color: #f3e8ff;
+  margin-bottom: 0.75rem;
+  line-height: 1.2;
+}
+
+.correct-answer-subtitle {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: #a78bfa;
+  margin-bottom: 0.5rem;
+}
+
+.correct-answer-description {
+  font-size: 0.875rem;
+  color: rgba(167, 139, 250, 0.8);
+}
+
+/* 정답 정보 카드 */
+.correct-answer-info-card {
+  width: 100%;
+  max-width: 384px;
+  margin-bottom: 2rem;
+  background-color: #1d1226;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 20px 25px -5px rgba(16, 185, 129, 0.1);
+  animation: fadeIn 0.5s ease-in;
+  animation-delay: 0.2s;
+  animation-fill-mode: both;
+}
+
+.correct-answer-info-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.correct-answer-check-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 9999px;
+  background-color: rgba(16, 185, 129, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.correct-answer-check-icon .material-symbols-outlined {
+  color: #10b981;
+  font-size: 24px;
+}
+
+.correct-answer-info-text {
+  flex: 1;
+}
+
+.correct-answer-info-title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #f3e8ff;
+  margin-bottom: 0.25rem;
+}
+
+.correct-answer-info-subtitle {
+  font-size: 0.875rem;
+  color: #a78bfa;
+}
+
+.correct-answer-score-section {
+  padding-top: 1rem;
+  border-top: 1px solid #362447;
+}
+
+.correct-answer-score-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.correct-answer-score-label {
+  font-size: 0.75rem;
+  color: #a78bfa;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.correct-answer-score-value {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #fbbf24;
+}
+
+.correct-answer-progress-bar {
+  width: 100%;
+  height: 8px;
+  background-color: #0f0716;
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.correct-answer-progress-fill {
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(to right, #10b981, #a855f7);
+  border-radius: 9999px;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* 설명 카드 */
+.correct-answer-explanation-card {
+  width: 100%;
+  max-width: 384px;
+  margin-bottom: 2rem;
+  background-color: rgba(29, 18, 38, 0.5);
+  border: 1px solid #362447;
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  animation: fadeIn 0.5s ease-in;
+  animation-delay: 0.3s;
+  animation-fill-mode: both;
+}
+
+.correct-answer-explanation-icon {
+  color: #a855f7;
+  font-size: 20px;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.correct-answer-explanation-content {
+  flex: 1;
+}
+
+.correct-answer-explanation-title {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #f3e8ff;
+  margin-bottom: 0.5rem;
+}
+
+.correct-answer-explanation-text {
+  font-size: 0.875rem;
+  color: #a78bfa;
+  line-height: 1.75;
+}
+
+/* 버튼 영역 */
+.correct-answer-buttons {
+  width: 100%;
+  max-width: 384px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  animation: fadeIn 0.5s ease-in;
+  animation-delay: 0.4s;
+  animation-fill-mode: both;
+}
+
+.correct-answer-next-button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 0.75rem;
+  background: linear-gradient(to right, #a855f7, #7e22ce);
+  color: white;
+  height: 56px;
+  padding: 0 1.5rem;
+  font-size: 1rem;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 10px 15px -3px rgba(168, 85, 247, 0.3);
+}
+
+.correct-answer-next-button:hover {
+  background: linear-gradient(to right, #7e22ce, #a855f7);
+  box-shadow: 0 10px 15px -3px rgba(168, 85, 247, 0.5);
+}
+
+.correct-answer-next-button:active {
+  transform: scale(0.98);
+}
+
+.correct-answer-next-button .material-symbols-outlined {
+  font-size: 20px;
+  transition: transform 0.2s;
+}
+
+.correct-answer-next-button:hover .material-symbols-outlined {
+  transform: translateX(4px);
+}
+
+.correct-answer-replay-button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 0.75rem;
+  background-color: #1d1226;
+  border: 1px solid #362447;
+  color: #f3e8ff;
+  height: 48px;
+  padding: 0 1.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.correct-answer-replay-button:hover {
+  background-color: #2a1b36;
+  border-color: rgba(168, 85, 247, 0.5);
+}
+
+.correct-answer-replay-button .material-symbols-outlined {
+  font-size: 18px;
+}
+
+/* 반응형 */
+@media (max-width: 480px) {
+  .correct-answer-content {
+    padding: 2rem 1rem;
+  }
+
+  .correct-answer-celebration-icon {
+    width: 100px;
+    height: 100px;
+  }
+
+  .correct-answer-celebration-icon .material-symbols-outlined {
+    font-size: 48px;
+  }
+
+  .correct-answer-title {
+    font-size: 1.875rem;
+  }
+}

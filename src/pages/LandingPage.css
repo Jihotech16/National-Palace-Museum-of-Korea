@@ -1,0 +1,273 @@
+.landing-container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background-color: #191022;
+  font-family: 'Public Sans', 'Noto Sans KR', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.landing-background {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.landing-bg-image {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: transform 10s;
+}
+
+.landing-bg-image:hover {
+  transform: scale(1.05);
+}
+
+.landing-gradient-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(25, 16, 34, 0.4), rgba(25, 16, 34, 1));
+}
+
+.landing-gradient-bottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 66.67%;
+  background: linear-gradient(to top, rgba(25, 16, 34, 1), rgba(25, 16, 34, 0.9), transparent);
+}
+
+.landing-content {
+  position: relative;
+  z-index: 10;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 2rem 1.5rem;
+  padding-bottom: max(2rem, env(safe-area-inset-bottom));
+}
+
+.landing-top {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 2rem;
+}
+
+.landing-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  opacity: 0.8;
+}
+
+.landing-brand .material-symbols-outlined {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1.5rem;
+}
+
+.landing-brand-text {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+}
+
+.landing-settings-btn {
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.5rem;
+  backdrop-filter: blur(12px);
+  transition: background-color 0.3s;
+  border: none;
+  cursor: pointer;
+}
+
+.landing-settings-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.landing-settings-btn .material-symbols-outlined {
+  color: white;
+  font-size: 1.25rem;
+}
+
+.landing-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto 1.5rem;
+}
+
+.landing-icon {
+  margin-bottom: 1.5rem;
+  border-radius: 1rem;
+  background: rgba(127, 19, 236, 0.2);
+  padding: 1rem;
+  border: 1px solid rgba(127, 19, 236, 0.5);
+  backdrop-filter: blur(4px);
+}
+
+.landing-icon .material-symbols-outlined {
+  color: #7f13ec;
+  font-size: 3rem;
+}
+
+.landing-title {
+  color: white;
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  margin-bottom: 1rem;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.landing-title-accent {
+  color: #7f13ec;
+}
+
+.landing-description {
+  color: #d1d5db;
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.6;
+  margin-bottom: 2.5rem;
+  max-width: 320px;
+}
+
+.landing-button-container {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.landing-primary-btn {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 0.75rem;
+  background: #7f13ec;
+  padding: 1rem;
+  color: white;
+  box-shadow: 0 0 20px rgba(127, 19, 236, 0.4);
+  transition: all 0.3s;
+  border: none;
+  cursor: pointer;
+}
+
+.landing-primary-btn:hover {
+  background: rgba(127, 19, 236, 0.9);
+  box-shadow: 0 0 30px rgba(127, 19, 236, 0.6);
+}
+
+.landing-primary-btn:active {
+  transform: scale(0.98);
+}
+
+.landing-btn-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  position: relative;
+  z-index: 1;
+}
+
+.landing-btn-text {
+  font-size: 1.125rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.landing-primary-btn .material-symbols-outlined {
+  font-size: 1.25rem;
+}
+
+.landing-shine {
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.2), transparent);
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.landing-secondary-buttons {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.landing-secondary-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.5rem 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #9ca3af;
+  transition: color 0.3s;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.landing-secondary-btn:hover {
+  color: white;
+}
+
+.landing-secondary-btn .material-symbols-outlined {
+  font-size: 1.125rem;
+  transition: transform 0.3s;
+}
+
+.landing-secondary-btn:hover .material-symbols-outlined {
+  transform: scale(1.1);
+}
+
+.landing-divider {
+  height: 1rem;
+  width: 1px;
+  background: #374151;
+}
+
+/* Material Symbols Font */
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200');
+
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+}
+

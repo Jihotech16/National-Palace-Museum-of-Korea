@@ -1,15 +1,18 @@
 import { useState, useEffect, useRef } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { saveActivityData, getActivityData } from '../../firebase/firestore'
-import { getNextActivityPath } from '../../utils/activityOrder'
-import ActivityLayout from '../../components/ActivityLayout'
+import { getNextActivityPath, getPreviousActivityPath, getActivityIdFromPath } from '../../utils/activityOrder'
 import './ActivityCommon.css'
 
 function ActivityDraw({ user }) {
   const navigate = useNavigate()
+  const location = useLocation()
   const canvasRef = useRef(null)
   const [isDrawing, setIsDrawing] = useState(false)
   const [saved, setSaved] = useState(false)
+
+  const currentActivityId = getActivityIdFromPath(location.pathname)
+  const previousPath = currentActivityId ? getPreviousActivityPath(currentActivityId) : null
 
   useEffect(() => {
     loadCanvas()
@@ -24,11 +27,9 @@ function ActivityDraw({ user }) {
     canvas.width = canvas.offsetWidth
     canvas.height = canvas.offsetHeight
 
-    // 흰색 배경
     ctx.fillStyle = 'white'
     ctx.fillRect(0, 0, canvas.width, canvas.height)
 
-    // 그리기 설정
     ctx.strokeStyle = '#333'
     ctx.lineWidth = 2
     ctx.lineCap = 'round'
@@ -49,6 +50,14 @@ function ActivityDraw({ user }) {
       img.src = result.data.canvasData
     } else {
       setupCanvas()
+    }
+  }
+
+  const handleBack = () => {
+    if (previousPath) {
+      navigate(previousPath)
+    } else {
+      navigate('/')
     }
   }
 
@@ -103,14 +112,27 @@ function ActivityDraw({ user }) {
   }
 
   return (
-    <ActivityLayout title="유물 그리기">
-      <div className="activity-section">
-        <h2>친구들에게 소개해주고 싶은 국립고궁박물관 유물을 그려보세요.</h2>
-        
-        <div className="drawing-area">
+    <div className="activity-container dark">
+      <header className="activity-header">
+        <button className="activity-back-btn" onClick={handleBack}>
+          <span className="material-symbols-outlined">arrow_back</span>
+        </button>
+        <h1 className="activity-title">유물 그리기</h1>
+        <div style={{ width: '40px' }}></div>
+      </header>
+
+      <main className="activity-main">
+        <article className="activity-problem-card">
+          <div className="activity-content">
+            <h2 className="activity-problem-title">친구들에게 소개해주고 싶은 국립고궁박물관 유물을 그려보세요.</h2>
+            <div className="activity-divider"></div>
+          </div>
+        </article>
+
+        <div className="activity-drawing-area">
           <canvas
             ref={canvasRef}
-            className="drawing-canvas"
+            className="activity-drawing-canvas"
             onMouseDown={startDrawing}
             onMouseMove={draw}
             onMouseUp={stopDrawing}
@@ -120,17 +142,36 @@ function ActivityDraw({ user }) {
             onTouchEnd={stopDrawing}
           />
         </div>
+      </main>
 
-        <div className="canvas-controls">
-          <button onClick={clearCanvas} className="clear-button">
-            지우기
-          </button>
-          <button onClick={handleSave} className="save-button">
-            {saved ? '✓ 저장됨' : '저장하기'}
-          </button>
-        </div>
-      </div>
-    </ActivityLayout>
+      <footer className="activity-footer">
+        <form 
+          className="activity-form"
+          onSubmit={(e) => {
+            e.preventDefault()
+            handleSave()
+          }}
+        >
+          <div className="activity-canvas-controls">
+            <button 
+              type="button"
+              onClick={clearCanvas} 
+              className="activity-clear-btn"
+            >
+              지우기
+            </button>
+            <button 
+              type="submit"
+              className={`activity-submit-btn ${saved ? 'saved' : ''}`}
+            >
+              <span>{saved ? '✓ 저장됨' : '정답 제출'}</span>
+              <span className="material-symbols-outlined">send</span>
+            </button>
+          </div>
+        </form>
+        <div className="activity-safe-area"></div>
+      </footer>
+    </div>
   )
 }
 

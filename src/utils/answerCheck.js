@@ -8,6 +8,9 @@ export const ANSWERS = {
     sealAnswer: '의례', // 어보는 조선왕실의 의례를 위해 제작된 인장
     sealAnimalAnswer: '거북' // 왕의 어보에는 거북이 새겨져 있음
   },
+  sealKing: {
+    kingAnswer: '세종' // 조선의 4대 국왕은 세종
+  },
   ceiling: {
     ceilingUsage: '천장' // 쌍용각보개는 정전이나 편전에서 국왕의 자리 천장에 사용되었다
   },

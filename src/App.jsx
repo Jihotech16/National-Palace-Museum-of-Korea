@@ -1,8 +1,12 @@
 import { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import { onAuthChange } from './firebase/auth'
+import LandingPage from './pages/LandingPage'
 import Login from './pages/Login'
-import ActivityNature from './pages/activities/ActivityNature'
+import JoseonRoyalCourtStart from './pages/1_King_of_Joseon/1_Start'
+import Question01_King from './pages/1_King_of_Joseon/Question01_King'
+import Question02_Seal from './pages/1_King_of_Joseon/Question02_Seal'
+import Question03_Nature from './pages/1_King_of_Joseon/Question03_Nature'
 import ActivitySeal from './pages/activities/ActivitySeal'
 import ActivityCeiling from './pages/activities/ActivityCeiling'
 import ActivityClothing from './pages/activities/ActivityClothing'
@@ -12,6 +16,7 @@ import ActivityAnimal from './pages/activities/ActivityAnimal'
 import ActivityPortrait from './pages/activities/ActivityPortrait'
 import ActivityScience from './pages/activities/ActivityScience'
 import ActivityDraw from './pages/activities/ActivityDraw'
+import ExhibitionHallList from './pages/ExhibitionHallList'
 import { getFirstIncompleteActivity } from './utils/activityOrder'
 import { getAllActivityStatus } from './firebase/firestore'
 import './App.css'
@@ -20,16 +25,15 @@ function App() {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
-  const [redirectPath, setRedirectPath] = useState('/activity/seal')
+  const [redirectPath, setRedirectPath] = useState('/exhibition-hall-list')
 
   useEffect(() => {
     try {
       const unsubscribe = onAuthChange(async (user) => {
         setUser(user)
         if (user) {
-          // 로그인 시 다음 활동지로 리다이렉트 경로 설정
-          const path = await getFirstIncompleteActivity(user.uid, getAllActivityStatus)
-          setRedirectPath(path)
+          // 로그인 시 전시관 목록으로 리다이렉트
+          setRedirectPath('/exhibition-hall-list')
         }
         setLoading(false)
         setError(null)
@@ -86,15 +90,23 @@ function App() {
         />
         <Route 
           path="/" 
-          element={user ? <Navigate to={redirectPath} replace /> : <Navigate to="/login" replace />} 
+          element={user ? <Navigate to={redirectPath} replace /> : <LandingPage />} 
         />
         <Route 
-          path="/activity/nature" 
-          element={user ? <ActivityNature user={user} /> : <Navigate to="/login" replace />} 
+          path="/1_King_of_Joseon/1_Start" 
+          element={user ? <JoseonRoyalCourtStart /> : <Navigate to="/login" replace />} 
         />
         <Route 
-          path="/activity/seal" 
-          element={user ? <ActivitySeal user={user} /> : <Navigate to="/login" replace />} 
+          path="/1_King_of_Joseon/Question01_King" 
+          element={user ? <Question01_King user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/1_King_of_Joseon/Question02_Seal" 
+          element={user ? <Question02_Seal user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/1_King_of_Joseon/Question03_Nature" 
+          element={user ? <Question03_Nature user={user} /> : <Navigate to="/login" replace />} 
         />
         <Route 
           path="/activity/ceiling" 
@@ -127,6 +139,10 @@ function App() {
         <Route 
           path="/activity/draw" 
           element={user ? <ActivityDraw user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/exhibition-hall-list" 
+          element={user ? <ExhibitionHallList /> : <Navigate to="/login" replace />} 
         />
       </Routes>
     </Router>

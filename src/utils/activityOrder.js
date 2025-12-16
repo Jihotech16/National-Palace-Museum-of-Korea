@@ -1,20 +1,22 @@
 // 활동지 순서 정의
 export const ACTIVITY_ORDER = {
-  seal: 1,
-  nature: 2,
-  ceiling: 3,
-  clothing: 4,
-  portraitKing: 5,
-  education: 6,
-  animal: 7,
-  portrait: 8,
-  science: 9,
-  draw: 10
+  sealKing: 1,
+  seal: 2,
+  nature: 3,
+  ceiling: 4,
+  clothing: 5,
+  portraitKing: 6,
+  education: 7,
+  animal: 8,
+  portrait: 9,
+  science: 10,
+  draw: 11
 }
 
 export const ACTIVITY_PATHS = {
-  nature: '/activity/nature',
-  seal: '/activity/seal',
+  sealKing: '/1_King_of_Joseon/Question01_King',
+  seal: '/1_King_of_Joseon/Question02_Seal',
+  nature: '/1_King_of_Joseon/Question03_Nature',
   ceiling: '/activity/ceiling',
   clothing: '/activity/clothing',
   portraitKing: '/activity/portrait-king',
@@ -28,14 +30,14 @@ export const ACTIVITY_PATHS = {
 // 현재 활동지의 다음 활동지 경로 반환
 export const getNextActivityPath = (currentActivityId) => {
   const order = ACTIVITY_ORDER[currentActivityId]
-  if (!order) return '/activity/seal'
+  if (!order) return '/1_King_of_Joseon/Question01_King'
   
   const nextOrder = order + 1
   const nextActivityId = Object.keys(ACTIVITY_ORDER).find(
     id => ACTIVITY_ORDER[id] === nextOrder
   )
   
-  return nextActivityId ? ACTIVITY_PATHS[nextActivityId] : '/activity/seal'
+  return nextActivityId ? ACTIVITY_PATHS[nextActivityId] : '/1_King_of_Joseon/Question01_King'
 }
 
 // 현재 활동지의 이전 활동지 경로 반환
@@ -61,6 +63,13 @@ export const getActivityIdFromPath = (pathname) => {
   }
   
   // 경로 매칭이 안되면 기본 정규식으로 시도
+  // 1_King_of_Joseon 경로 처리
+  if (pathname.includes('/1_King_of_Joseon/')) {
+    if (pathname.includes('Question01_King')) return 'sealKing'
+    if (pathname.includes('Question02_Seal')) return 'seal'
+    if (pathname.includes('Question03_Nature')) return 'nature'
+  }
+  
   const match = pathname.match(/\/activity\/([\w-]+)/)
   if (match) {
     const pathSegment = match[1]
@@ -78,7 +87,7 @@ export const getActivityIdFromPath = (pathname) => {
 // 완료되지 않은 첫 번째 활동지 경로 반환
 export const getFirstIncompleteActivity = async (userId, getAllActivityStatus) => {
   const result = await getAllActivityStatus(userId)
-  if (!result.success) return '/activity/seal'
+  if (!result.success) return '/1_King_of_Joseon/Question01_King'
   
   const status = result.status || {}
   
@@ -90,6 +99,6 @@ export const getFirstIncompleteActivity = async (userId, getAllActivityStatus) =
   }
   
   // 모든 활동지 완료 시 첫 번째 활동지로
-  return '/activity/seal'
+  return '/1_King_of_Joseon/Question01_King'
 }
 

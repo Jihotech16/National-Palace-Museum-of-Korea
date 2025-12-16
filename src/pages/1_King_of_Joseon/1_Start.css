@@ -1,0 +1,420 @@
+.joseon-royal-court-start-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+  background-color: #0f0716;
+  color: #f3e8ff;
+}
+
+/* 헤더 */
+.joseon-royal-court-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1rem 0.5rem;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background-color: rgba(15, 7, 22, 0.9);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid #362447;
+}
+
+.joseon-royal-court-back-button {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 48px;
+  height: 48px;
+  color: #f3e8ff;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  transition: color 0.2s;
+}
+
+.joseon-royal-court-back-button:hover {
+  color: #a855f7;
+}
+
+.joseon-royal-court-header-title {
+  flex: 1;
+  text-align: center;
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  color: #f3e8ff;
+}
+
+.joseon-royal-court-search-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  background: transparent;
+  border: none;
+  color: #f3e8ff;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.joseon-royal-court-search-button:hover {
+  color: #a855f7;
+}
+
+/* 메인 콘텐츠 */
+.joseon-royal-court-content {
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: 7rem;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.joseon-royal-court-content::-webkit-scrollbar {
+  display: none;
+}
+
+/* 이미지 섹션 */
+.joseon-royal-court-image-section {
+  padding: 0.5rem 1rem 1.5rem;
+}
+
+.joseon-royal-court-image {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3.5 / 4;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 25px 50px -12px rgba(127, 19, 236, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: transform 1s;
+}
+
+.joseon-royal-court-image:hover {
+  transform: scale(1.05);
+}
+
+.joseon-royal-court-image-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(15, 7, 22, 0.95), transparent, transparent);
+  opacity: 0.9;
+}
+
+.joseon-royal-court-location-badge {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.75rem;
+  border-radius: 9999px;
+  background-color: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.joseon-royal-court-location-badge .material-symbols-outlined {
+  font-size: 16px;
+  color: #ffffff;
+}
+
+.joseon-royal-court-location-badge span:last-child {
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.joseon-royal-court-search-icon {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: 10;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 9999px;
+  background-color: rgba(168, 85, 247, 0.2);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(168, 85, 247, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #a855f7;
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.joseon-royal-court-search-icon .material-symbols-outlined {
+  font-size: 20px;
+}
+
+/* 정보 섹션 */
+.joseon-royal-court-info-section {
+  padding: 0 1.25rem;
+}
+
+.joseon-royal-court-tags {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.75rem;
+}
+
+.joseon-royal-court-tag {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 1.75rem;
+  padding: 0 0.75rem;
+  border-radius: 9999px;
+  gap: 0.375rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.joseon-royal-court-tag.primary {
+  background-color: rgba(168, 85, 247, 0.15);
+  border: 1px solid rgba(168, 85, 247, 0.3);
+  color: #a855f7;
+  font-weight: 700;
+}
+
+.joseon-royal-court-tag.primary .material-symbols-outlined {
+  font-size: 14px;
+}
+
+.joseon-royal-court-tag.secondary {
+  background-color: rgba(29, 18, 38, 0.6);
+  border: 1px solid rgba(54, 36, 71, 0.5);
+  color: #a78bfa;
+}
+
+.joseon-royal-court-title {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  text-align: left;
+  padding: 0.5rem 0 1rem;
+  color: #f3e8ff;
+}
+
+.joseon-royal-court-title-gradient {
+  background: linear-gradient(to right, #a855f7, #c084fc);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.joseon-royal-court-divider {
+  width: 3rem;
+  height: 0.25rem;
+  background-color: #a855f7;
+  border-radius: 9999px;
+  margin-bottom: 1.25rem;
+}
+
+.joseon-royal-court-description {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.joseon-royal-court-description p {
+  font-size: 0.9375rem;
+  font-weight: 400;
+  line-height: 1.75;
+  color: #a78bfa;
+}
+
+.joseon-royal-court-description strong {
+  color: #f3e8ff;
+  font-weight: 700;
+}
+
+/* 미션 난이도 */
+.joseon-royal-court-difficulty {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  background-color: rgba(29, 18, 38, 0.6);
+  border: 1px solid rgba(54, 36, 71, 0.5);
+}
+
+.joseon-royal-court-difficulty-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.joseon-royal-court-difficulty-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #a78bfa;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.joseon-royal-court-difficulty-value {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #a855f7;
+}
+
+.joseon-royal-court-difficulty-bar {
+  display: flex;
+  gap: 0.25rem;
+  height: 0.5rem;
+  width: 100%;
+}
+
+.joseon-royal-court-difficulty-fill {
+  flex: 1;
+  border-radius: 0.125rem;
+  background-color: #a855f7;
+}
+
+.joseon-royal-court-difficulty-empty {
+  flex: 1;
+  border-radius: 0.125rem;
+  background-color: rgba(54, 36, 71, 0.5);
+}
+
+/* 하단 버튼 */
+.joseon-royal-court-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1.25rem;
+  background: linear-gradient(to top, #0f0716, transparent);
+  z-index: 40;
+}
+
+.joseon-royal-court-start-button {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 0.75rem;
+  background-color: #a855f7;
+  padding: 1rem;
+  box-shadow: 0 10px 15px -3px rgba(168, 85, 247, 0.3);
+  transition: all 0.2s;
+}
+
+.joseon-royal-court-start-button:hover {
+  background-color: #7e22ce;
+  box-shadow: 0 10px 15px -3px rgba(168, 85, 247, 0.5);
+}
+
+.joseon-royal-court-start-button:active {
+  transform: scale(0.98);
+}
+
+.joseon-royal-court-start-button::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(100%);
+  transition: transform 0.3s;
+}
+
+.joseon-royal-court-start-button:hover::before {
+  transform: translateY(0);
+}
+
+.joseon-royal-court-start-button > div {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.joseon-royal-court-start-button .material-symbols-outlined {
+  color: #ffffff;
+  font-size: 20px;
+}
+
+.joseon-royal-court-start-button span:last-child {
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+/* Activity 스타일 오버라이드 */
+.joseon-royal-court-start-container .activity-problem-title {
+  color: #f3e8ff !important;
+}
+
+.joseon-royal-court-start-container .activity-seal-problem-title {
+  color: #f3e8ff !important;
+}
+
+.joseon-royal-court-start-container .activity-seal-animal-title {
+  color: #f3e8ff !important;
+}
+
+.joseon-royal-court-start-container .activity-description {
+  color: #a78bfa !important;
+}
+
+.joseon-royal-court-start-container .activity-seal-description {
+  color: #a78bfa !important;
+}
+
+/* ActivityFooter 스타일 오버라이드 */
+.joseon-royal-court-start-container .activity-footer {
+  background: linear-gradient(to top, #0f0716, transparent);
+  border-top: 1px solid rgba(54, 36, 71, 0.5);
+  padding: 1.25rem;
+}
+
+.joseon-royal-court-start-container .activity-answer-input {
+  background: rgba(29, 18, 38, 0.6);
+  border: 1px solid rgba(54, 36, 71, 0.5);
+  color: #f3e8ff;
+}
+
+.joseon-royal-court-start-container .activity-answer-input::placeholder {
+  color: #a78bfa;
+}
+
+.joseon-royal-court-start-container .activity-submit-btn {
+  background-color: #a855f7;
+  box-shadow: 0 10px 15px -3px rgba(168, 85, 247, 0.3);
+}
+
+.joseon-royal-court-start-container .activity-submit-btn:hover {
+  background-color: #7e22ce;
+}
+
+.joseon-royal-court-start-container .activity-submit-btn.saved {
+  background: #10b981;
+  box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.3);
+}

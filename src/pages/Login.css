@@ -1,222 +1,390 @@
-.login-container {
+.login-page {
+  position: relative;
   width: 100vw;
   height: 100vh;
-  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-image: url('../image/고궁박물관 표지.png');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  padding: 20px;
+  background-color: #191022;
+  padding: 1.5rem;
   box-sizing: border-box;
-  position: relative;
+  font-family: 'Public Sans', sans-serif;
   overflow: hidden;
+  color: white;
 }
 
-.login-container::before {
-  content: '';
+.login-page-bg-blur {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(2px);
-  z-index: 0;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(60px);
 }
 
-.login-card {
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
-  border-radius: 20px;
-  padding: 40px 30px;
+.login-page-bg-blur-1 {
+  top: -80px;
+  right: -80px;
+  background: rgba(127, 19, 236, 0.2);
+}
+
+.login-page-bg-blur-2 {
+  bottom: -80px;
+  left: -80px;
+  background: rgba(94, 14, 176, 0.2);
+}
+
+.login-page-container {
+  position: relative;
+  z-index: 10;
   width: 100%;
-  max-width: 450px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  max-width: 28rem;
+  max-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
   box-sizing: border-box;
-  margin: 0 auto;
-  position: relative;
-  z-index: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
-@media (max-width: 768px) {
-  .login-container {
-    padding: 10px;
-    align-items: flex-start;
-    padding-top: 20px;
-  }
-
-  .login-card {
-    padding: 30px 20px;
-    max-width: 100%;
-    margin: 0;
-  }
-
-  .form-row {
-    flex-direction: column;
-    gap: 20px;
-  }
+.login-page-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  animation: fadeInDown 0.6s ease-out;
+  flex-shrink: 0;
 }
 
-@media (max-width: 480px) {
-  .login-card {
-    padding: 25px 15px;
-    border-radius: 15px;
-  }
-
-  .login-header h1 {
-    font-size: 24px;
-  }
-
-  .login-header p {
-    font-size: 14px;
-  }
+.login-page-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 5rem;
+  height: 5rem;
+  background: linear-gradient(to bottom right, #7f13ec, #5e0eb0);
+  border-radius: 1.5rem;
+  box-shadow: 0 10px 25px rgba(127, 19, 236, 0.2);
+  transform: rotate(3deg);
+  margin-bottom: 1rem;
+  flex-shrink: 0;
 }
 
-.login-header {
+.login-page-icon .material-symbols-outlined {
+  font-size: 2.5rem;
+  color: white;
+}
+
+.login-page-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.02em;
+  flex-shrink: 0;
+}
+
+.login-page-subtitle {
+  color: #ad92c9;
   text-align: center;
-  margin-bottom: 30px;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  max-width: 280px;
+  flex-shrink: 0;
+}
+
+.login-page-form {
   position: relative;
-}
-
-.back-button {
-  position: absolute;
-  top: 0;
-  left: 0;
-  background: rgba(139, 69, 19, 0.1);
-  color: #8B4513;
-  padding: 8px 16px;
-  border-radius: 20px;
-  font-size: 14px;
-  transition: background 0.3s;
-  border: 1px solid rgba(139, 69, 19, 0.2);
-  cursor: pointer;
-}
-
-.back-button:hover {
-  background: rgba(139, 69, 19, 0.2);
-}
-
-.login-header h1 {
-  font-size: 28px;
-  color: #8B4513;
-  margin-bottom: 10px;
-}
-
-.login-header p {
-  color: #666;
-  font-size: 16px;
-}
-
-.login-form {
+  z-index: 10;
   display: flex;
   flex-direction: column;
-  gap: 20px;
-}
-
-.form-row {
-  display: flex;
-  gap: 12px;
+  gap: 1rem;
   width: 100%;
+  flex-shrink: 0;
 }
 
-.form-row .form-group {
-  flex: 1;
+.login-form-field {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 0.375rem;
 }
 
-.form-group {
+.login-form-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #ad92c9;
+  margin-left: 0.25rem;
+}
+
+.login-input-wrapper {
+  position: relative;
   display: flex;
-  flex-direction: column;
-  gap: 8px;
+  align-items: center;
 }
 
-.form-group label {
-  font-weight: 600;
-  color: #333;
-  font-size: 14px;
+.login-input-icon {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  padding-left: 0.75rem;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+  transition: color 0.3s;
+  color: #6b7280;
 }
 
-.form-group input,
-.form-group select {
-  padding: 12px 16px;
-  border: 2px solid #e0e0e0;
-  border-radius: 10px;
-  font-size: 16px;
-  transition: border-color 0.3s;
-  background-color: white;
-  cursor: pointer;
+.login-input-wrapper:focus-within .login-input-icon {
+  color: #7f13ec;
 }
 
-.form-group input:focus,
-.form-group select:focus {
-  border-color: #8B4513;
+.login-input-icon .material-symbols-outlined {
+  font-size: 1.25rem;
+}
+
+.login-form-grid .login-input-icon .material-symbols-outlined {
+  font-size: 1.125rem;
+}
+
+.login-input {
+  display: block;
+  width: 100%;
+  padding: 0.875rem 0.75rem;
+  padding-left: 2.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.75rem;
+  background-color: #251733;
+  color: white;
+  font-size: 0.875rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s;
   outline: none;
 }
 
-.form-group select {
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%238B4513' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 16px center;
-  padding-right: 40px;
+.login-input::placeholder {
+  color: #6b7280;
 }
 
-.form-hint {
-  display: block;
-  color: #999;
-  font-size: 12px;
-  margin-top: 4px;
+.login-input:focus {
+  border-color: #7f13ec;
+  box-shadow: 0 0 0 2px rgba(127, 19, 236, 0.5);
 }
 
-.error-message {
-  background: #fee;
-  color: #c33;
-  padding: 12px;
-  border-radius: 8px;
-  font-size: 14px;
+.login-input-center {
+  text-align: center;
+  padding-left: 2.25rem;
+  padding-right: 0.5rem;
+}
+
+.login-form-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+}
+
+.login-error-message {
+  background: rgba(220, 38, 38, 0.1);
+  color: #fca5a5;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
   text-align: left;
   line-height: 1.6;
-  white-space: pre-line;
+  border: 1px solid rgba(220, 38, 38, 0.2);
 }
 
-.submit-button {
-  background: linear-gradient(135deg, #8B4513 0%, #A0522D 100%);
+.login-submit-button {
+  margin-top: 1rem;
+  width: 100%;
+  background: linear-gradient(to right, #7f13ec, #5e0eb0);
   color: white;
-  padding: 14px;
-  border-radius: 10px;
-  font-size: 16px;
-  font-weight: 600;
-  transition: transform 0.2s, box-shadow 0.2s;
-  margin-top: 10px;
+  font-weight: 700;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 25px rgba(127, 19, 236, 0.3);
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 1rem;
 }
 
-.submit-button:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(139, 69, 19, 0.3);
+.login-submit-button:hover:not(:disabled) {
+  background: linear-gradient(to right, #5e0eb0, #7f13ec);
+  box-shadow: 0 10px 30px rgba(127, 19, 236, 0.4);
 }
 
-.submit-button:disabled {
+.login-submit-button:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.login-submit-button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
 
-.login-info {
-  margin-top: 20px;
-  padding: 16px;
-  background: #f5f5f5;
-  border-radius: 10px;
+.login-submit-icon {
+  font-size: 1.25rem;
+  transition: transform 0.3s;
+}
+
+.login-submit-button:hover:not(:disabled) .login-submit-icon {
+  transform: translateX(4px);
+}
+
+.login-page-footer {
+  margin-top: 1.5rem;
   text-align: center;
+  position: relative;
+  z-index: 10;
+  flex-shrink: 0;
 }
 
-.login-info p {
-  color: #666;
-  font-size: 13px;
-  line-height: 1.5;
-  margin: 0;
+.login-page-footer-text {
+  font-size: 0.875rem;
+  color: #ad92c9;
 }
 
+.login-page-footer-link {
+  font-weight: 700;
+  color: #7f13ec;
+  margin-left: 0.25rem;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.login-page-footer-link:hover {
+  color: #5e0eb0;
+  text-decoration: underline;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 작은 화면 대응 */
+@media (max-height: 700px) {
+  .login-page-header {
+    margin-bottom: 1rem;
+  }
+
+  .login-page-icon {
+    width: 4rem;
+    height: 4rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .login-page-icon .material-symbols-outlined {
+    font-size: 2rem;
+  }
+
+  .login-page-title {
+    font-size: 1.25rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .login-page-subtitle {
+    font-size: 0.75rem;
+  }
+
+  .login-page-form {
+    gap: 0.75rem;
+  }
+
+  .login-page-footer {
+    margin-top: 1rem;
+  }
+}
+
+@media (max-height: 600px) {
+  .login-page {
+    padding: 1rem;
+  }
+
+  .login-page-container {
+    padding: 1rem;
+  }
+
+  .login-page-header {
+    margin-bottom: 0.75rem;
+  }
+
+  .login-page-icon {
+    width: 3.5rem;
+    height: 3.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .login-page-icon .material-symbols-outlined {
+    font-size: 1.75rem;
+  }
+
+  .login-page-title {
+    font-size: 1.125rem;
+  }
+
+  .login-page-subtitle {
+    font-size: 0.7rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .login-form-label {
+    font-size: 0.7rem;
+  }
+
+  .login-input {
+    padding: 0.75rem 0.5rem;
+    padding-left: 2.25rem;
+    font-size: 0.8rem;
+  }
+
+  .login-input-center {
+    padding-left: 2rem;
+  }
+
+  .login-submit-button {
+    padding: 0.75rem;
+    font-size: 0.9rem;
+  }
+
+  .login-page-footer {
+    margin-top: 0.75rem;
+  }
+
+  .login-page-footer-text {
+    font-size: 0.75rem;
+  }
+}
+
+/* Material Symbols Font */
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200');
+
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+}
