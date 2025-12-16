@@ -95,8 +95,6 @@ function Login() {
           <button className="back-button" onClick={handleBack}>
             ← 뒤로
           </button>
-          <h1>🏛️ 국립고궁박물관</h1>
-          <p>전시 해설 활동지</p>
         </div>
 
         <form onSubmit={handleSubmit} className="login-form">
@@ -118,55 +116,57 @@ function Login() {
             </select>
           </div>
 
-          <div className="form-group">
-            <label htmlFor="grade">학년</label>
-            <select
-              id="grade"
-              value={grade}
-              onChange={(e) => setGrade(e.target.value)}
-              className="form-select"
-            >
-              <option value="">학년을 선택하세요</option>
-              {grades.map((g) => (
-                <option key={g.value} value={g.value}>
-                  {g.label}
-                </option>
-              ))}
-            </select>
-          </div>
+          <div className="form-row">
+            <div className="form-group">
+              <label htmlFor="grade">학년</label>
+              <select
+                id="grade"
+                value={grade}
+                onChange={(e) => setGrade(e.target.value)}
+                className="form-select"
+              >
+                <option value="">학년을 선택하세요</option>
+                {grades.map((g) => (
+                  <option key={g.value} value={g.value}>
+                    {g.label}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-          <div className="form-group">
-            <label htmlFor="classNum">반</label>
-            <select
-              id="classNum"
-              value={classNum}
-              onChange={(e) => setClassNum(e.target.value)}
-              className="form-select"
-            >
-              <option value="">반을 선택하세요</option>
-              {classes.map((c) => (
-                <option key={c.value} value={c.value}>
-                  {c.label}
-                </option>
-              ))}
-            </select>
-          </div>
+            <div className="form-group">
+              <label htmlFor="classNum">반</label>
+              <select
+                id="classNum"
+                value={classNum}
+                onChange={(e) => setClassNum(e.target.value)}
+                className="form-select"
+              >
+                <option value="">반을 선택하세요</option>
+                {classes.map((c) => (
+                  <option key={c.value} value={c.value}>
+                    {c.label}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-          <div className="form-group">
-            <label htmlFor="number">번호</label>
-            <select
-              id="number"
-              value={number}
-              onChange={(e) => setNumber(e.target.value)}
-              className="form-select"
-            >
-              <option value="">번호를 선택하세요</option>
-              {numbers.map((n) => (
-                <option key={n.value} value={n.value}>
-                  {n.label}
-                </option>
-              ))}
-            </select>
+            <div className="form-group">
+              <label htmlFor="number">번호</label>
+              <select
+                id="number"
+                value={number}
+                onChange={(e) => setNumber(e.target.value)}
+                className="form-select"
+              >
+                <option value="">번호를 선택하세요</option>
+                {numbers.map((n) => (
+                  <option key={n.value} value={n.value}>
+                    {n.label}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
 
           {error && <div className="error-message">{error}</div>}

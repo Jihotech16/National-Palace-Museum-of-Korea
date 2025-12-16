@@ -4,7 +4,9 @@ import { saveActivityData, getActivityData } from '../../firebase/firestore'
 import { getNextActivityPath } from '../../utils/activityOrder'
 import { checkAnswer } from '../../utils/answerCheck'
 import ActivityLayout from '../../components/ActivityLayout'
+import CoverLayout from '../../components/CoverLayout'
 import sealImage from '../../image/태조추상시호금보.jpeg'
+import coverImage from '../../image/조선국왕표지.jpg'
 import './ActivityCommon.css'
 
 function ActivitySeal({ user }) {
@@ -73,12 +75,13 @@ function ActivitySeal({ user }) {
 
   if (showCover) {
     return (
-      <ActivityLayout title="조선국왕">
-        <div className="activity-section cover-page">
-          <div className="cover-content">
-            <h1 className="cover-title">조선국왕</h1>
-            <h2 className="cover-subtitle">Kings of the Joseon Dynasty</h2>
-          </div>
+      <CoverLayout>
+        <div className="cover-page">
+          <img 
+            src={coverImage} 
+            alt="조선국왕 표지" 
+            className="cover-image"
+          />
           <button 
             onClick={() => setShowCover(false)} 
             className="cover-start-button"
@@ -86,7 +89,7 @@ function ActivitySeal({ user }) {
             시작하기
           </button>
         </div>
-      </ActivityLayout>
+      </CoverLayout>
     )
   }
 
