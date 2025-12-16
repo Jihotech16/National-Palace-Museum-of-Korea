@@ -18,6 +18,15 @@ function ActivityNature({ user }) {
     loadData()
   }, [])
 
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => {
+        setError('')
+      }, 3000)
+      return () => clearTimeout(timer)
+    }
+  }, [error])
+
   const loadData = async () => {
     const result = await getActivityData(user.uid, 'nature')
     if (result.success && result.data) {
@@ -87,26 +96,9 @@ function ActivityNature({ user }) {
   }
 
   return (
-    <ActivityLayout title="다섯 가지 자연물">
+    <ActivityLayout title="조선국왕">
       <div className="activity-section">
-        <h2>2층 조선의 국왕실</h2>
-        <p className="activity-description">
-          다섯 가지 자연물을 소재로 그린 유물을 찾아 이름을 적어보세요.
-        </p>
-
-        <div className="input-group">
-          <label>다섯 가지 자연물을 소재로 그린 유물을 찾아 이름을 적어보세요.</label>
-          <input
-            type="text"
-            value={artifactName}
-            onChange={(e) => {
-              setArtifactName(e.target.value)
-              setError('')
-            }}
-            placeholder="유물 이름을 입력하세요"
-            className="text-input"
-          />
-        </div>
+        <h2 style={{ textAlign: 'center' }}>일월오봉도</h2>
 
         <div className="input-group">
           <label>일월오봉도에 그려진 다섯 가지 자연물을 적어보세요.</label>
@@ -122,7 +114,11 @@ function ActivityNature({ user }) {
           ))}
         </div>
 
-        {error && <div className="error-message" style={{ marginBottom: '16px' }}>{error}</div>}
+        {error && (
+          <div className="toast-error">
+            {error}
+          </div>
+        )}
         
         <button 
           onClick={handleSave} 

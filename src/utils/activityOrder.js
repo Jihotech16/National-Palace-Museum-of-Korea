@@ -2,15 +2,23 @@
 export const ACTIVITY_ORDER = {
   seal: 1,
   nature: 2,
-  animal: 3,
-  portrait: 4,
-  science: 5,
-  draw: 6
+  ceiling: 3,
+  clothing: 4,
+  portraitKing: 5,
+  education: 6,
+  animal: 7,
+  portrait: 8,
+  science: 9,
+  draw: 10
 }
 
 export const ACTIVITY_PATHS = {
   nature: '/activity/nature',
   seal: '/activity/seal',
+  ceiling: '/activity/ceiling',
+  clothing: '/activity/clothing',
+  portraitKing: '/activity/portrait-king',
+  education: '/activity/education',
   animal: '/activity/animal',
   portrait: '/activity/portrait',
   science: '/activity/science',
@@ -45,8 +53,26 @@ export const getPreviousActivityPath = (currentActivityId) => {
 
 // 경로에서 활동지 ID 추출
 export const getActivityIdFromPath = (pathname) => {
-  const match = pathname.match(/\/activity\/(\w+)/)
-  return match ? match[1] : null
+  // 먼저 ACTIVITY_PATHS에서 정확한 경로를 찾아서 키를 반환
+  for (const [id, path] of Object.entries(ACTIVITY_PATHS)) {
+    if (pathname === path || pathname.startsWith(path + '/')) {
+      return id
+    }
+  }
+  
+  // 경로 매칭이 안되면 기본 정규식으로 시도
+  const match = pathname.match(/\/activity\/([\w-]+)/)
+  if (match) {
+    const pathSegment = match[1]
+    // 하이픈을 포함한 경로를 camelCase로 변환 (portrait-king -> portraitKing)
+    const camelCase = pathSegment.replace(/-([a-z])/g, (g) => g[1].toUpperCase())
+    // ACTIVITY_ORDER에 해당 키가 있는지 확인
+    if (ACTIVITY_ORDER[camelCase]) {
+      return camelCase
+    }
+  }
+  
+  return null
 }
 
 // 완료되지 않은 첫 번째 활동지 경로 반환

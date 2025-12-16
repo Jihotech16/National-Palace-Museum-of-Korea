@@ -2,8 +2,16 @@
   background: white;
   border-radius: 16px;
   padding: 24px;
+  padding-bottom: 90px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   margin-bottom: 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  box-sizing: border-box;
+  min-height: 0;
+  position: relative;
 }
 
 .activity-section h2 {
@@ -72,8 +80,41 @@
   line-height: 1.6;
 }
 
+.toast-error {
+  position: fixed;
+  top: 70px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fee;
+  color: #c33;
+  padding: 14px 20px;
+  border-radius: 10px;
+  font-size: 14px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  animation: slideDown 0.3s ease-out;
+  max-width: 90%;
+  text-align: center;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
 .save-button {
-  width: 100%;
+  position: absolute;
+  bottom: 24px;
+  left: 24px;
+  right: 24px;
+  width: calc(100% - 48px);
+  min-height: 50px;
   background: linear-gradient(135deg, #8B4513 0%, #A0522D 100%);
   color: white;
   padding: 14px;
@@ -81,7 +122,9 @@
   font-size: 16px;
   font-weight: 600;
   transition: transform 0.2s, box-shadow 0.2s;
-  margin-top: 20px;
+  margin-top: 0;
+  box-sizing: border-box;
+  z-index: 10;
 }
 
 .save-button:hover {
@@ -132,9 +175,15 @@
 }
 
 .canvas-controls {
+  position: absolute;
+  bottom: 24px;
+  left: 24px;
+  right: 24px;
+  width: calc(100% - 48px);
   display: flex;
   gap: 12px;
-  margin-top: 16px;
+  margin-top: 0;
+  z-index: 10;
 }
 
 .clear-button {
@@ -152,14 +201,79 @@
   background: #e0e0e0;
 }
 
-.save-button {
+.canvas-controls .save-button {
+  position: static;
   flex: 1;
+  min-height: 50px;
+  width: auto;
+  left: auto;
+  right: auto;
 }
 
 .seal-activity {
   display: flex;
   flex-direction: column;
   gap: 20px;
+  padding-bottom: 0;
+}
+
+.cover-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 24px;
+  min-height: calc(100vh - 120px);
+}
+
+.cover-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.cover-title {
+  font-size: 48px;
+  font-weight: 700;
+  color: #8B4513;
+  margin-bottom: 16px;
+  letter-spacing: 2px;
+}
+
+.cover-subtitle {
+  font-size: 24px;
+  font-weight: 400;
+  color: #666;
+  margin: 0;
+  letter-spacing: 1px;
+}
+
+.cover-start-button {
+  width: 100%;
+  max-width: 300px;
+  min-height: 50px;
+  background: linear-gradient(135deg, #8B4513 0%, #A0522D 100%);
+  color: white;
+  padding: 14px;
+  border-radius: 10px;
+  font-size: 18px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(139, 69, 19, 0.2);
+}
+
+.cover-start-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(139, 69, 19, 0.3);
+}
+
+.cover-start-button:active {
+  transform: translateY(0);
 }
 
 .observation-table {
@@ -219,6 +333,21 @@
 @media (max-width: 480px) {
   .activity-section {
     padding: 20px 16px;
+    padding-bottom: 90px;
+  }
+  
+  .save-button {
+    bottom: 20px;
+    left: 16px;
+    right: 16px;
+    width: calc(100% - 32px);
+  }
+  
+  .canvas-controls {
+    bottom: 20px;
+    left: 16px;
+    right: 16px;
+    width: calc(100% - 32px);
   }
 
   .activity-section h2 {
@@ -249,6 +378,18 @@
 
   .drawing-canvas {
     height: 300px;
+  }
+
+  .cover-title {
+    font-size: 36px;
+  }
+
+  .cover-subtitle {
+    font-size: 18px;
+  }
+
+  .cover-start-button {
+    max-width: 100%;
   }
 }
 

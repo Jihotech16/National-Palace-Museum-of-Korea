@@ -5,7 +5,21 @@ export const ANSWERS = {
     natures: ['해', '달', '물', '소나무', '산봉우리'] // 일월오봉도에 그려진 다섯 가지 자연물
   },
   seal: {
-    sealAnswer: '의례' // 어보는 조선왕실의 의례를 위해 제작된 인장
+    sealAnswer: '의례', // 어보는 조선왕실의 의례를 위해 제작된 인장
+    sealAnimalAnswer: '거북' // 왕의 어보에는 거북이 새겨져 있음
+  },
+  ceiling: {
+    ceilingUsage: '천장' // 쌍용각보개는 정전이나 편전에서 국왕의 자리 천장에 사용되었다
+  },
+  clothing: {
+    clothingAnswer: '면복' // 조선의 국왕이 입는 가장 격식있는 예복
+  },
+  portraitKing: {
+    kingNumber: '21', // 조선 21대 왕
+    kingName: '영조' // 영조
+  },
+  education: {
+    educationAnswer: '보양청' // 왕위계승자인 원자가 글을 배우기 전까지의 교육을 맡던 시설
   }
   // 다른 활동지의 정답도 여기에 추가 가능
 }

@@ -4,6 +4,10 @@ import { onAuthChange } from './firebase/auth'
 import Login from './pages/Login'
 import ActivityNature from './pages/activities/ActivityNature'
 import ActivitySeal from './pages/activities/ActivitySeal'
+import ActivityCeiling from './pages/activities/ActivityCeiling'
+import ActivityClothing from './pages/activities/ActivityClothing'
+import ActivityPortraitKing from './pages/activities/ActivityPortraitKing'
+import ActivityEducation from './pages/activities/ActivityEducation'
 import ActivityAnimal from './pages/activities/ActivityAnimal'
 import ActivityPortrait from './pages/activities/ActivityPortrait'
 import ActivityScience from './pages/activities/ActivityScience'
@@ -91,6 +95,22 @@ function App() {
         <Route 
           path="/activity/seal" 
           element={user ? <ActivitySeal user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/activity/ceiling" 
+          element={user ? <ActivityCeiling user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/activity/clothing" 
+          element={user ? <ActivityClothing user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/activity/portrait-king" 
+          element={user ? <ActivityPortraitKing user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/activity/education" 
+          element={user ? <ActivityEducation user={user} /> : <Navigate to="/login" replace />} 
         />
         <Route 
           path="/activity/animal" 

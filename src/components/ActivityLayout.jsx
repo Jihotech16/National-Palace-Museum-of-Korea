@@ -27,15 +27,17 @@ function ActivityLayout({ title, children }) {
   return (
     <div className="activity-layout">
       <header className="activity-header">
-        <div className="header-buttons">
+        {previousPath ? (
           <button className="back-button" onClick={handleBack}>
             ← 뒤로
           </button>
-          <button className="logout-button" onClick={handleLogout}>
-            로그아웃
-          </button>
-        </div>
+        ) : (
+          <div style={{ width: '80px' }}></div>
+        )}
         <h1>{title}</h1>
+        <button className="logout-button" onClick={handleLogout}>
+          로그아웃
+        </button>
       </header>
       <main className="activity-content">
         {children}
