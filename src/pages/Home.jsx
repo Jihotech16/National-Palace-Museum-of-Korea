@@ -35,22 +35,18 @@ function Home({ user }) {
     navigate('/login')
   }
 
+  const handleBack = () => {
+    navigate('/login')
+  }
+
   const activities = [
-    {
-      id: 'mindmap',
-      title: '마인드 맵',
-      description: '국립고궁박물관을 생각하면 떠오르는 단어들을 나열해보세요',
-      path: '/activity/mindmap',
-      icon: '🧠',
-      order: 1
-    },
     {
       id: 'seal',
       title: '어보',
       description: '2층 조선의 국왕실 - 어보와 어보 상자 관찰',
       path: '/activity/seal',
       icon: '🪙',
-      order: 2
+      order: 1
     },
     {
       id: 'nature',
@@ -58,7 +54,7 @@ function Home({ user }) {
       description: '2층 조선의 국왕실 - 자연물 그림 찾기',
       path: '/activity/nature',
       icon: '🌿',
-      order: 3
+      order: 2
     },
     {
       id: 'animal',
@@ -66,7 +62,7 @@ function Home({ user }) {
       description: '9가지 동물과 비슷한 모습의 유물 찾기',
       path: '/activity/animal',
       icon: '🐉',
-      order: 4
+      order: 3
     },
     {
       id: 'portrait',
@@ -74,7 +70,7 @@ function Home({ user }) {
       description: '임금의 초상화 어진 비교하기',
       path: '/activity/portrait',
       icon: '👑',
-      order: 5
+      order: 4
     },
     {
       id: 'science',
@@ -82,7 +78,7 @@ function Home({ user }) {
       description: 'B1층 과학문화실 유물 찾기',
       path: '/activity/science',
       icon: '🔬',
-      order: 6
+      order: 5
     },
     {
       id: 'draw',
@@ -90,7 +86,7 @@ function Home({ user }) {
       description: '친구들에게 소개하고 싶은 유물 그려보기',
       path: '/activity/draw',
       icon: '🎨',
-      order: 7
+      order: 6
     }
   ]
 
@@ -121,11 +117,16 @@ function Home({ user }) {
   return (
     <div className="home-container">
       <header className="home-header">
+        <div className="header-buttons">
+          <button className="back-button" onClick={handleBack}>
+            ← 뒤로
+          </button>
+          <button className="logout-button" onClick={handleLogout}>
+            로그아웃
+          </button>
+        </div>
         <h1>🏛️ 국립고궁박물관</h1>
         <p className="subtitle">전시 해설 활동지</p>
-        <button className="logout-button" onClick={handleLogout}>
-          로그아웃
-        </button>
       </header>
 
       <main className="activities-grid">

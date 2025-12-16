@@ -10,6 +10,9 @@
   padding: 30px 20px;
   text-align: center;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .home-header h1 {
@@ -22,16 +25,43 @@
   opacity: 0.9;
 }
 
-.logout-button {
+.header-buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   position: absolute;
   top: 20px;
+  left: 20px;
   right: 20px;
+}
+
+.back-button {
   background: rgba(255, 255, 255, 0.2);
   color: white;
   padding: 8px 16px;
   border-radius: 20px;
   font-size: 14px;
   transition: background 0.3s;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.back-button:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.logout-button {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  transition: background 0.3s;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+  margin-left: auto;
 }
 
 .logout-button:hover {

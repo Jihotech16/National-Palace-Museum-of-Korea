@@ -1,16 +1,14 @@
 // 활동지 순서 정의
 export const ACTIVITY_ORDER = {
-  mindmap: 1,
-  seal: 2,
-  nature: 3,
-  animal: 4,
-  portrait: 5,
-  science: 6,
-  draw: 7
+  seal: 1,
+  nature: 2,
+  animal: 3,
+  portrait: 4,
+  science: 5,
+  draw: 6
 }
 
 export const ACTIVITY_PATHS = {
-  mindmap: '/activity/mindmap',
   nature: '/activity/nature',
   seal: '/activity/seal',
   animal: '/activity/animal',
@@ -22,14 +20,14 @@ export const ACTIVITY_PATHS = {
 // 현재 활동지의 다음 활동지 경로 반환
 export const getNextActivityPath = (currentActivityId) => {
   const order = ACTIVITY_ORDER[currentActivityId]
-  if (!order) return '/activity/mindmap'
+  if (!order) return '/activity/seal'
   
   const nextOrder = order + 1
   const nextActivityId = Object.keys(ACTIVITY_ORDER).find(
     id => ACTIVITY_ORDER[id] === nextOrder
   )
   
-  return nextActivityId ? ACTIVITY_PATHS[nextActivityId] : '/activity/mindmap'
+  return nextActivityId ? ACTIVITY_PATHS[nextActivityId] : '/activity/seal'
 }
 
 // 현재 활동지의 이전 활동지 경로 반환
@@ -54,7 +52,7 @@ export const getActivityIdFromPath = (pathname) => {
 // 완료되지 않은 첫 번째 활동지 경로 반환
 export const getFirstIncompleteActivity = async (userId, getAllActivityStatus) => {
   const result = await getAllActivityStatus(userId)
-  if (!result.success) return '/activity/mindmap'
+  if (!result.success) return '/activity/seal'
   
   const status = result.status || {}
   
@@ -66,6 +64,6 @@ export const getFirstIncompleteActivity = async (userId, getAllActivityStatus) =
   }
   
   // 모든 활동지 완료 시 첫 번째 활동지로
-  return '/activity/mindmap'
+  return '/activity/seal'
 }
 

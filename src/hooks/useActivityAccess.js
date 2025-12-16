@@ -3,13 +3,12 @@ import { useNavigate } from 'react-router-dom'
 import { checkActivityCompleted } from '../firebase/firestore'
 
 const ACTIVITY_ORDER = {
-  mindmap: 1,
-  seal: 2,
-  nature: 3,
-  animal: 4,
-  portrait: 5,
-  science: 6,
-  draw: 7
+  seal: 1,
+  nature: 2,
+  animal: 3,
+  portrait: 4,
+  science: 5,
+  draw: 6
 }
 
 const ACTIVITY_IDS = Object.keys(ACTIVITY_ORDER)

@@ -9,6 +9,12 @@ function Login() {
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
 
+  const handleBack = () => {
+    if (window.history.length > 1) {
+      navigate(-1)
+    }
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     setError('')
@@ -54,6 +60,9 @@ function Login() {
     <div className="login-container">
       <div className="login-card">
         <div className="login-header">
+          <button className="back-button" onClick={handleBack}>
+            ← 뒤로
+          </button>
           <h1>🏛️ 국립고궁박물관</h1>
           <p>전시 해설 활동지</p>
         </div>

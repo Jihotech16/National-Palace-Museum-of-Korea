@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import { onAuthChange } from './firebase/auth'
 import Login from './pages/Login'
-import ActivityMindMap from './pages/activities/ActivityMindMap'
 import ActivityNature from './pages/activities/ActivityNature'
 import ActivitySeal from './pages/activities/ActivitySeal'
 import ActivityAnimal from './pages/activities/ActivityAnimal'
@@ -17,7 +16,7 @@ function App() {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
-  const [redirectPath, setRedirectPath] = useState('/activity/mindmap')
+  const [redirectPath, setRedirectPath] = useState('/activity/seal')
 
   useEffect(() => {
     try {
@@ -84,10 +83,6 @@ function App() {
         <Route 
           path="/" 
           element={user ? <Navigate to={redirectPath} replace /> : <Navigate to="/login" replace />} 
-        />
-        <Route 
-          path="/activity/mindmap" 
-          element={user ? <ActivityMindMap user={user} /> : <Navigate to="/login" replace />} 
         />
         <Route 
           path="/activity/nature" 

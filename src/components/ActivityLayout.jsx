@@ -14,8 +14,8 @@ function ActivityLayout({ title, children }) {
     if (previousPath) {
       navigate(previousPath)
     } else {
-      // 첫 번째 활동지이거나 경로를 찾을 수 없으면 로그아웃
-      handleLogout()
+      // 첫 번째 활동지이거나 경로를 찾을 수 없으면 홈으로
+      navigate('/')
     }
   }
 
@@ -28,11 +28,9 @@ function ActivityLayout({ title, children }) {
     <div className="activity-layout">
       <header className="activity-header">
         <div className="header-buttons">
-          {previousPath && (
-            <button className="back-button" onClick={handleBack}>
-              ← 뒤로
-            </button>
-          )}
+          <button className="back-button" onClick={handleBack}>
+            ← 뒤로
+          </button>
           <button className="logout-button" onClick={handleLogout}>
             로그아웃
           </button>
