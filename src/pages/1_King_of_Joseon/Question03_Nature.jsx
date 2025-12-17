@@ -131,9 +131,18 @@ function Question03_Nature({ user }) {
           </div>
         </article>
 
+        {error && (
+          <div className="activity-nature-error">
+            {error}
+          </div>
+        )}
+      </main>
+
+      {/* Sticky Bottom Action Area */}
+      <div className="activity-nature-bottom-container">
         {/* Input Card */}
-        <section className="activity-nature-input-card">
-          <div className="activity-nature-input-group">
+        <section className="activity-nature-bottom-input-section">
+          <div className="activity-nature-input-group activity-nature-bottom-input-group">
             {natures.map((nature, index) => (
               <input
                 key={index}
@@ -146,16 +155,6 @@ function Question03_Nature({ user }) {
             ))}
           </div>
         </section>
-
-        {error && (
-          <div className="activity-nature-error">
-            {error}
-          </div>
-        )}
-      </main>
-
-      {/* Sticky Bottom Action Area */}
-      <div style={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 40 }}>
         <ActivityFooter
           answerValue=""
           onAnswerChange={() => {}}
