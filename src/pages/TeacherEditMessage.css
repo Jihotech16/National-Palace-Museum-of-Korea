@@ -1,0 +1,229 @@
+.teacher-edit-message-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding: 0.5rem 1rem 1rem;
+  padding-bottom: 8rem;
+}
+
+.teacher-edit-message-card {
+  background-color: #261933;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 1rem;
+  padding: 1.25rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.teacher-edit-message-content-card {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+  min-height: 240px;
+}
+
+.teacher-edit-message-label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #94a3b8;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.teacher-edit-message-select-wrapper {
+  position: relative;
+}
+
+.teacher-edit-message-select {
+  width: 100%;
+  appearance: none;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: white;
+  font-size: 1rem;
+  font-weight: 500;
+  border-radius: 0.75rem;
+  padding: 0.875rem 2.5rem 0.875rem 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.teacher-edit-message-select:focus {
+  outline: none;
+  border-color: #7f13ec;
+  box-shadow: 0 0 0 2px rgba(127, 19, 236, 0.2);
+}
+
+.teacher-edit-message-select-arrow {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: #94a3b8;
+  font-size: 1.5rem;
+}
+
+.teacher-edit-message-hint {
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.teacher-edit-message-hint .material-symbols-outlined {
+  font-size: 0.875rem;
+}
+
+.teacher-edit-message-title-section {
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.teacher-edit-message-title-input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: white;
+  line-height: 1.5;
+}
+
+.teacher-edit-message-title-input::placeholder {
+  color: #cbd5e1;
+}
+
+.teacher-edit-message-title-input:focus {
+  outline: none;
+}
+
+.teacher-edit-message-content-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding-top: 1.25rem;
+  min-height: 240px;
+}
+
+.teacher-edit-message-content-textarea {
+  flex: 1;
+  width: 100%;
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: 1rem;
+  color: #e2e8f0;
+  line-height: 1.75;
+  resize: none;
+  font-family: inherit;
+  min-height: 200px;
+}
+
+.teacher-edit-message-content-textarea::placeholder {
+  color: #94a3b8;
+}
+
+.teacher-edit-message-content-textarea:focus {
+  outline: none;
+}
+
+.teacher-edit-message-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding-top: 1rem;
+  margin-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.teacher-edit-message-tool-btn {
+  padding: 0.5rem;
+  margin-left: -0.5rem;
+  background: transparent;
+  border: none;
+  border-radius: 9999px;
+  cursor: pointer;
+  color: #94a3b8;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.teacher-edit-message-tool-btn:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #7f13ec;
+}
+
+.teacher-edit-message-tool-btn .material-symbols-outlined {
+  font-size: 1.375rem;
+}
+
+.teacher-edit-message-tool-spacer {
+  flex: 1;
+}
+
+.teacher-edit-message-char-count {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #94a3b8;
+}
+
+.teacher-edit-message-submit-section {
+  padding-top: 0.5rem;
+  padding-bottom: 1.5rem;
+}
+
+.teacher-edit-message-submit-btn {
+  width: 100%;
+  padding: 1rem;
+  background-color: #7f13ec;
+  color: white;
+  border: none;
+  border-radius: 0.75rem;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  box-shadow: 0 4px 12px rgba(127, 19, 236, 0.3);
+}
+
+.teacher-edit-message-submit-btn:hover:not(:disabled) {
+  background-color: rgba(127, 19, 236, 0.9);
+  box-shadow: 0 6px 16px rgba(127, 19, 236, 0.4);
+}
+
+.teacher-edit-message-submit-btn:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.teacher-edit-message-submit-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.teacher-edit-message-submit-btn .material-symbols-outlined {
+  font-size: 1.25rem;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}

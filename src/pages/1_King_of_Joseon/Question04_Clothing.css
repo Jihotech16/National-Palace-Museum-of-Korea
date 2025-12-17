@@ -1,0 +1,152 @@
+/* Material Symbols Font */
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&display=swap');
+
+.activity-clothing-container {
+  min-height: 100vh;
+  background: #f7f6f8;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Public Sans', 'Noto Sans', sans-serif;
+  position: relative;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.activity-clothing-container.dark {
+  background: #191022;
+  color: white;
+}
+
+/* Problem Card */
+.activity-clothing-problem-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Image */
+.activity-clothing-image-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.activity-clothing-image {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: top center;
+  transition: transform 0.7s;
+}
+
+.activity-clothing-image-wrapper:hover .activity-clothing-image {
+  transform: scale(1.05);
+}
+
+.activity-clothing-image-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(25, 16, 34, 0.8), transparent);
+  opacity: 0.6;
+}
+
+.activity-clothing-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(12px);
+  padding: 4px 12px;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.activity-clothing-badge span {
+  color: white;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+}
+
+/* Content */
+.activity-clothing-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0 4px;
+}
+
+.activity-clothing-problem-title {
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: white;
+}
+
+.activity-clothing-divider {
+  height: 4px;
+  width: 48px;
+  background: #7f13ec;
+  border-radius: 2px;
+  margin-bottom: 8px;
+}
+
+.activity-clothing-description {
+  color: #6b7280;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.activity-clothing-container.dark .activity-clothing-description {
+  color: #ad92c9;
+}
+
+/* Error Message */
+.activity-clothing-error {
+  position: fixed;
+  top: 70px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fee;
+  color: #c33;
+  padding: 14px 20px;
+  border-radius: 10px;
+  font-size: 14px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  animation: slideDown 0.3s ease-out;
+  max-width: 90%;
+  text-align: center;
+}
+
+.activity-clothing-container.dark .activity-clothing-error {
+  background: rgba(204, 51, 51, 0.95);
+  color: #ffcccc;
+  backdrop-filter: blur(8px);
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .activity-clothing-problem-title {
+    font-size: 22px;
+  }
+
+  .activity-clothing-description {
+    font-size: 14px;
+  }
+}

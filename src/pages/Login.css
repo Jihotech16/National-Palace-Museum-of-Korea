@@ -108,6 +108,8 @@
   display: flex;
   flex-direction: column;
   gap: 0.375rem;
+  width: 100%;
+  min-width: 0;
 }
 
 .login-form-label {
@@ -123,6 +125,8 @@
   position: relative;
   display: flex;
   align-items: center;
+  width: 100%;
+  min-width: 0;
 }
 
 .login-input-icon {
@@ -163,6 +167,8 @@
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
   transition: all 0.3s;
   outline: none;
+  min-width: 0;
+  min-height: 3rem;
 }
 
 .login-input::placeholder {
@@ -172,6 +178,43 @@
 .login-input:focus {
   border-color: #7f13ec;
   box-shadow: 0 0 0 2px rgba(127, 19, 236, 0.5);
+}
+
+.login-select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 1.25rem;
+  padding-right: 2.5rem;
+  cursor: pointer;
+  min-width: 100%;
+  width: 100%;
+  min-height: 3rem;
+  height: auto;
+  line-height: 1.5;
+}
+
+.login-select:focus {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%237f13ec' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+}
+
+.login-select:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.login-select option {
+  background-color: #251733;
+  color: white;
+  padding: 1.25rem 0.75rem;
+  white-space: normal;
+  word-wrap: break-word;
+  min-width: 100%;
+  min-height: 3.5rem;
+  line-height: 1.6;
+  font-size: 0.875rem;
+  height: auto;
 }
 
 .login-input-center {

@@ -1,3 +1,85 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #7f13ec;
+  --color-background-light: #f7f6f8;
+  --color-background-dark: #191022;
+  --color-surface-light: #ffffff;
+  --color-surface-dark: #2d1f3f;
+  
+  --font-display: "Lexend", "Noto Sans KR", sans-serif;
+  --font-body: "Noto Sans KR", sans-serif;
+}
+
+/* Custom utility classes for background colors */
+.bg-background-light {
+  background-color: #f7f6f8 !important;
+}
+
+.bg-background-dark {
+  background-color: #191022 !important;
+}
+
+.dark .bg-background-dark {
+  background-color: #191022 !important;
+}
+
+.bg-surface-light {
+  background-color: #ffffff !important;
+}
+
+.bg-surface-dark {
+  background-color: #2d1f3f !important;
+}
+
+.dark .bg-surface-dark {
+  background-color: #2d1f3f !important;
+}
+
+.bg-primary {
+  background-color: #7f13ec !important;
+}
+
+.bg-primary\/90 {
+  background-color: rgba(127, 19, 236, 0.9) !important;
+}
+
+.hover\:bg-primary\/90:hover {
+  background-color: rgba(127, 19, 236, 0.9) !important;
+}
+
+.text-primary {
+  color: #7f13ec !important;
+}
+
+.border-primary {
+  border-color: #7f13ec !important;
+}
+
+.shadow-primary\/20 {
+  box-shadow: 0 4px 6px -1px rgba(127, 19, 236, 0.2), 0 2px 4px -1px rgba(127, 19, 236, 0.2) !important;
+}
+
+.from-primary {
+  --tw-gradient-from: #7f13ec var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(127 19 236 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+
+.bg-primary\/10 {
+  background-color: rgb(127 19 236 / 0.1);
+}
+
+.shadow-primary\/20 {
+  --tw-shadow-color: rgb(127 19 236 / 0.2);
+  --tw-shadow: var(--tw-shadow-colored);
+}
+
+.shadow-primary\/30 {
+  --tw-shadow-color: rgb(127 19 236 / 0.3);
+  --tw-shadow: var(--tw-shadow-colored);
+}
+
 * {
   margin: 0;
   padding: 0;

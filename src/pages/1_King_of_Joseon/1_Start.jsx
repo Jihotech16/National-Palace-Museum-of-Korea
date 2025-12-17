@@ -1,12 +1,12 @@
 import { useNavigate } from 'react-router-dom'
 import './1_Start.css'
-import 어좌Image from '../../image/eojwa.jpg'
+import 조선국왕실Image from '../../image/조선국왕실.jpg'
 
 function Start() {
   const navigate = useNavigate()
 
   const handleBack = () => {
-    navigate(-1)
+    navigate('/exhibition-hall-list')
   }
 
   const handleStartExploration = () => {
@@ -37,8 +37,8 @@ function Start() {
           <div 
             className="joseon-royal-court-image"
             style={{
-              backgroundImage: `url(${어좌Image})`,
-              backgroundPosition: 'center top'
+              backgroundImage: `url(${조선국왕실Image})`,
+              backgroundPosition: 'left top'
             }}
           >
             <div className="joseon-royal-court-image-overlay"></div>
@@ -92,14 +92,12 @@ function Start() {
           <div className="joseon-royal-court-difficulty">
             <div className="joseon-royal-court-difficulty-header">
               <span className="joseon-royal-court-difficulty-label">미션 난이도</span>
-              <span className="joseon-royal-court-difficulty-value">Easy</span>
+              <span className="joseon-royal-court-difficulty-value">Hard</span>
             </div>
             <div className="joseon-royal-court-difficulty-bar">
               <div className="joseon-royal-court-difficulty-fill"></div>
-              <div className="joseon-royal-court-difficulty-empty"></div>
-              <div className="joseon-royal-court-difficulty-empty"></div>
-              <div className="joseon-royal-court-difficulty-empty"></div>
-              <div className="joseon-royal-court-difficulty-empty"></div>
+              <div className="joseon-royal-court-difficulty-fill"></div>
+              <div className="joseon-royal-court-difficulty-fill"></div>
             </div>
           </div>
         </div>
@@ -122,3 +120,4 @@ function Start() {
 }
 
 export default Start
+

@@ -1,0 +1,501 @@
+.teacher-detail-page {
+  position: relative;
+  width: 100vw;
+  min-height: 100vh;
+  background-color: #191022;
+  font-family: 'Public Sans', 'Noto Sans', sans-serif;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.teacher-detail-container {
+  position: relative;
+  width: 100%;
+  max-width: 28rem;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #191022;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+}
+
+/* teacher-header는 TeacherPage.css에서 관리 */
+/* 헤더 고정을 보장하기 위한 추가 스타일 */
+.teacher-container {
+  overflow: visible !important;
+}
+
+.teacher-header {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 100 !important;
+}
+
+/* teacher-main이 스크롤 가능하도록 설정 */
+.teacher-main {
+  flex: 1 !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  min-height: 0; /* flexbox에서 스크롤이 작동하도록 */
+}
+
+.teacher-detail-content {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  gap: 1.5rem;
+  padding-bottom: 8rem;
+}
+
+/* 이전 헤더 스타일은 더 이상 사용하지 않음 (teacher-header 사용) */
+/* 
+.teacher-detail-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  background-color: rgba(25, 16, 34, 0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(77, 50, 103, 0.3);
+}
+
+.teacher-detail-header-left {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.teacher-detail-back-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 9999px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  color: white;
+}
+
+.teacher-detail-back-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.teacher-detail-back-btn .material-symbols-outlined {
+  font-size: 24px;
+}
+
+.teacher-detail-title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  line-height: 1.25;
+  color: white;
+  margin: 0;
+}
+
+.teacher-detail-subtitle {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #ad92c9;
+  margin: 0;
+}
+
+.teacher-detail-refresh-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 9999px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  color: #7c3aed;
+}
+
+.teacher-detail-refresh-btn:hover {
+  background-color: rgba(124, 58, 237, 0.1);
+}
+
+.teacher-detail-refresh-btn .material-symbols-outlined {
+  font-size: 24px;
+}
+*/
+
+.teacher-detail-loading,
+.teacher-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1rem;
+  color: #ad92c9;
+  font-size: 0.875rem;
+}
+
+.teacher-detail-stats {
+  display: flex;
+  gap: 0.75rem;
+  padding: 1.5rem 1rem 0.5rem;
+}
+
+.teacher-detail-stat-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  background-color: #261933;
+  border: 1px solid #4d3267;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  position: relative;
+}
+
+.teacher-detail-stat-card-primary {
+  border-color: rgba(127, 19, 236, 0.3);
+  overflow: hidden;
+}
+
+.teacher-detail-stat-card-bg {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 4rem;
+  height: 4rem;
+  background-color: rgba(127, 19, 236, 0.1);
+  border-radius: 0 0 0 100%;
+  margin-right: -0.5rem;
+  margin-top: -0.5rem;
+}
+
+.teacher-detail-stat-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 9999px;
+  background-color: rgba(17, 24, 39, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+}
+
+.teacher-detail-stat-icon .material-symbols-outlined {
+  font-size: 1.25rem;
+  color: #ad92c9;
+}
+
+.teacher-detail-stat-icon-primary {
+  background-color: rgba(127, 19, 236, 0.1);
+}
+
+.teacher-detail-stat-icon-primary .material-symbols-outlined {
+  color: #7f13ec;
+}
+
+.teacher-detail-stat-value {
+  font-size: 1.875rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1;
+  color: white;
+}
+
+.teacher-detail-stat-value-primary {
+  color: #7f13ec;
+}
+
+.teacher-detail-stat-unit {
+  font-size: 1rem;
+  font-weight: 400;
+  margin-left: 0.25rem;
+  color: #ad92c9;
+}
+
+.teacher-detail-stat-unit-primary {
+  color: rgba(127, 19, 236, 0.7);
+}
+
+.teacher-detail-stat-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #ad92c9;
+  margin-top: 0.25rem;
+}
+
+.teacher-detail-filters {
+  padding: 0.75rem 1rem;
+}
+
+.teacher-detail-filters-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.teacher-detail-filters-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: white;
+  margin: 0;
+}
+
+.teacher-detail-sort-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #7f13ec;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.teacher-detail-sort-btn:hover {
+  opacity: 0.8;
+}
+
+.teacher-detail-sort-btn .material-symbols-outlined {
+  font-size: 1rem;
+}
+
+.teacher-detail-filter-buttons {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.teacher-detail-filter-buttons::-webkit-scrollbar {
+  display: none;
+}
+
+.teacher-detail-filter-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  height: 2rem;
+  padding: 0 0.75rem;
+  border-radius: 9999px;
+  background-color: rgba(17, 24, 39, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #ad92c9;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.teacher-detail-filter-btn:hover {
+  background-color: #7f13ec;
+  color: white;
+  border-color: #7f13ec;
+}
+
+.teacher-detail-filter-btn-active {
+  background-color: #7f13ec;
+  color: white;
+  border-color: #7f13ec;
+}
+
+.teacher-detail-filter-btn .material-symbols-outlined {
+  font-size: 1.125rem;
+}
+
+.teacher-detail-main {
+  flex: 1;
+  padding: 0 1rem 5rem;
+  overflow-y: auto;
+}
+
+.teacher-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+}
+
+.teacher-detail-student-card {
+  aspect-ratio: 4/5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #261933;
+  border-radius: 0.75rem;
+  border: 1px solid #4d3267;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.teacher-detail-student-card:hover {
+  border-color: #7f13ec;
+}
+
+.teacher-detail-student-card-low {
+  border-color: rgba(239, 68, 68, 0.5);
+}
+
+.teacher-detail-student-card-low:hover {
+  border-color: #ef4444;
+}
+
+.teacher-detail-student-card-completed {
+  border-color: rgba(127, 19, 236, 0.3);
+}
+
+.teacher-detail-student-progress-circle {
+  position: relative;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+}
+
+.teacher-detail-student-progress-inner {
+  position: absolute;
+  inset: 0.25rem;
+  background-color: #261933;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.teacher-detail-student-number {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: white;
+}
+
+.teacher-detail-student-number-primary {
+  color: #7f13ec;
+}
+
+.teacher-detail-student-number-red {
+  color: #ef4444;
+}
+
+.teacher-detail-student-number-secondary {
+  color: #6b7280;
+}
+
+.teacher-detail-student-progress-text {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #7f13ec;
+}
+
+.teacher-detail-student-progress-text-primary {
+  color: #7f13ec;
+}
+
+.teacher-detail-student-progress-text-red {
+  color: #ef4444;
+}
+
+.teacher-detail-student-progress-text-secondary {
+  font-weight: 500;
+  color: #6b7280;
+}
+
+.teacher-detail-student-check {
+  position: absolute;
+  top: 0.25rem;
+  right: 0.25rem;
+}
+
+.teacher-detail-student-check .material-symbols-outlined {
+  font-size: 1rem;
+  color: #7f13ec;
+}
+
+.teacher-detail-fab {
+  position: absolute;
+  bottom: 1.5rem;
+  right: 1rem;
+  z-index: 40;
+}
+
+.teacher-detail-fab-btn {
+  background-color: #7f13ec;
+  color: white;
+  font-weight: 700;
+  padding: 0.75rem 1.25rem;
+  border-radius: 9999px;
+  box-shadow: 0 10px 15px -3px rgba(127, 19, 236, 0.5);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: opacity 0.2s;
+}
+
+.teacher-detail-fab-btn:hover {
+  opacity: 0.9;
+}
+
+.teacher-detail-fab-btn .material-symbols-outlined {
+  font-size: 1.25rem;
+}
+
+/* Material Symbols Font */
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200');
+
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 640px) {
+  .teacher-detail-container {
+    max-width: 100%;
+  }
+  
+  .teacher-detail-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (min-width: 640px) {
+  .teacher-detail-grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+

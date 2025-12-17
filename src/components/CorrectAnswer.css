@@ -414,6 +414,33 @@
   font-size: 18px;
 }
 
+.correct-answer-exhibition-button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 0.75rem;
+  background-color: #1d1226;
+  border: 1px solid #362447;
+  color: #f3e8ff;
+  height: 48px;
+  padding: 0 1.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.correct-answer-exhibition-button:hover {
+  background-color: #2a1b36;
+  border-color: rgba(168, 85, 247, 0.5);
+}
+
+.correct-answer-exhibition-button .material-symbols-outlined {
+  font-size: 18px;
+}
+
 /* 반응형 */
 @media (max-width: 480px) {
   .correct-answer-content {
@@ -433,3 +460,4 @@
     font-size: 1.875rem;
   }
 }
+

@@ -1,0 +1,262 @@
+.teacher-question-content {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  gap: 2rem;
+  padding-bottom: 8rem;
+}
+
+.teacher-question-section-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: white;
+  margin: 0 0 1rem 0;
+}
+
+.teacher-question-halls {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.teacher-question-halls-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+}
+
+.teacher-question-hall-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  background-color: #261933;
+  border: 1px solid #4d3267;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: left;
+}
+
+.teacher-question-hall-btn:hover {
+  border-color: #7f13ec;
+  background-color: rgba(127, 19, 236, 0.05);
+}
+
+.teacher-question-hall-btn-active {
+  border-color: #7f13ec;
+  background-color: rgba(127, 19, 236, 0.1);
+}
+
+.teacher-question-hall-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.teacher-question-hall-icon-orange {
+  background-color: rgba(249, 115, 22, 0.1);
+  color: #f97316;
+}
+
+.teacher-question-hall-icon-blue {
+  background-color: rgba(59, 130, 246, 0.1);
+  color: #3b82f6;
+}
+
+.teacher-question-hall-icon-emerald {
+  background-color: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+}
+
+.teacher-question-hall-icon .material-symbols-outlined {
+  font-size: 1.5rem;
+}
+
+.teacher-question-hall-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.teacher-question-hall-name {
+  font-size: 1rem;
+  font-weight: 700;
+  color: white;
+  margin: 0;
+}
+
+.teacher-question-hall-count {
+  font-size: 0.75rem;
+  color: #ad92c9;
+  margin: 0;
+}
+
+.teacher-question-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.teacher-question-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.teacher-question-item {
+  background-color: #261933;
+  border: 1px solid #4d3267;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+
+.teacher-question-item:hover {
+  border-color: #7f13ec;
+}
+
+.teacher-question-item-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.teacher-question-item-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex: 1;
+}
+
+.teacher-question-item-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  background-color: #7f13ec;
+  color: white;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.teacher-question-item-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: white;
+  margin: 0;
+}
+
+.teacher-question-item-arrow {
+  color: #ad92c9;
+  transition: transform 0.2s;
+  flex-shrink: 0;
+}
+
+.teacher-question-item-arrow-expanded {
+  transform: rotate(180deg);
+}
+
+.teacher-question-item-content {
+  padding: 0 1rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  border-top: 1px solid #4d3267;
+  padding-top: 1rem;
+  margin-top: 0.5rem;
+}
+
+.teacher-question-item-description {
+  color: #cbd5e1;
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+
+.teacher-question-item-description p {
+  margin: 0;
+}
+
+.teacher-question-item-image {
+  width: 100%;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  background-color: rgba(17, 24, 39, 0.5);
+}
+
+.teacher-question-item-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+.teacher-question-item-answers {
+  background-color: rgba(127, 19, 236, 0.05);
+  border: 1px solid rgba(127, 19, 236, 0.2);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.teacher-question-answers-title {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #7f13ec;
+  margin: 0;
+}
+
+.teacher-question-answer-item {
+  display: flex;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.teacher-question-answer-value {
+  color: white;
+  font-weight: 700;
+  flex: 1;
+}
+
+.teacher-question-item-explanation {
+  background-color: rgba(17, 24, 39, 0.5);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.teacher-question-explanation-title {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #ad92c9;
+  margin: 0;
+}
+
+.teacher-question-item-explanation p {
+  color: #cbd5e1;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 640px) {
+  .teacher-question-halls-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -12,6 +12,14 @@ function LandingPage() {
     navigate('/login')
   }
 
+  const handleTeacherLogin = () => {
+    navigate('/teacher-login')
+  }
+
+  const handleUserGuide = () => {
+    navigate('/userguide')
+  }
+
   return (
     <div className="landing-container">
       {/* Background Image with Overlay */}
@@ -31,13 +39,16 @@ function LandingPage() {
       <div className="landing-content">
         {/* Top Section: Branding */}
         <div className="landing-top">
-          <div className="landing-brand">
+          <a 
+            href="https://www.gogung.go.kr/gogung/main/main.do" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="landing-brand"
+            style={{ textDecoration: 'none', color: 'inherit', cursor: 'pointer' }}
+          >
             <span className="material-symbols-outlined">temple_buddhist</span>
             <span className="landing-brand-text">국립고궁박물관</span>
-          </div>
-          <button className="landing-settings-btn">
-            <span className="material-symbols-outlined">settings</span>
-          </button>
+          </a>
         </div>
 
         {/* Bottom Section: Main Content */}
@@ -49,14 +60,14 @@ function LandingPage() {
 
           {/* Headline */}
           <h1 className="landing-title">
-            국립고궁박물관의<br/>
-            <span className="landing-title-accent">비밀</span>
+            국립고궁박물관<br/>
+            <span className="landing-title-accent">탐험</span>
           </h1>
 
           {/* Body Text */}
           <p className="landing-description">
             박물관 곳곳에 숨겨진 단서를 찾아<br/> 
-            고대의 미스터리를 지금 바로 해결하세요.
+            전시관을 탐험하고 퀴즈를 풀어보세요.
           </p>
 
           {/* Primary Button */}
@@ -78,7 +89,12 @@ function LandingPage() {
               <span>로그인</span>
             </button>
             <div className="landing-divider" />
-            <button className="landing-secondary-btn">
+            <button className="landing-secondary-btn" onClick={handleTeacherLogin}>
+              <span className="material-symbols-outlined">supervisor_account</span>
+              <span>교사 로그인</span>
+            </button>
+            <div className="landing-divider" />
+            <button className="landing-secondary-btn" onClick={handleUserGuide}>
               <span className="material-symbols-outlined">help</span>
               <span>이용안내</span>
             </button>

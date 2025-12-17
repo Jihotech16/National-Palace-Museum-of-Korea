@@ -1,0 +1,210 @@
+/* Material Symbols Font */
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&display=swap');
+
+/* Problem Card */
+.activity-seal-problem-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Image */
+.activity-seal-image-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.activity-seal-image {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.7s;
+}
+
+.activity-seal-image-wrapper:hover .activity-seal-image {
+  transform: scale(1.05);
+}
+
+.activity-seal-image-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(25, 16, 34, 0.8), transparent);
+  opacity: 0.6;
+}
+
+.activity-seal-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(12px);
+  padding: 4px 12px;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.activity-seal-badge span {
+  color: white;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+}
+
+/* Content */
+.activity-seal-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0 4px;
+}
+
+.activity-seal-problem-title {
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #191022;
+}
+
+.activity-seal-divider {
+  height: 4px;
+  width: 48px;
+  background: #7f13ec;
+  border-radius: 2px;
+  margin-bottom: 8px;
+}
+
+.activity-seal-description {
+  color: #6b7280;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.activity-seal-inline-input {
+  display: inline-block;
+  width: 150px;
+  padding: 4px 8px;
+  border: 2px solid #7f13ec;
+  border-radius: 6px;
+  font-size: 16px;
+  margin: 0 4px;
+  text-align: center;
+  background: white;
+  color: #191022;
+}
+
+.activity-seal-inline-input:focus {
+  outline: none;
+  border-color: #7f13ec;
+  box-shadow: 0 0 0 3px rgba(127, 19, 236, 0.1);
+}
+
+/* Animal Selection Card */
+.activity-seal-animal-card {
+  border-radius: 0.75rem;
+  border: 1px solid #e5e7eb;
+  background: white;
+  padding: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.activity-seal-animal-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.activity-seal-animal-title {
+  font-weight: 600;
+  font-size: 16px;
+  color: #191022;
+  line-height: 1.5;
+}
+
+.activity-seal-options-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.activity-seal-option {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  border: 2px solid #e5e7eb;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: white;
+  color: #191022;
+}
+
+.activity-seal-option:hover {
+  border-color: #7f13ec;
+}
+
+.activity-seal-option.selected {
+  background: rgba(127, 19, 236, 0.1);
+  border-color: #7f13ec;
+}
+
+.activity-seal-radio {
+  margin-right: 10px;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: #7f13ec;
+}
+
+.activity-seal-option span {
+  font-size: 15px;
+}
+
+/* Error Message */
+.activity-seal-error {
+  position: fixed;
+  top: 70px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fee;
+  color: #c33;
+  padding: 14px 20px;
+  border-radius: 10px;
+  font-size: 14px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  animation: slideDown 0.3s ease-out;
+  max-width: 90%;
+  text-align: center;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .activity-seal-problem-title {
+    font-size: 22px;
+  }
+
+  .activity-seal-description {
+    font-size: 14px;
+  }
+
+  .activity-seal-options-grid {
+    grid-template-columns: 1fr;
+  }
+}

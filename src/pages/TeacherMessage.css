@@ -1,0 +1,232 @@
+.teacher-message-main {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0.5rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.teacher-message-date-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 0;
+}
+
+.teacher-message-date-badge {
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #94a3b8;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 9999px;
+}
+
+.teacher-message-item {
+  position: relative;
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  background-color: #261933;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+  transition: transform 0.2s, opacity 0.2s;
+}
+
+.teacher-message-item:active {
+  transform: scale(0.98);
+}
+
+.teacher-message-item-unread {
+  border-color: rgba(127, 19, 236, 0.3);
+}
+
+.teacher-message-item-old {
+  opacity: 0.7;
+}
+
+.teacher-message-unread-indicator {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 0.625rem;
+  height: 0.625rem;
+  background-color: #7f13ec;
+  border-radius: 9999px;
+  box-shadow: 0 0 8px rgba(127, 19, 236, 0.6);
+}
+
+.teacher-message-avatar {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.teacher-message-avatar-image {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 9999px;
+  background-color: #475569;
+  background-size: cover;
+  background-position: center;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.teacher-message-avatar-badge {
+  position: absolute;
+  bottom: -0.25rem;
+  right: -0.25rem;
+  background-color: #191022;
+  padding: 0.125rem;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.teacher-message-avatar-badge-teacher {
+  background-color: #7f13ec;
+  width: 1rem;
+  height: 1rem;
+}
+
+.teacher-message-avatar-badge-system {
+  background-color: #6b7280;
+  width: 1rem;
+  height: 1rem;
+}
+
+.teacher-message-avatar-badge .material-symbols-outlined {
+  font-size: 10px;
+  color: white;
+}
+
+.teacher-message-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.teacher-message-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.25rem;
+}
+
+.teacher-message-sender {
+  font-size: 1rem;
+  font-weight: 700;
+  color: white;
+  margin: 0;
+  padding-right: 1rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.teacher-message-time {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #94a3b8;
+  white-space: nowrap;
+  padding-top: 0.125rem;
+}
+
+.teacher-message-time-unread {
+  color: #7f13ec;
+}
+
+.teacher-message-title-text {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #e2e8f0;
+  margin: 0 0 0.125rem 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.teacher-message-content-text {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  line-height: 1.5;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Material Symbols Font */
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200');
+
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+}
+
+.teacher-message-compose-btn {
+  position: fixed;
+  bottom: 6rem;
+  right: 1.5rem;
+  width: 3.5rem;
+  height: 3.5rem;
+  background-color: #7f13ec;
+  color: white;
+  border: none;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(127, 19, 236, 0.4);
+  transition: all 0.2s;
+  z-index: 50;
+}
+
+.teacher-message-compose-btn:hover {
+  background-color: #6b0fc7;
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(127, 19, 236, 0.5);
+}
+
+.teacher-message-compose-btn:active {
+  transform: scale(0.95);
+}
+
+.teacher-message-compose-btn .material-symbols-outlined {
+  font-size: 1.5rem;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 640px) {
+  .teacher-message-container {
+    max-width: 100%;
+  }
+  
+  .teacher-message-compose-btn {
+    bottom: 5.5rem;
+    right: 1rem;
+    width: 3rem;
+    height: 3rem;
+  }
+  
+  .teacher-message-compose-btn .material-symbols-outlined {
+    font-size: 1.25rem;
+  }
+}

@@ -8,7 +8,8 @@ function ActivityFooter({
   saving = false,
   showAnswerInput = true,
   answerPlaceholder = '답을 입력하세요',
-  answerId = 'answer'
+  answerId = 'answer',
+  children
 }) {
   return (
     <footer className="activity-footer">
@@ -21,25 +22,27 @@ function ActivityFooter({
           }
         }}
       >
-        {/* Answer Input Field */}
-        {showAnswerInput && (
-          <div className="activity-input-wrapper">
-            <label className="activity-input-label" htmlFor={answerId}>
-              정답 입력
-            </label>
-            <div className="activity-input-icon-wrapper">
-              <span className="material-symbols-outlined activity-input-icon">edit_note</span>
+        {/* Custom Input Fields (children) or Default Input Field */}
+        {children ? children : (
+          showAnswerInput && (
+            <div className="activity-input-wrapper">
+              <label className="activity-input-label" htmlFor={answerId}>
+                정답 입력
+              </label>
+              <div className="activity-input-icon-wrapper">
+                <span className="material-symbols-outlined activity-input-icon">edit_note</span>
+              </div>
+              <input
+                id={answerId}
+                name={answerId}
+                type="text"
+                value={answerValue}
+                onChange={(e) => onAnswerChange(e.target.value)}
+                placeholder={answerPlaceholder}
+                className="activity-answer-input"
+              />
             </div>
-            <input
-              id={answerId}
-              name={answerId}
-              type="text"
-              value={answerValue}
-              onChange={(e) => onAnswerChange(e.target.value)}
-              placeholder={answerPlaceholder}
-              className="activity-answer-input"
-            />
-          </div>
+          )
         )}
         {/* Submit Button */}
         <button 

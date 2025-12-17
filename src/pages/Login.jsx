@@ -1,26 +1,49 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { signInWithStudentId } from '../firebase/auth'
+import { getAllSchools } from '../firebase/firestore'
+import CustomSelect from '../components/CustomSelect'
 import './Login.css'
 
 function Login() {
-  const [school, setSchool] = useState('')
+  const [schools, setSchools] = useState([])
+  const [selectedSchool, setSelectedSchool] = useState('')
   const [grade, setGrade] = useState('')
   const [classNum, setClassNum] = useState('')
   const [number, setNumber] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [loadingSchools, setLoadingSchools] = useState(true)
+  const [schoolError, setSchoolError] = useState('')
   const navigate = useNavigate()
+
+  // 학교 목록 로드
+  useEffect(() => {
+    const loadSchools = async () => {
+      setLoadingSchools(true)
+      setSchoolError('')
+      const result = await getAllSchools()
+      if (result.success) {
+        setSchools(result.schools || [])
+        if (result.schools && result.schools.length === 0) {
+          setSchoolError('등록된 학교가 없습니다.')
+        }
+      } else {
+        setSchoolError('학교 목록을 불러오는데 실패했습니다.')
+      }
+      setLoadingSchools(false)
+    }
+    loadSchools()
+  }, [])
 
   // 선택된 값들로부터 학번 생성 (학교 + 학년 + 반 + 번호)
   const generateStudentId = () => {
-    if (!school || !grade || !classNum || !number) {
+    if (!selectedSchool || !grade || !classNum || !number) {
       return ''
     }
-    // 학교 이름을 숫자로 변환 (간단한 해시 방식)
-    // 또는 학교 이름의 첫 글자나 특정 규칙 사용
-    // 일단 "테스트학교"는 "1"로 매핑
-    const schoolCode = school === '테스트학교' ? '1' : '1'
+    // 선택된 학교의 schoolCode 사용
+    const selectedSchoolData = schools.find(s => s.id === selectedSchool)
+    const schoolCode = selectedSchoolData?.schoolCode || '1'
     
     // 형식: 학교(1자리) + 학년(1자리) + 반(2자리) + 번호(2자리) = 6자리
     const formattedClass = String(classNum).padStart(2, '0')
@@ -33,20 +56,42 @@ function Login() {
     setError('')
     setLoading(true)
 
-    if (!school || !grade || !classNum || !number) {
+    if (!selectedSchool || !grade || !classNum || !number) {
       setError('모든 항목을 입력해주세요.')
       setLoading(false)
       return
     }
 
     const studentId = generateStudentId()
+    const selectedSchoolData = schools.find(s => s.id === selectedSchool)
+    const schoolName = selectedSchoolData?.schoolName || null
+    const schoolCode = selectedSchoolData?.schoolCode || '1'
 
-    const result = await signInWithStudentId(studentId)
+    // 숫자로 변환하여 전달 (빈 문자열 체크)
+    const gradeNum = grade && grade.trim() !== '' ? Number(grade) : null
+    const classNumNum = classNum && classNum.trim() !== '' ? Number(classNum) : null
+    const numberNum = number && number.trim() !== '' ? Number(number) : null
+
+    // 유효성 검사
+    if (isNaN(gradeNum) || isNaN(classNumNum) || isNaN(numberNum)) {
+      setError('학년, 반, 번호는 올바른 숫자여야 합니다.')
+      setLoading(false)
+      return
+    }
+
+    const result = await signInWithStudentId(
+      studentId, 
+      schoolName,
+      schoolCode,
+      gradeNum,
+      classNumNum,
+      numberNum
+    )
 
     setLoading(false)
 
     if (result.success) {
-      navigate('/')
+      navigate('/exhibition-hall-list')
     } else {
       // 에러 메시지 처리
       let errorMessage = result.error || '로그인에 실패했습니다.'
@@ -83,21 +128,17 @@ function Login() {
         <form onSubmit={handleSubmit} className="login-page-form">
           <div className="login-form-field">
             <label className="login-form-label" htmlFor="school">학교</label>
-            <div className="login-input-wrapper">
-              <div className="login-input-icon">
-                <span className="material-symbols-outlined">school</span>
-              </div>
-              <input
-                className="login-input"
-                id="school"
-                type="text"
-                value={school}
-                onChange={(e) => setSchool(e.target.value)}
-                placeholder="학교 이름을 입력하세요"
-                autoComplete="organization"
-                autoFocus
-              />
-            </div>
+            <CustomSelect
+              options={schools.map(school => ({
+                value: school.id,
+                label: school.schoolName || school.id
+              }))}
+              value={selectedSchool}
+              onChange={(value) => setSelectedSchool(value)}
+              placeholder={loadingSchools ? '학교 목록을 불러오는 중...' : '학교를 선택하세요'}
+              disabled={loadingSchools}
+              icon={<span className="material-symbols-outlined">school</span>}
+            />
           </div>
 
           <div className="login-form-grid">
@@ -135,7 +176,7 @@ function Login() {
                   onChange={(e) => setClassNum(e.target.value)}
                   placeholder="3"
                   min="1"
-                  max="10"
+                  max="20"
                   autoComplete="off"
                 />
               </div>
@@ -162,6 +203,7 @@ function Login() {
             </div>
           </div>
 
+          {schoolError && <div className="login-error-message">{schoolError}</div>}
           {error && <div className="login-error-message">{error}</div>}
 
           <button 

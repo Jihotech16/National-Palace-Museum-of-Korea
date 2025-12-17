@@ -1,0 +1,885 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
+
+.admin-page {
+  position: relative;
+  width: 100vw;
+  min-height: 100vh;
+  background-color: #1a0b2e;
+  font-family: 'Noto Sans KR', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  color: #ffffff;
+  display: flex;
+  justify-content: center;
+}
+
+.admin-container {
+  width: 100%;
+  max-width: 28rem;
+  min-height: 100vh;
+  position: relative;
+  background-color: #1a0b2e;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+}
+
+.admin-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  gap: 1rem;
+}
+
+.admin-loading-spinner {
+  width: 3rem;
+  height: 3rem;
+  border: 3px solid rgba(251, 191, 36, 0.3);
+  border-top-color: #fbbf24;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* 헤더 */
+.admin-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.5rem;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background-color: rgba(26, 11, 46, 0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.admin-header-subtitle {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #fbbf24;
+  margin-bottom: 0.125rem;
+}
+
+.admin-header-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.025em;
+}
+
+.admin-header-exit-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 9999px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.admin-header-exit-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.admin-header-exit-btn:active {
+  transform: scale(0.95);
+}
+
+.admin-header-exit-btn .material-symbols-outlined {
+  font-size: 1.5rem;
+  color: #d1d5db;
+}
+
+/* 검색 */
+.admin-search-container {
+  padding: 0.5rem 1.5rem;
+  margin-top: 0.5rem;
+}
+
+.admin-search-wrapper {
+  position: relative;
+}
+
+.admin-search-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.admin-search-icon .material-symbols-outlined {
+  font-size: 1.25rem;
+  color: #9ca3af;
+  transition: color 0.2s;
+}
+
+.admin-search-wrapper:focus-within .admin-search-icon .material-symbols-outlined {
+  color: #fbbf24;
+}
+
+.admin-search-input {
+  width: 100%;
+  padding: 0.875rem 1rem 0.875rem 2.75rem;
+  border-radius: 1rem;
+  border: none;
+  background-color: #2f1c4e;
+  color: #ffffff;
+  font-size: 0.875rem;
+  transition: all 0.2s;
+}
+
+.admin-search-input:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(251, 191, 36, 0.7);
+}
+
+.admin-search-input::placeholder {
+  color: #9ca3af;
+}
+
+/* 학교 목록 헤더 */
+.admin-schools-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+}
+
+.admin-schools-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #e5e7eb;
+}
+
+.admin-schools-count {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #fbbf24;
+  background-color: rgba(251, 191, 36, 0.1);
+  padding: 0.25rem 0.625rem;
+  border-radius: 0.375rem;
+  border: 1px solid rgba(251, 191, 36, 0.2);
+}
+
+/* 학교 목록 */
+.admin-schools-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 1.5rem 7rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.admin-error-message {
+  padding: 1rem;
+  background-color: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 0.75rem;
+  color: #fca5a5;
+  font-size: 0.875rem;
+  margin-bottom: 1rem;
+}
+
+.admin-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1rem;
+  color: #6b7280;
+  gap: 1rem;
+}
+
+.admin-empty-state .material-symbols-outlined {
+  font-size: 3rem;
+  color: #4b5563;
+}
+
+.admin-school-card {
+  position: relative;
+  background-color: #2f1c4e;
+  border-radius: 1rem;
+  padding: 1.25rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.2s;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.admin-school-card:hover {
+  border-color: rgba(251, 191, 36, 0.4);
+}
+
+.admin-school-card:active {
+  transform: scale(0.98);
+}
+
+.admin-school-card-content {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.admin-school-icon {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 0.75rem;
+  background-color: rgba(99, 102, 241, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: #818cf8;
+  border: 1px solid rgba(99, 102, 241, 0.1);
+}
+
+.admin-school-icon .material-symbols-outlined {
+  font-size: 1.5rem;
+}
+
+.admin-school-icon .material-symbols-outlined.filled {
+  font-variation-settings: 'FILL' 1;
+}
+
+.admin-school-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding-top: 0.125rem;
+}
+
+.admin-school-name {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition: color 0.2s;
+}
+
+.admin-school-card:hover .admin-school-name {
+  color: #fbbf24;
+}
+
+.admin-school-code-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.375rem;
+}
+
+.admin-school-code-label {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.125rem 0.375rem;
+  border-radius: 0.25rem;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #9ca3af;
+  font-family: monospace;
+}
+
+.admin-school-code {
+  font-size: 0.75rem;
+  color: #9ca3af;
+  font-family: monospace;
+  letter-spacing: 0.05em;
+}
+
+.admin-school-chevron {
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  background: transparent;
+  border: none;
+  color: #9ca3af;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.admin-school-chevron:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* 추가 버튼 */
+.admin-add-button {
+  position: absolute;
+  bottom: 2rem;
+  right: 1.5rem;
+  width: 3.5rem;
+  height: 3.5rem;
+  background-color: #fbbf24;
+  border-radius: 9999px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #451a03;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+  transition: all 0.2s;
+  z-index: 10;
+}
+
+.admin-add-button:hover {
+  background-color: rgba(251, 191, 36, 0.9);
+}
+
+.admin-add-button:active {
+  transform: scale(0.95);
+}
+
+.admin-add-button .material-symbols-outlined {
+  font-size: 2rem;
+}
+
+/* 메인 뷰 슬라이드 */
+.admin-main-view {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  background-color: #1a0b2e;
+  transition: transform 0.3s;
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-main-view-slide {
+  transform: translateX(-20%);
+}
+
+/* 상세 뷰 */
+.admin-detail-view {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  background-color: #1a0b2e;
+  transform: translateX(100%);
+  transition: transform 0.3s;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+.admin-detail-view-visible {
+  transform: translateX(0);
+}
+
+.admin-detail-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background-color: rgba(26, 11, 46, 0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.admin-detail-back-btn {
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-left: -0.25rem;
+}
+
+.admin-detail-back-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.admin-detail-header-title {
+  flex: 1;
+  min-width: 0;
+}
+
+.admin-detail-header-title h1 {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.admin-detail-edit-btn {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #fbbf24;
+  padding: 0.375rem 0.75rem;
+  border-radius: 0.5rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.admin-detail-edit-btn:hover {
+  background-color: rgba(251, 191, 36, 0.1);
+}
+
+.admin-detail-content {
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: 2.5rem;
+}
+
+.admin-detail-hero {
+  background-color: rgba(47, 28, 78, 0.5);
+  padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.admin-detail-icon-large {
+  width: 6rem;
+  height: 6rem;
+  border-radius: 1rem;
+  background-color: rgba(99, 102, 241, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #818cf8;
+  margin-bottom: 1.25rem;
+  border: 4px solid #2f1c4e;
+}
+
+.admin-detail-icon-large .material-symbols-outlined {
+  font-size: 3rem;
+}
+
+.admin-detail-icon-large .material-symbols-outlined.filled {
+  font-variation-settings: 'FILL' 1;
+}
+
+.admin-detail-school-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-align: center;
+  color: #ffffff;
+  margin-bottom: 0.375rem;
+}
+
+.admin-detail-code-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  background-color: rgba(255, 255, 255, 0.1);
+  font-size: 0.75rem;
+  font-family: monospace;
+  font-weight: 500;
+  color: #d1d5db;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  margin-top: 0.5rem;
+}
+
+.admin-detail-stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.admin-detail-stat {
+  background-color: #2f1c4e;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.admin-detail-stat-number {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 0.25rem;
+}
+
+.admin-detail-stat-label {
+  font-size: 0.75rem;
+  color: #9ca3af;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.admin-detail-sections {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.admin-detail-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.admin-detail-section-title {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.admin-detail-section-title .material-symbols-outlined {
+  font-size: 1.125rem;
+  color: #fbbf24;
+}
+
+.admin-detail-info-card {
+  background-color: #2f1c4e;
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  overflow: hidden;
+}
+
+.admin-detail-info-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  transition: background-color 0.2s;
+}
+
+.admin-detail-info-row:last-child {
+  border-bottom: none;
+}
+
+.admin-detail-info-row:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.admin-detail-info-label {
+  font-size: 0.875rem;
+  color: #9ca3af;
+}
+
+.admin-detail-info-value {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #ffffff;
+}
+
+.admin-detail-security-card {
+  background-color: #2f1c4e;
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 1.25rem;
+}
+
+.admin-detail-security-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.admin-detail-security-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #ffffff;
+}
+
+.admin-detail-security-change-btn {
+  font-size: 0.75rem;
+  color: #fbbf24;
+  font-weight: 700;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.admin-detail-security-change-btn:hover {
+  text-decoration: underline;
+}
+
+.admin-detail-password-display {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: rgba(0, 0, 0, 0.2);
+  padding: 1rem;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.admin-detail-password-dots {
+  font-size: 1.125rem;
+  letter-spacing: 0.3em;
+  color: #e5e7eb;
+  font-family: monospace;
+}
+
+.admin-detail-password-display .material-symbols-outlined {
+  font-size: 0.875rem;
+  color: #9ca3af;
+}
+
+.admin-detail-password-info {
+  font-size: 0.75rem;
+  color: #9ca3af;
+  margin-top: 0.75rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.375rem;
+}
+
+.admin-detail-password-info .material-symbols-outlined {
+  font-size: 0.875rem;
+  margin-top: 0.125rem;
+}
+
+.admin-detail-actions {
+  padding-top: 1rem;
+  padding-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.admin-detail-delete-btn {
+  width: 100%;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  background-color: rgba(239, 68, 68, 0.1);
+  color: #fca5a5;
+  font-weight: 700;
+  font-size: 0.875rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.admin-detail-delete-btn:hover {
+  background-color: rgba(239, 68, 68, 0.2);
+}
+
+.admin-detail-delete-btn .material-symbols-outlined {
+  font-size: 1.125rem;
+}
+
+/* 모달 */
+.admin-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  pointer-events: auto;
+}
+
+.admin-modal {
+  background-color: #2f1c4e;
+  border-radius: 2rem 2rem 0 0;
+  padding: 2rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  transform: translateY(0);
+  transition: transform 0.3s ease-out;
+  pointer-events: auto;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  width: 100%;
+  max-width: 28rem;
+  margin: 0 auto;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.admin-modal-handle {
+  width: 3rem;
+  height: 0.375rem;
+  background-color: #d1d5db;
+  border-radius: 9999px;
+  margin: 0 auto 2rem;
+}
+
+.admin-modal-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.admin-modal-title .material-symbols-outlined {
+  color: #fbbf24;
+}
+
+.admin-modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.admin-modal-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.admin-modal-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.admin-modal-input {
+  width: 100%;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  background-color: rgba(0, 0, 0, 0.2);
+  border: none;
+  color: #ffffff;
+  font-size: 1rem;
+  transition: all 0.2s;
+}
+
+.admin-modal-input:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(251, 191, 36, 0.7);
+}
+
+.admin-modal-input::placeholder {
+  color: #9ca3af;
+}
+
+.admin-modal-code-wrapper {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.admin-modal-code-input {
+  flex: 1;
+  font-family: monospace;
+}
+
+.admin-modal-code-generate-btn {
+  padding: 0 1.25rem;
+  border-radius: 0.75rem;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: none;
+  color: #d1d5db;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.admin-modal-code-generate-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.admin-modal-actions {
+  padding-top: 1.5rem;
+  display: flex;
+  gap: 1rem;
+}
+
+.admin-modal-cancel-btn {
+  flex: 1;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  font-weight: 700;
+  color: #9ca3af;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.admin-modal-cancel-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.admin-modal-submit-btn {
+  flex: 1;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  font-weight: 700;
+  color: #451a03;
+  background-color: #fbbf24;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 10px 15px -3px rgba(251, 191, 36, 0.2);
+}
+
+.admin-modal-submit-btn:hover {
+  background-color: rgba(251, 191, 36, 0.9);
+}
+
+/* 스크롤바 */
+.admin-schools-list::-webkit-scrollbar,
+.admin-detail-content::-webkit-scrollbar,
+.admin-modal::-webkit-scrollbar {
+  width: 4px;
+}
+
+.admin-schools-list::-webkit-scrollbar-track,
+.admin-detail-content::-webkit-scrollbar-track,
+.admin-modal::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.admin-schools-list::-webkit-scrollbar-thumb,
+.admin-detail-content::-webkit-scrollbar-thumb,
+.admin-modal::-webkit-scrollbar-thumb {
+  background-color: rgba(251, 191, 36, 0.3);
+  border-radius: 20px;
+}
+
+.admin-schools-list::-webkit-scrollbar-thumb:hover,
+.admin-detail-content::-webkit-scrollbar-thumb:hover,
+.admin-modal::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(251, 191, 36, 0.5);
+}

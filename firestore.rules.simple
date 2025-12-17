@@ -1,0 +1,123 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // ========== 헬퍼 함수 ==========
+    
+    // 사용자가 인증되었는지 확인
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    // 학생인지 확인
+    function isStudent() {
+      return isAuthenticated() && 
+             request.auth.token.email != null &&
+             request.auth.token.email.matches('.*@student\\.local$');
+    }
+    
+    // 교사인지 확인
+    function isTeacher() {
+      return isAuthenticated() && 
+             request.auth.token.email != null &&
+             request.auth.token.email.matches('.*@teacher\\.local$');
+    }
+    
+    // 이메일에서 학번 추출
+    function getStudentIdFromEmail() {
+      return request.auth.token.email.split('@')[0];
+    }
+    
+    // 이메일에서 교사 ID 추출
+    function getTeacherIdFromEmail() {
+      return request.auth.token.email.split('@')[0];
+    }
+    
+    // ========== 컬렉션별 규칙 ==========
+    
+    // users 컬렉션: 학생 개인 정보 및 활동 데이터
+    match /users/{studentId} {
+      // 학생은 자신의 데이터만 읽기/쓰기 가능
+      allow read, write: if isStudent() && 
+        getStudentIdFromEmail() == studentId;
+      
+      // 교사는 모든 학생 데이터 읽기 가능 (간단한 버전)
+      // 주의: 실제 운영 시에는 반별로 제한하는 것이 좋습니다
+      allow read: if isTeacher();
+      
+      // activities 서브컬렉션
+      match /activities/{activityId} {
+        // 학생은 자신의 활동 데이터 읽기/쓰기 가능
+        allow read, write: if isStudent() && 
+          getStudentIdFromEmail() == studentId;
+        
+        // 교사는 모든 학생 활동 데이터 읽기 가능
+        allow read: if isTeacher();
+      }
+    }
+    
+    // classes 컬렉션: 반별 학생 그룹
+    match /classes/{classId} {
+      // 교사는 자신의 반 데이터 읽기/쓰기 가능
+      allow read, write: if isTeacher() && 
+        getTeacherIdFromEmail() == classId;
+      
+      // students 서브컬렉션
+      match /students/{studentId} {
+        // 교사는 자신의 반 학생 목록 읽기 가능
+        allow read: if isTeacher() && 
+          getTeacherIdFromEmail() == classId;
+        
+        // 학생은 자신을 반에 추가/업데이트 가능
+        allow write: if isStudent() && 
+          getStudentIdFromEmail() == studentId;
+        
+        // 교사는 자신의 반 학생 추가/업데이트 가능
+        allow write: if isTeacher() && 
+          getTeacherIdFromEmail() == classId;
+      }
+    }
+    
+    // teachers 컬렉션: 교사 계정 정보
+    match /teachers/{teacherId} {
+      // 교사는 자신의 정보만 읽기 가능
+      allow read: if isTeacher() && 
+        getTeacherIdFromEmail() == teacherId;
+      
+      // 쓰기는 관리자만 가능
+      allow write: if false;
+    }
+    
+    // messages 컬렉션: 채팅 메시지
+    match /messages/class/{classId}/messages/{messageId} {
+      // 교사는 자신의 반 메시지 읽기/쓰기 가능
+      allow read, write: if isTeacher() && 
+        getTeacherIdFromEmail() == classId;
+      
+      // 학생은 자신의 반 메시지만 읽기 가능
+      // 주의: 학생의 반 확인을 위해 users 문서를 읽어야 하지만,
+      // 성능을 위해 간단하게 모든 학생이 읽을 수 있도록 설정
+      // 실제 운영 시에는 users 문서에 classId 필드를 추가하여 확인하는 것을 권장
+      allow read: if isStudent();
+    }
+    
+    match /messages/private/{chatId}/messages/{messageId} {
+      // 교사는 자신이 포함된 채팅방 메시지 읽기/쓰기 가능
+      allow read, write: if isTeacher() && 
+        chatId.matches(getTeacherIdFromEmail() + '-.*');
+      
+      // 학생은 자신이 포함된 채팅방 메시지 읽기/쓰기 가능
+      allow read, write: if isStudent() && 
+        chatId.matches('.*-' + getStudentIdFromEmail());
+    }
+    
+    // schools 컬렉션: 학교 정보 (선택사항)
+    match /schools/{schoolCode} {
+      // 인증된 사용자만 읽기 가능
+      allow read: if isAuthenticated();
+      
+      // 쓰기는 관리자만 가능
+      allow write: if false;
+    }
+  }
+}

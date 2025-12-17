@@ -1,0 +1,365 @@
+.student-message-detail-page {
+  position: relative;
+  width: 100vw;
+  min-height: 100vh;
+  background-color: #191022;
+  font-family: 'Public Sans', 'Noto Sans', sans-serif;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.student-message-detail-container {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #191022;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+}
+
+.student-message-detail-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1rem 0.5rem;
+  background-color: rgba(15, 7, 22, 0.95);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid #362447;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+}
+
+.student-message-detail-header-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 9999px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: color 0.2s;
+  color: #f3e8ff;
+  position: relative;
+}
+
+.student-message-detail-header-btn:hover {
+  color: #a855f7;
+}
+
+.student-message-detail-header-btn .material-symbols-outlined {
+  font-size: 24px;
+}
+
+.student-message-detail-header-title {
+  flex: 1;
+  text-align: center;
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  color: #f3e8ff;
+}
+
+.student-message-detail-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  gap: 1.5rem;
+  overflow-y: auto;
+  padding-bottom: 6rem;
+}
+
+.student-message-detail-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 50vh;
+  color: #94a3b8;
+}
+
+.student-message-detail-card {
+  background-color: #261933;
+  border-radius: 1rem;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  overflow: hidden;
+  margin-top: 0.5rem;
+}
+
+.student-message-detail-header-section {
+  padding: 1.25rem 1.25rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.student-message-detail-avatar {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.student-message-detail-avatar-image {
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 9999px;
+  background-color: #475569;
+  background-size: cover;
+  background-position: center;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.student-message-detail-avatar-badge {
+  position: absolute;
+  bottom: -0.25rem;
+  right: -0.25rem;
+  background-color: #191022;
+  padding: 0.125rem;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
+}
+
+.student-message-detail-avatar-badge-teacher {
+  background-color: #7f13ec;
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.student-message-detail-avatar-badge-system {
+  background-color: #6b7280;
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.student-message-detail-avatar-badge .material-symbols-outlined {
+  font-size: 12px;
+  color: white;
+}
+
+.student-message-detail-sender-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.student-message-detail-sender-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #7f13ec;
+  margin-bottom: 0.125rem;
+}
+
+.student-message-detail-sender-name {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: white;
+  line-height: 1;
+  margin: 0 0 0.25rem 0;
+}
+
+.student-message-detail-time {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+.student-message-detail-divider {
+  width: 100%;
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.05);
+  margin: 0 auto;
+}
+
+.student-message-detail-content {
+  padding: 1.5rem;
+}
+
+.student-message-detail-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: white;
+  margin: 0 0 1.25rem 0;
+  line-height: 1.375;
+}
+
+.student-message-detail-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  font-size: 1rem;
+  line-height: 1.75;
+  color: #cbd5e1;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+.student-message-detail-body p {
+  margin: 0;
+}
+
+.student-message-detail-body strong {
+  font-weight: 700;
+  color: white;
+}
+
+.student-message-detail-hint {
+  background-color: rgba(127, 19, 236, 0.05);
+  border: 1px solid rgba(127, 19, 236, 0.1);
+  border-radius: 0.75rem;
+  padding: 1rem;
+}
+
+.student-message-detail-hint-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.student-message-detail-hint-header .material-symbols-outlined {
+  font-size: 1.25rem;
+  color: #7f13ec;
+}
+
+.student-message-detail-hint-header .material-symbols-outlined.filled {
+  font-variation-settings: 'FILL' 1;
+}
+
+.student-message-detail-hint-label {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #7f13ec;
+}
+
+.student-message-detail-hint-text {
+  font-size: 0.875rem;
+  color: #cbd5e1;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.student-message-detail-action {
+  padding: 0.5rem 1.5rem 1.5rem;
+}
+
+.student-message-detail-action-btn {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #7f13ec;
+  color: white;
+  border-radius: 0.75rem;
+  font-weight: 700;
+  font-size: 0.875rem;
+  box-shadow: 0 10px 15px -3px rgba(127, 19, 236, 0.2);
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.student-message-detail-action-btn:hover {
+  background-color: rgba(127, 19, 236, 0.9);
+}
+
+.student-message-detail-action-btn .material-symbols-outlined {
+  font-size: 1.125rem;
+}
+
+/* 하단 네비게이션 바 */
+.student-message-detail-navbar {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  background-color: #1d1226;
+  border-top: 1px solid #362447;
+  height: 72px;
+  padding: 0 0.5rem;
+  z-index: 50;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.student-message-detail-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  width: 100%;
+  height: 100%;
+  color: #a78bfa;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.student-message-detail-nav-item:hover {
+  color: #a855f7;
+}
+
+.student-message-detail-nav-item.active {
+  color: #a855f7;
+}
+
+.student-message-detail-nav-item span:first-child {
+  font-size: 24px;
+}
+
+.student-message-detail-nav-item.active span:first-child {
+  filter: drop-shadow(0 0 8px rgba(168, 85, 247, 0.5));
+}
+
+.student-message-detail-nav-item span:last-child {
+  font-size: 0.625rem;
+  font-weight: 500;
+}
+
+.student-message-detail-nav-item.active span:last-child {
+  font-weight: 700;
+}
+
+.student-message-detail-nav-item.active .material-symbols-outlined {
+  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+/* Material Symbols Font */
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200');
+
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+}
