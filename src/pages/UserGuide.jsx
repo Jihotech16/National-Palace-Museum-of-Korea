@@ -98,7 +98,7 @@ function UserGuide() {
         </div>
         
         {/* ActionPanel: Critical School Notice */}
-        <div className="@container" style={{ marginBottom: '64px' }}>
+        <div className="@container" style={{ marginBottom: '32px' }}>
           <div className="relative flex flex-col gap-4 rounded-2xl border-l-4 border-l-amber-400 shadow-lg overflow-hidden" style={{ backgroundColor: '#2d1f3f', padding: '17.5px' }}>
             {/* Glow effect */}
             <div className="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 rounded-full blur-2xl" style={{ backgroundColor: 'rgba(127, 19, 236, 0.1)' }}></div>
@@ -113,13 +113,24 @@ function UserGuide() {
                 </p>
               </div>
             </div>
-            <div className="flex flex-col @[400px]:flex-row items-stretch @[400px]:items-center gap-3 bg-slate-50 dark:bg-black/20 p-3 rounded-xl border border-slate-100 dark:border-white/5 relative z-10">
-              <span className="flex-1 text-slate-700 dark:text-slate-200 text-sm font-mono font-medium truncate pl-1">
+            <div className="flex flex-col @[400px]:flex-row items-stretch @[400px]:items-center gap-3 rounded-xl relative z-10" style={{ 
+              backgroundColor: 'rgba(0, 0, 0, 0.2)',
+              border: '1px solid rgba(255, 255, 255, 0.05)',
+              padding: '10.5px'
+            }}>
+              <span className="flex-1 text-sm font-mono font-medium truncate pl-1" style={{ color: '#e2e8f0' }}>
                 jihotech16@outlook.kr
               </span>
               <button 
                 onClick={handleCopyEmail}
-                className="flex items-center justify-center gap-1.5 bg-primary hover:bg-primary/90 active:scale-95 transition-all text-white px-4 py-2 rounded-lg text-xs font-bold shadow-md shadow-primary/20"
+                className="flex items-center justify-center gap-1.5 active:scale-95 transition-all text-white rounded-lg text-xs font-bold shadow-md"
+                style={{ 
+                  backgroundColor: '#7f13ec',
+                  padding: '8px 16px',
+                  boxShadow: '0 4px 6px -1px rgba(127, 19, 236, 0.2)'
+                }}
+                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(127, 19, 236, 0.9)'}
+                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#7f13ec'}
               >
                 <span className="material-symbols-outlined" style={{fontSize: '16px'}}>content_copy</span>
                 <span>복사</span>
@@ -129,8 +140,8 @@ function UserGuide() {
         </div>
         
         {/* HeadlineText: Exploration Method */}
-        <div style={{ marginTop: '64px', marginBottom: '16px' }}>
-          <div className="flex items-center gap-2 mb-2 px-1">
+        <div style={{ marginTop: '16px', marginBottom: '16px' }}>
+          <div className="flex items-center gap-2 px-1" style={{ marginBottom: '7px' }}>
             <span className="w-1 h-6 rounded-full" style={{ backgroundColor: '#7f13ec' }}></span>
             <h2 className="text-xl font-bold leading-tight tracking-tight" style={{ color: '#ffffff' }}>탐험 방법</h2>
           </div>
@@ -149,7 +160,7 @@ function UserGuide() {
                 <span className="material-symbols-outlined" style={{fontSize: '20px'}}>museum</span>
               </div>
             </div>
-            <div className="flex flex-col p-4 rounded-xl shadow-sm border" style={{ backgroundColor: '#2d1f3f', borderColor: 'rgba(255, 255, 255, 0.05)' }}>
+            <div className="flex flex-col rounded-xl shadow-sm border" style={{ backgroundColor: '#2d1f3f', borderColor: 'rgba(255, 255, 255, 0.05)', padding: '14px' }}>
               <div className="flex justify-between items-center mb-1">
                 <span className="text-xs font-bold px-2 py-0.5 rounded uppercase tracking-wider" style={{ color: '#7f13ec', backgroundColor: 'rgba(127, 19, 236, 0.1)' }}>Step 1</span>
               </div>
@@ -163,16 +174,16 @@ function UserGuide() {
           {/* Step 2 */}
           <div className="relative grid grid-cols-[48px_1fr] gap-x-4 z-10" style={{ marginBottom: '32px' }}>
             <div className="flex flex-col items-center pt-1">
-              <div className="flex items-center justify-center size-10 rounded-full border-2" style={{ backgroundColor: '#2d1f3f', borderColor: '#475569', color: '#94a3b8' }}>
+              <div className="flex items-center justify-center size-10 rounded-full border-2 shadow-sm" style={{ backgroundColor: '#2d1f3f', borderColor: '#7f13ec', color: '#7f13ec' }}>
                 <span className="material-symbols-outlined" style={{fontSize: '20px'}}>search</span>
               </div>
             </div>
-            <div className="flex flex-col p-4 rounded-xl shadow-sm border" style={{ backgroundColor: '#2d1f3f', borderColor: 'rgba(255, 255, 255, 0.05)' }}>
+            <div className="flex flex-col rounded-xl shadow-sm border" style={{ backgroundColor: '#2d1f3f', borderColor: 'rgba(255, 255, 255, 0.05)', padding: '14px' }}>
               <div className="flex justify-between items-center mb-1">
-                <span className="text-xs font-bold px-2 py-0.5 rounded uppercase tracking-wider" style={{ color: '#94a3b8', backgroundColor: 'rgba(255, 255, 255, 0.05)' }}>Step 2</span>
+                <span className="text-xs font-bold px-2 py-0.5 rounded uppercase tracking-wider" style={{ color: '#7f13ec', backgroundColor: 'rgba(127, 19, 236, 0.1)' }}>Step 2</span>
               </div>
-              <p className="text-slate-900 dark:text-white text-base font-bold mb-1">단서 찾기</p>
-              <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">
+              <p className="text-base font-bold mb-1" style={{ color: '#ffffff' }}>단서 찾기</p>
+              <p className="text-sm leading-relaxed" style={{ color: '#94a3b8' }}>
                 유물 주변에 숨겨진 QR코드나 이미지 마커를 스캔하여 단서를 획득하세요.
               </p>
             </div>
@@ -181,16 +192,16 @@ function UserGuide() {
           {/* Step 3 */}
           <div className="relative grid grid-cols-[48px_1fr] gap-x-4 z-10" style={{ marginBottom: '32px' }}>
             <div className="flex flex-col items-center pt-1">
-              <div className="flex items-center justify-center size-10 rounded-full border-2" style={{ backgroundColor: '#2d1f3f', borderColor: '#475569', color: '#94a3b8' }}>
+              <div className="flex items-center justify-center size-10 rounded-full border-2 shadow-sm" style={{ backgroundColor: '#2d1f3f', borderColor: '#7f13ec', color: '#7f13ec' }}>
                 <span className="material-symbols-outlined" style={{fontSize: '20px'}}>extension</span>
               </div>
             </div>
-            <div className="flex flex-col p-4 rounded-xl shadow-sm border" style={{ backgroundColor: '#2d1f3f', borderColor: 'rgba(255, 255, 255, 0.05)' }}>
+            <div className="flex flex-col rounded-xl shadow-sm border" style={{ backgroundColor: '#2d1f3f', borderColor: 'rgba(255, 255, 255, 0.05)', padding: '14px' }}>
               <div className="flex justify-between items-center mb-1">
-                <span className="text-xs font-bold px-2 py-0.5 rounded uppercase tracking-wider" style={{ color: '#94a3b8', backgroundColor: 'rgba(255, 255, 255, 0.05)' }}>Step 3</span>
+                <span className="text-xs font-bold px-2 py-0.5 rounded uppercase tracking-wider" style={{ color: '#7f13ec', backgroundColor: 'rgba(127, 19, 236, 0.1)' }}>Step 3</span>
               </div>
-              <p className="text-slate-900 dark:text-white text-base font-bold mb-1">문제 해결</p>
-              <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">
+              <p className="text-base font-bold mb-1" style={{ color: '#ffffff' }}>문제 해결</p>
+              <p className="text-sm leading-relaxed" style={{ color: '#94a3b8' }}>
                 획득한 단서를 조합하여 퀴즈를 풀고 다음 스테이지 잠금을 해제하세요.
               </p>
             </div>

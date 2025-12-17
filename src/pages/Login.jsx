@@ -219,7 +219,16 @@ function Login() {
         <div className="login-page-footer">
           <p className="login-page-footer-text">
             도움이 필요하신가요? 
-            <a className="login-page-footer-link" href="#">사용 가이드 보기</a>
+            <a 
+              className="login-page-footer-link" 
+              href="#" 
+              onClick={(e) => {
+                e.preventDefault()
+                navigate('/userguide')
+              }}
+            >
+              사용 가이드 보기
+            </a>
           </p>
         </div>
       </div>
