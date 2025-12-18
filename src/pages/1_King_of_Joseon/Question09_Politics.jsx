@@ -6,3 +6,4 @@ function Question09_Politics({ user }) {
 }
 
 export default Question09_Politics
+

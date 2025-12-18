@@ -233,3 +233,4 @@ function StudentMessageDetail({ user }) {
 }
 
 export default StudentMessageDetail
+

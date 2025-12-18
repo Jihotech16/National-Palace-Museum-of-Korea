@@ -7,3 +7,4 @@ function Question02_Seal({ user }) {
 }
 
 export default Question02_Seal
+

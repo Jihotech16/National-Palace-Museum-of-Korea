@@ -7,3 +7,4 @@ function Question07_Jongmyo({ user }) {
 
 export default Question07_Jongmyo
 
+

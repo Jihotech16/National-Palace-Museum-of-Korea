@@ -6,3 +6,4 @@ function Question06_Education({ user }) {
 }
 
 export default Question06_Education
+

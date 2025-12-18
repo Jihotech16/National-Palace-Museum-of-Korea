@@ -7,3 +7,4 @@ function Question04_Clothing({ user }) {
 }
 
 export default Question04_Clothing
+

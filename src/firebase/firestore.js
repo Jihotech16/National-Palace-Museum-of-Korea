@@ -679,7 +679,8 @@ export const getStudentsProgress = async (schoolCode, grade, classNum) => {
     const students = studentsResult.students
     const progressData = {}
     
-    for (const student of students) {
+    // 모든 학생의 활동 상태를 병렬로 가져오기 (성능 최적화)
+    const statusPromises = students.map(async (student) => {
       const activitiesResult = await getAllActivityStatus(student.studentId)
       if (activitiesResult.success) {
         const completedCount = Object.values(activitiesResult.status).filter(Boolean).length
@@ -690,7 +691,10 @@ export const getStudentsProgress = async (schoolCode, grade, classNum) => {
           progress
         }
       }
-    }
+    })
+    
+    // 모든 학생의 상태를 병렬로 로드
+    await Promise.all(statusPromises)
     
     // 평균 진행률 계산
     const progressValues = Object.values(progressData).map(p => p.progress)
@@ -733,30 +737,41 @@ export const getHallProgress = async (schoolCode, grade, classNum) => {
       '6_Science_Culture': { name: '6관: 과학문화', color: 'blue', icon: 'science' }
     }
     
+    // 모든 학생의 활동 상태를 한 번에 병렬로 가져오기 (성능 최적화)
+    const studentStatusMap = {}
+    const statusPromises = students.map(async (student) => {
+      const activitiesResult = await getAllActivityStatus(student.studentId)
+      if (activitiesResult.success) {
+        studentStatusMap[student.studentId] = activitiesResult.status || {}
+      } else {
+        studentStatusMap[student.studentId] = {}
+      }
+    })
+    
+    // 모든 학생의 상태를 병렬로 로드
+    await Promise.all(statusPromises)
+    
     const hallProgressData = {}
     
-    // 각 전시관별로 진행률 계산
+    // 각 전시관별로 진행률 계산 (이미 로드된 데이터 사용)
     for (const [hallId, activities] of Object.entries(EXHIBITION_HALL_ACTIVITIES)) {
       const totalActivities = activities.length
       let totalCompleted = 0
       let completedStudents = 0
       let inProgressStudents = 0
       
-      // 각 학생의 해당 전시관 완료 상태 확인
+      // 각 학생의 해당 전시관 완료 상태 확인 (메모리에서 계산)
       for (const student of students) {
-        const activitiesResult = await getAllActivityStatus(student.studentId)
-        if (activitiesResult.success) {
-          const status = activitiesResult.status || {}
-          const completedCount = activities.filter(activityId => status[activityId] === true).length
-          const studentProgress = totalActivities > 0 ? (completedCount / totalActivities) * 100 : 0
-          
-          totalCompleted += completedCount
-          
-          if (studentProgress === 100) {
-            completedStudents++
-          } else if (studentProgress > 0) {
-            inProgressStudents++
-          }
+        const status = studentStatusMap[student.studentId] || {}
+        const completedCount = activities.filter(activityId => status[activityId] === true).length
+        const studentProgress = totalActivities > 0 ? (completedCount / totalActivities) * 100 : 0
+        
+        totalCompleted += completedCount
+        
+        if (studentProgress === 100) {
+          completedStudents++
+        } else if (studentProgress > 0) {
+          inProgressStudents++
         }
       }
       

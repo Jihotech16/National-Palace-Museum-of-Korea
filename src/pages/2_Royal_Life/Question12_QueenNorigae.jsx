@@ -7,3 +7,4 @@ function Question12_QueenNorigae({ user }) {
 
 export default Question12_QueenNorigae
 
+

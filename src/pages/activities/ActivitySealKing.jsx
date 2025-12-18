@@ -153,3 +153,4 @@ function ActivitySealKing({ user }) {
 }
 
 export default ActivitySealKing
+

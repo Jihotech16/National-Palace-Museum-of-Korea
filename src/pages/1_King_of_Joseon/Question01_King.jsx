@@ -6,3 +6,4 @@ function Question01_King({ user }) {
 }
 
 export default Question01_King
+

@@ -60,3 +60,4 @@ function ActivityFooter({
 }
 
 export default ActivityFooter
+

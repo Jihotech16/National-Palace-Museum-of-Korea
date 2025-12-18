@@ -7,3 +7,4 @@ function Question05_Palace({ user }) {
 
 export default Question05_Palace
 
+

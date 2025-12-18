@@ -421,20 +421,23 @@ function TeacherDetail() {
                 })}
               </div>
             </main>
-
-            <div className="teacher-detail-fab">
-              <button 
-                className="teacher-detail-fab-btn"
-                onClick={handleSendMessage}
-                type="button"
-              >
-                <span className="material-symbols-outlined">send</span>
-                <span>전체 메시지</span>
-              </button>
-            </div>
             </div>
           )}
         </main>
+
+        {/* 메시지 보내기 버튼 - teacher-main 밖으로 이동 */}
+        {!loading && (
+          <div className="teacher-detail-fab">
+            <button 
+              className="teacher-detail-fab-btn"
+              onClick={handleSendMessage}
+              type="button"
+            >
+              <span className="material-symbols-outlined">send</span>
+              <span>전체 메시지</span>
+            </button>
+          </div>
+        )}
 
         <nav className="teacher-nav">
           <div className="teacher-nav-content">
@@ -746,4 +749,5 @@ function TeacherDetail() {
 }
 
 export default TeacherDetail
+
 

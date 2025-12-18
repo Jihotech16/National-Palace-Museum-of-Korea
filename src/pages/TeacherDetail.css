@@ -49,7 +49,7 @@
   flex-direction: column;
   padding: 1rem;
   gap: 1.5rem;
-  padding-bottom: 8rem;
+  padding-bottom: 2rem;
 }
 
 /* 이전 헤더 스타일은 더 이상 사용하지 않음 (teacher-header 사용) */
@@ -434,10 +434,21 @@
 }
 
 .teacher-detail-fab {
-  position: absolute;
-  bottom: 1.5rem;
-  right: 1rem;
-  z-index: 40;
+  position: fixed;
+  bottom: 6rem;
+  right: 50%;
+  transform: translateX(50%);
+  max-width: 28rem;
+  width: calc(100% - 2rem);
+  z-index: 50;
+  pointer-events: none;
+}
+
+.teacher-detail-fab .teacher-detail-fab-btn {
+  pointer-events: auto;
+  margin-left: auto;
+  display: flex;
+  width: fit-content;
 }
 
 .teacher-detail-fab-btn {
@@ -498,4 +509,5 @@
     grid-template-columns: repeat(5, 1fr);
   }
 }
+
 

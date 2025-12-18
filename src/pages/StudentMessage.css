@@ -1,7 +1,8 @@
 .student-message-page {
   position: relative;
   width: 100vw;
-  min-height: 100vh;
+  height: 100vh;
+  height: 100dvh; /* 동적 뷰포트 높이 (모바일 키보드 대응) */
   background-color: #191022;
   font-family: 'Public Sans', 'Noto Sans', sans-serif;
   color: white;
@@ -10,13 +11,14 @@
   justify-content: center;
   padding: 0;
   box-sizing: border-box;
+  overflow: hidden;
 }
 
 .student-message-container {
   position: relative;
   width: 100%;
   max-width: 480px;
-  min-height: 100vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
   background-color: #191022;
@@ -373,4 +375,5 @@
   -webkit-font-feature-settings: 'liga';
   -webkit-font-smoothing: antialiased;
 }
+
 

@@ -7,3 +7,4 @@ function Question05_Nature({ user }) {
 }
 
 export default Question05_Nature
+

@@ -143,3 +143,4 @@ for (const teacher of teachers) {
 3. **계정 관리**: 정기적으로 사용하지 않는 계정 정리
 4. **로그 모니터링**: `lastLogin` 필드를 통해 활동 모니터링 가능
 
+

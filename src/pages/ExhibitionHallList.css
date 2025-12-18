@@ -4,6 +4,8 @@
   max-width: 480px;
   margin: 0 auto;
   min-height: 100vh;
+  height: 100vh;
+  height: 100dvh; /* 동적 뷰포트 높이 (모바일 키보드 대응) */
   background-color: #0f0716;
   color: #f3e8ff;
   font-family: 'Public Sans', 'Noto Sans', sans-serif;
@@ -11,7 +13,6 @@
   flex-direction: column;
   overflow-x: hidden;
   padding-bottom: 72px;
-  height: 100vh;
   overflow-y: auto;
 }
 
@@ -556,4 +557,5 @@
 .exhibition-hall-list-nav-item.active .material-symbols-outlined {
   font-variation-settings: 'FILL' 1;
 }
+
 
