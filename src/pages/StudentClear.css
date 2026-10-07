@@ -3,7 +3,7 @@
   display: flex;
   flex-direction: column;
   height: 100vh;
-  max-width: 28rem;
+  max-width: 480px;
   margin: 0 auto;
   background-color: #0f0716;
   overflow-x: hidden;
@@ -101,21 +101,50 @@
   display: flex;
   flex-direction: column;
   padding: 1.5rem;
-  padding-bottom: calc(72px + 1.5rem);
+  padding-bottom: 1rem;
   align-items: center;
-  justify-content: center;
-  overflow-y: auto;
+  justify-content: flex-start;
+  overflow-y: visible;
   min-height: 0;
-  max-height: calc(100vh - 72px);
+  width: 100%;
 }
 
 .student-clear-celebration {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 2rem;
   text-align: center;
-  animation: fadeInUp 0.6s ease-out;
+  animation: fadeInCenter 0.6s ease-out, fadeOut 0.5s ease-out 1.5s forwards;
+  z-index: 1000;
+  width: 100%;
+  max-width: 480px;
+  padding: 0 1.5rem;
+}
+
+@keyframes fadeInCenter {
+  from {
+    opacity: 0;
+    transform: translate(-50%, calc(-50% + 20px));
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.9);
+  }
 }
 
 @keyframes fadeInUp {
@@ -179,6 +208,14 @@
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
   overflow: hidden;
   border: 6px double #d4af37;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.student-clear-certificate-enter {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .dark .student-clear-certificate {
@@ -431,6 +468,7 @@
   display: flex;
   gap: 0.75rem;
   margin-top: 2rem;
+  margin-bottom: 0;
 }
 
 .student-clear-button {
@@ -747,21 +785,284 @@
 }
 
 /* Scrollbar */
-.student-clear-main::-webkit-scrollbar {
+.student-layout-content::-webkit-scrollbar {
   width: 6px;
 }
 
-.student-clear-main::-webkit-scrollbar-track {
+.student-layout-content::-webkit-scrollbar-track {
   background: #191022;
 }
 
-.student-clear-main::-webkit-scrollbar-thumb {
+.student-layout-content::-webkit-scrollbar-thumb {
   background: #362348;
   border-radius: 3px;
 }
 
-.student-clear-main::-webkit-scrollbar-thumb:hover {
+.student-layout-content::-webkit-scrollbar-thumb:hover {
   background: #7f13ec;
+}
+
+/* 서울역사박물관 수료증 스타일 (파란색 테마) */
+.student-clear-main-seoul .student-clear-celebration-icon .material-symbols-outlined {
+  color: #3b82f6;
+}
+
+.student-clear-main-seoul .student-clear-icon-glow {
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.4) 0%, transparent 70%);
+  background-color: #3b82f6;
+  filter: blur(1rem);
+  opacity: 0.3;
+}
+
+.student-clear-main-seoul .student-clear-celebration-title {
+  color: #dbeafe;
+}
+
+.student-clear-main-seoul .student-clear-celebration-subtitle {
+  color: #93c5fd;
+}
+
+.student-clear-certificate-seoul {
+  border-color: #2563eb;
+}
+
+.dark .student-clear-certificate-seoul {
+  border-color: #3b82f6;
+}
+
+.student-clear-certificate-seoul .student-clear-certificate-label {
+  color: #2563eb;
+}
+
+.student-clear-certificate-seoul .student-clear-certificate-title-text {
+  border-bottom-color: rgba(37, 99, 235, 0.3);
+}
+
+.student-clear-certificate-seoul .student-clear-certificate-corner {
+  border-color: #2563eb;
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+}
+
+.dark .student-clear-certificate-seoul .student-clear-certificate-corner {
+  border-color: #3b82f6;
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+}
+
+.student-clear-certificate-seoul .student-clear-certificate-bg-pattern {
+  background-image: radial-gradient(rgba(37, 99, 235, 0.05) 1px, transparent 1px);
+}
+
+.student-clear-certificate-seoul .student-clear-certificate-seal-bg {
+  background: radial-gradient(circle, rgba(37, 99, 235, 0.1) 0%, transparent 70%);
+}
+
+.dark .student-clear-certificate-seoul .student-clear-certificate-seal-bg {
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, transparent 70%);
+}
+
+.student-clear-certificate-seoul .student-clear-signature-seal {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  border: 2px solid rgba(37, 99, 235, 0.3);
+}
+
+.dark .student-clear-certificate-seoul .student-clear-signature-seal {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  border: 2px solid rgba(59, 130, 246, 0.3);
+}
+
+.student-clear-certificate-seoul .student-clear-button-primary,
+.student-clear-button-seoul {
+  background-color: #2563eb;
+  box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.3);
+}
+
+.student-clear-certificate-seoul .student-clear-button-primary:hover,
+.student-clear-button-seoul:hover {
+  background-color: #1d4ed8;
+}
+
+.student-clear-certificate-seoul .student-clear-back-button:hover,
+.student-clear-main-seoul .student-clear-back-button:hover {
+  color: #2563eb;
+}
+
+.student-clear-certificate-seoul .student-clear-share-button:hover,
+.student-clear-main-seoul .student-clear-share-button:hover {
+  color: #2563eb;
+}
+
+/* 둘 다 완료한 경우 버튼 스타일 */
+.student-clear-button-both {
+  background: linear-gradient(135deg, #7f13ec 0%, #2563eb 100%);
+  box-shadow: 0 10px 15px -3px rgba(127, 19, 236, 0.2), 0 10px 15px -3px rgba(37, 99, 235, 0.2);
+}
+
+.student-clear-button-both:hover {
+  background: linear-gradient(135deg, #5e0eb0 0%, #1d4ed8 100%);
+}
+
+/* 박물관별 탭 스타일 */
+.student-clear-tabs {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding: 0 1.5rem;
+  width: 100%;
+}
+
+.student-clear-tab {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  border-radius: 0.75rem;
+  background-color: rgba(54, 35, 72, 0.5);
+  border: 1px solid rgba(168, 85, 247, 0.2);
+  color: #ad92c9;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+  overflow: hidden;
+  padding: 0;
+}
+
+/* 서울역사박물관 탭 기본 스타일 */
+.student-clear-tab-seoul {
+  background-color: rgba(37, 99, 235, 0.1);
+  border-color: rgba(37, 99, 235, 0.2);
+}
+
+.student-clear-tab-image {
+  width: 100%;
+  height: 120px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  position: relative;
+  min-height: 120px;
+}
+
+.student-clear-tab-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.6));
+}
+
+.student-clear-tab-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  position: relative;
+}
+
+.student-clear-tab:hover {
+  border-color: rgba(168, 85, 247, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.student-clear-tab:hover .student-clear-tab-content {
+  color: #c4b5fd;
+}
+
+.student-clear-tab-active {
+  border-color: #7f13ec;
+  box-shadow: 0 0 0 2px rgba(127, 19, 236, 0.3);
+}
+
+.student-clear-tab-active .student-clear-tab-content {
+  color: #f3e8ff;
+}
+
+/* 서울역사박물관 탭 기본 색상 */
+.student-clear-tab-seoul .student-clear-tab-content {
+  color: #60a5fa;
+}
+
+.student-clear-tab-seoul.student-clear-tab-active {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.3);
+}
+
+.student-clear-tab-seoul.student-clear-tab-active .student-clear-tab-content {
+  color: #2563eb;
+}
+
+.student-clear-tab-seoul:hover {
+  background-color: rgba(37, 99, 235, 0.15);
+  border-color: rgba(37, 99, 235, 0.4);
+}
+
+.student-clear-tab-seoul:hover .student-clear-tab-content {
+  color: #3b82f6;
+}
+
+.student-clear-tab .material-symbols-outlined {
+  font-size: 1.25rem;
+}
+
+.student-clear-tab-badge {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  background-color: #10b981;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #0f0716;
+  z-index: 10;
+}
+
+.student-clear-tab-badge .material-symbols-outlined {
+  font-size: 0.75rem;
+  color: white;
+}
+
+/* 둘 다 완료한 경우 (보라색과 파란색 혼합) */
+.student-clear-certificate-both .student-clear-certificate-label {
+  background: linear-gradient(135deg, #7f13ec 0%, #2563eb 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.student-clear-certificate-both .student-clear-certificate-title-text {
+  border-bottom-color: rgba(127, 19, 236, 0.2);
+  border-image: linear-gradient(90deg, rgba(127, 19, 236, 0.3) 0%, rgba(37, 99, 235, 0.3) 100%) 1;
+}
+
+.student-clear-certificate-both .student-clear-certificate-corner {
+  background: linear-gradient(135deg, #7f13ec 0%, #2563eb 100%);
+}
+
+.dark .student-clear-certificate-both .student-clear-certificate-corner {
+  background: linear-gradient(135deg, #a855f7 0%, #3b82f6 100%);
+}
+
+.student-clear-certificate-both .student-clear-certificate-seal-bg {
+  background: radial-gradient(circle, rgba(127, 19, 236, 0.1) 0%, rgba(37, 99, 235, 0.1) 50%, transparent 70%);
+}
+
+.dark .student-clear-certificate-both .student-clear-certificate-seal-bg {
+  background: radial-gradient(circle, rgba(168, 85, 247, 0.15) 0%, rgba(59, 130, 246, 0.15) 50%, transparent 70%);
+}
+
+.student-clear-certificate-both .student-clear-signature-seal {
+  background: linear-gradient(135deg, #7f13ec 0%, #2563eb 100%);
+  border: 2px solid rgba(127, 19, 236, 0.3);
+}
+
+.dark .student-clear-certificate-both .student-clear-signature-seal {
+  background: linear-gradient(135deg, #a855f7 0%, #3b82f6 100%);
+  border: 2px solid rgba(168, 85, 247, 0.3);
 }
 
 

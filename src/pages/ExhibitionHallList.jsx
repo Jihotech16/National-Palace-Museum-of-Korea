@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import StudentLayout from '../components/StudentLayout'
 import './ExhibitionHallList.css'
 import 조선국왕실Image from '../image/조선국왕실.jpg'
 import 왕실생활실Image from '../image/왕실생활실.jpg'
@@ -9,7 +10,6 @@ import 왕실의례실Image from '../image/왕실의례실.jpg'
 import 과학문화실Image from '../image/과학문화실.jpg'
 import { getAllActivityStatus } from '../firebase/firestore'
 import { EXHIBITION_HALL_ACTIVITIES } from '../utils/activityOrder'
-import { logout } from '../firebase/auth'
 
 function ExhibitionHallList({ user }) {
   const navigate = useNavigate()
@@ -17,10 +17,6 @@ function ExhibitionHallList({ user }) {
   const [activityStatus, setActivityStatus] = useState({})
   const [loading, setLoading] = useState(true)
   const [featuredExhibition, setFeaturedExhibition] = useState(null)
-
-  const handleBack = () => {
-    navigate('/')
-  }
 
   const handleExhibitionClick = (exhibitionId) => {
     // 전시관 클릭 시 해당 전시관 시작 화면으로 이동
@@ -42,11 +38,6 @@ function ExhibitionHallList({ user }) {
 
   const handleFilterClick = (filter) => {
     setSelectedFilter(filter)
-  }
-
-  const handleLogout = async () => {
-    await logout()
-    navigate('/login')
   }
 
   // Firebase에서 활동지 완료 상태 가져오기
@@ -219,36 +210,11 @@ function ExhibitionHallList({ user }) {
     : exhibitionsWithProgress.filter(ex => ex.floorValue === selectedFilter)
 
   return (
-    <div className="exhibition-hall-list-container">
-      {/* 헤더 */}
-      <div className="exhibition-hall-list-header">
-        <button 
-          className="exhibition-hall-list-back-button"
-          onClick={handleBack}
-        >
-          <span className="material-symbols-outlined">arrow_back_ios_new</span>
-        </button>
-        <h2 className="exhibition-hall-list-title">전시관 탐험</h2>
-        <button 
-          className="exhibition-hall-list-search-button" 
-          style={{ position: 'relative' }}
-          onClick={() => navigate('/student/messages')}
-        >
-          <span className="material-symbols-outlined">mail</span>
-          <span style={{
-            position: 'absolute',
-            top: '8px',
-            right: '8px',
-            width: '10px',
-            height: '10px',
-            backgroundColor: '#ef4444',
-            borderRadius: '50%',
-            border: '2px solid white'
-          }}></span>
-        </button>
-      </div>
-
-      {/* 메인 콘텐츠 */}
+    <StudentLayout 
+      title="전시관 탐험" 
+      backPath="/landing"
+      activeNav="museum"
+    >
       <div className="exhibition-hall-list-content">
         {/* 추천 전시관 카드 */}
         {featuredExhibition && (
@@ -424,26 +390,7 @@ function ExhibitionHallList({ user }) {
           ))}
         </div>
       </div>
-
-      {/* 하단 네비게이션 바 */}
-      <div className="exhibition-hall-list-navbar">
-        <button className="exhibition-hall-list-nav-item active">
-          <span className="material-symbols-outlined">museum</span>
-          <span>전시관</span>
-        </button>
-        <button 
-          className="exhibition-hall-list-nav-item"
-          onClick={() => navigate('/student-clear')}
-        >
-          <span className="material-symbols-outlined">verified</span>
-          <span>수료증 확인</span>
-        </button>
-        <button className="exhibition-hall-list-nav-item" onClick={handleLogout}>
-          <span className="material-symbols-outlined">logout</span>
-          <span>로그아웃</span>
-        </button>
-      </div>
-    </div>
+    </StudentLayout>
   )
 }
 

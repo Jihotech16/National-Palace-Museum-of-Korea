@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { getNextActivityPath, getExhibitionHallFromActivityId, EXHIBITION_HALL_ACTIVITIES } from '../utils/activityOrder'
 import { getAllActivityStatus } from '../firebase/firestore'
 import './CorrectAnswer.css'
@@ -12,11 +12,13 @@ function CorrectAnswer({
   userEmail = null,
   onNext = null,
   onReplay = null,
-  nextButtonText = '다음 문제로'
+  nextButtonText = '다음 문제로',
+  theme = 'purple' // 'purple' or 'blue'
 }) {
   const [progress, setProgress] = useState(0)
   const [isLastQuestion, setIsLastQuestion] = useState(false)
   const navigate = useNavigate()
+  const location = useLocation()
 
   useEffect(() => {
     if (activityId) {
@@ -74,14 +76,37 @@ function CorrectAnswer({
     if (onNext) {
       onNext()
     } else if (isLastQuestion) {
-      // 마지막 문제일 때는 전시관 목록으로 이동
-      navigate('/exhibition-hall-list')
+      // 마지막 문제일 때는 해당 박물관의 전시관 목록으로 이동
+      if (activityId && activityId.startsWith('seoul')) {
+        navigate('/seoul-history-museum-hall-list')
+      } else {
+        navigate('/exhibition-hall-list')
+      }
     } else if (activityId) {
       const nextPath = getNextActivityPath(activityId)
       if (nextPath) {
-        navigate(nextPath)
+        // 현재 경로 형식에 맞게 변환
+        let finalPath = nextPath
+        const currentPath = location.pathname
+        
+        // 현재 경로가 /2_Seoul_Empire/, /3_Seoul_Colonial/, /4_Seoul_Growth/ 형식이면
+        // 다음 경로도 같은 형식으로 변환
+        if (currentPath.includes('/2_Seoul_Empire/') && nextPath.includes('/SeoulHistoryMuseum/2_Seoul_Empire/')) {
+          finalPath = nextPath.replace('/SeoulHistoryMuseum/2_Seoul_Empire/', '/2_Seoul_Empire/')
+        } else if (currentPath.includes('/3_Seoul_Colonial/') && nextPath.includes('/SeoulHistoryMuseum/3_Seoul_Colonial/')) {
+          finalPath = nextPath.replace('/SeoulHistoryMuseum/3_Seoul_Colonial/', '/3_Seoul_Colonial/')
+        } else if (currentPath.includes('/4_Seoul_Growth/') && nextPath.includes('/SeoulHistoryMuseum/4_Seoul_Growth/')) {
+          finalPath = nextPath.replace('/SeoulHistoryMuseum/4_Seoul_Growth/', '/4_Seoul_Growth/')
+        }
+        
+        navigate(finalPath)
       } else {
-        navigate('/exhibition-hall-list')
+        // 다음 경로가 없으면 해당 박물관의 전시관 목록으로
+        if (activityId && activityId.startsWith('seoul')) {
+          navigate('/seoul-history-museum-hall-list')
+        } else {
+          navigate('/exhibition-hall-list')
+        }
       }
     } else {
       navigate('/exhibition-hall-list')
@@ -98,11 +123,20 @@ function CorrectAnswer({
   }
 
   const handleGoToExhibition = () => {
-    navigate('/exhibition-hall-list')
+    // 서울역사박물관 문제인지 확인 (theme가 'blue'이거나 activityId가 'seoul'로 시작)
+    if (theme === 'blue' || (activityId && activityId.startsWith('seoul'))) {
+      navigate('/seoul-history-museum-hall-list')
+    } else {
+      navigate('/exhibition-hall-list')
+    }
   }
 
+  const containerClass = theme === 'blue' 
+    ? 'correct-answer-container correct-answer-container-blue'
+    : 'correct-answer-container'
+
   return (
-    <div className="correct-answer-container">
+    <div className={containerClass}>
       {/* 배경 효과 */}
       <div className="correct-answer-background-effects">
         <div className="correct-answer-bg-blur-1"></div>

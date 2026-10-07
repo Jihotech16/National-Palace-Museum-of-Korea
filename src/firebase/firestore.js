@@ -729,12 +729,16 @@ export const getHallProgress = async (schoolCode, grade, classNum) => {
     const { EXHIBITION_HALL_ACTIVITIES } = await import('../utils/activityOrder')
     
     const hallInfo = {
-      '1_King_of_Joseon': { name: '1관: 조선의 국왕', color: 'orange', icon: 'crown' },
-      '2_Royal_Life': { name: '2관: 왕실생활', color: 'blue', icon: 'home' },
-      '3_Empire_of_Korea': { name: '3관: 대한제국', color: 'emerald', icon: 'flag' },
-      '4_Palace_Painting': { name: '4관: 궁중서화', color: 'emerald', icon: 'palette' },
-      '5_Royal_Ritual': { name: '5관: 왕실의례', color: 'orange', icon: 'celebration' },
-      '6_Science_Culture': { name: '6관: 과학문화', color: 'blue', icon: 'science' }
+      '1_King_of_Joseon': { name: '1관: 조선의 국왕', color: 'orange', icon: 'crown', museum: 'palace' },
+      '2_Royal_Life': { name: '2관: 왕실생활', color: 'blue', icon: 'home', museum: 'palace' },
+      '3_Empire_of_Korea': { name: '3관: 대한제국', color: 'emerald', icon: 'flag', museum: 'palace' },
+      '4_Palace_Painting': { name: '4관: 궁중서화', color: 'emerald', icon: 'palette', museum: 'palace' },
+      '5_Royal_Ritual': { name: '5관: 왕실의례', color: 'orange', icon: 'celebration', museum: 'palace' },
+      '6_Science_Culture': { name: '6관: 과학문화', color: 'blue', icon: 'science', museum: 'palace' },
+      '1_Seoul_Joseon': { name: '1관: 조선의 서울', color: 'orange', icon: 'castle', museum: 'seoul' },
+      '2_Seoul_Empire': { name: '2관: 대한제국의 서울', color: 'blue', icon: 'flag', museum: 'seoul' },
+      '3_Seoul_Colonial': { name: '3관: 일제강점기의 서울', color: 'emerald', icon: 'history', museum: 'seoul' },
+      '4_Seoul_Growth': { name: '4관: 성장하는 서울', color: 'orange', icon: 'trending_up', museum: 'seoul' }
     }
     
     // 모든 학생의 활동 상태를 한 번에 병렬로 가져오기 (성능 최적화)
@@ -788,17 +792,21 @@ export const getHallProgress = async (schoolCode, grade, classNum) => {
         inProgress: inProgressStudents,
         completed: completedStudents,
         color: hallInfo[hallId]?.color || 'orange',
-        icon: hallInfo[hallId]?.icon || 'crown'
+        icon: hallInfo[hallId]?.icon || 'crown',
+        museum: hallInfo[hallId]?.museum || 'palace'
       }
     }
     
     // 전시관 순서대로 정렬
-    const hallOrder = ['1_King_of_Joseon', '2_Royal_Life', '3_Empire_of_Korea', '4_Palace_Painting', '5_Royal_Ritual', '6_Science_Culture']
+    const hallOrder = [
+      '1_King_of_Joseon', '2_Royal_Life', '3_Empire_of_Korea', '4_Palace_Painting', '5_Royal_Ritual', '6_Science_Culture',
+      '1_Seoul_Joseon', '2_Seoul_Empire', '3_Seoul_Colonial', '4_Seoul_Growth'
+    ]
     const halls = hallOrder
       .filter(hallId => hallProgressData[hallId])
-      .map((hallId, index) => ({
+      .map((hallId) => ({
         ...hallProgressData[hallId],
-        id: index + 1 // 1부터 시작하는 ID
+        museum: hallInfo[hallId]?.museum || 'palace'
       }))
     
     return { success: true, halls }

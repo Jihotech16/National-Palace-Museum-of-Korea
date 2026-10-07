@@ -1,0 +1,431 @@
+.seoul-hall-list-content {
+  flex: 1;
+  padding-bottom: 1rem;
+}
+
+/* 추천 전시관 카드 */
+.seoul-hall-list-featured {
+  padding: 1rem;
+}
+
+.seoul-hall-list-featured-image {
+  position: relative;
+  min-height: 240px;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  cursor: pointer;
+  transition: transform 0.7s;
+}
+
+.seoul-hall-list-featured-image:hover {
+  transform: scale(1.05);
+}
+
+.seoul-hall-list-featured-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, #0f172a, rgba(15, 23, 42, 0.4), transparent);
+}
+
+.seoul-hall-list-featured-content {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  padding: 1.25rem;
+}
+
+.seoul-hall-list-featured-badge {
+  display: inline-block;
+  background-color: rgba(37, 99, 235, 0.9);
+  color: white;
+  font-size: 0.625rem;
+  font-weight: 700;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.375rem;
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 0.5rem;
+  width: fit-content;
+}
+
+.seoul-hall-list-featured-title {
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 0.25rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.seoul-hall-list-featured-subtitle {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+/* 필터 버튼 */
+.seoul-hall-list-filters {
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.5rem 1rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.seoul-hall-list-filters::-webkit-scrollbar {
+  display: none;
+}
+
+.seoul-hall-list-filter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  height: 36px;
+  padding: 0 1rem;
+  border-radius: 9999px;
+  border: 1px solid #1e293b;
+  background-color: #1e293b;
+  color: #60a5fa;
+  font-size: 0.875rem;
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.seoul-hall-list-filter:hover {
+  background-color: #334155;
+  border-color: rgba(37, 99, 235, 0.5);
+}
+
+.seoul-hall-list-filter.active {
+  background-color: #2563eb;
+  color: white;
+  border-color: transparent;
+  box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
+}
+
+.seoul-hall-list-filter:active {
+  transform: scale(0.95);
+}
+
+/* 섹션 헤더 */
+.seoul-hall-list-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+  margin-top: 0.5rem;
+}
+
+.seoul-hall-list-section-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #f3e8ff;
+}
+
+.seoul-hall-list-section-indicator {
+  width: 4px;
+  height: 20px;
+  background-color: #2563eb;
+  border-radius: 9999px;
+}
+
+.seoul-hall-list-count {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #60a5fa;
+  background-color: #1e293b;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.375rem;
+  border: 1px solid #334155;
+}
+
+/* 전시관 목록 */
+.seoul-hall-list-items {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding: 0 1rem 1.5rem;
+}
+
+.seoul-hall-list-item {
+  display: flex;
+  flex-direction: column;
+  border-radius: 0.75rem;
+  background-color: #1e293b;
+  border: 1px solid #334155;
+  overflow: hidden;
+  transition: all 0.3s;
+}
+
+.seoul-hall-list-item:hover {
+  box-shadow: 0 10px 15px rgba(37, 99, 235, 0.05);
+}
+
+.seoul-hall-list-item.disabled {
+  opacity: 0.7;
+}
+
+.seoul-hall-list-item.disabled:hover {
+  opacity: 1;
+}
+
+.seoul-hall-list-item-image {
+  position: relative;
+  height: 176px;
+  width: 100%;
+  overflow: hidden;
+}
+
+.seoul-hall-list-item-bg {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.5s;
+}
+
+.seoul-hall-list-item:hover .seoul-hall-list-item-bg {
+  transform: scale(1.05);
+}
+
+.seoul-hall-list-item.disabled .seoul-hall-list-item-bg {
+  filter: grayscale(100%);
+}
+
+.seoul-hall-list-item-status {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.375rem 0.625rem;
+  border-radius: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  backdrop-filter: blur(12px);
+  border: 1px solid;
+}
+
+.seoul-hall-list-item-status.status-progress {
+  background-color: rgba(15, 23, 42, 0.8);
+  color: #2563eb;
+  border-color: rgba(37, 99, 235, 0.2);
+}
+
+.seoul-hall-list-item-status.status-available {
+  background-color: rgba(15, 23, 42, 0.8);
+  color: white;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.seoul-hall-list-item-status.status-completed {
+  background-color: rgba(20, 83, 45, 0.8);
+  color: #bbf7d0;
+  border-color: rgba(34, 197, 94, 0.5);
+}
+
+.seoul-hall-list-item-status.status-locked {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(15, 23, 42, 0.6);
+}
+
+.seoul-hall-list-item-status.status-locked span:first-child {
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  padding: 0.375rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.seoul-hall-list-item-content {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.seoul-hall-list-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.seoul-hall-list-item-title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 0.25rem;
+  color: #f3e8ff;
+  transition: color 0.2s;
+}
+
+.seoul-hall-list-item:hover .seoul-hall-list-item-title {
+  color: #2563eb;
+}
+
+.seoul-hall-list-item.disabled .seoul-hall-list-item-title {
+  color: #60a5fa;
+}
+
+.seoul-hall-list-item-meta {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: #60a5fa;
+}
+
+.seoul-hall-list-item.disabled .seoul-hall-list-item-meta {
+  color: #6b7280;
+}
+
+.seoul-hall-list-item-meta .difficulty {
+  color: #fbbf24;
+}
+
+.seoul-hall-list-item.disabled .seoul-hall-list-item-meta .difficulty {
+  color: #6b7280;
+}
+
+.seoul-hall-list-item-description {
+  font-size: 0.875rem;
+  color: #9ca3af;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.seoul-hall-list-item.disabled .seoul-hall-list-item-description {
+  color: #6b7280;
+}
+
+.seoul-hall-list-item-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 0.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid #334155;
+}
+
+.seoul-hall-list-item-progress {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.seoul-hall-list-item-progress-label {
+  font-size: 0.625rem;
+  color: #60a5fa;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.seoul-hall-list-item-progress-bar {
+  width: 96px;
+  height: 6px;
+  background-color: #0f172a;
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.seoul-hall-list-item-progress-fill {
+  height: 100%;
+  background-color: #2563eb;
+  border-radius: 9999px;
+}
+
+.seoul-hall-list-item-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  height: 36px;
+  padding: 0 1.25rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+}
+
+.seoul-hall-list-item-button.primary {
+  background-color: #2563eb;
+  color: white;
+  box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
+}
+
+.seoul-hall-list-item-button.primary:hover {
+  background-color: #1d4ed8;
+}
+
+.seoul-hall-list-item-button.secondary {
+  background-color: #334155;
+  color: #2563eb;
+  border: 1px solid rgba(37, 99, 235, 0.3);
+}
+
+.seoul-hall-list-item-button.secondary:hover {
+  background-color: rgba(37, 99, 235, 0.2);
+  border-color: #2563eb;
+}
+
+.seoul-hall-list-item-button.tertiary {
+  background-color: #334155;
+  color: #60a5fa;
+}
+
+.seoul-hall-list-item-button.tertiary:hover {
+  background-color: #1e293b;
+}
+
+.seoul-hall-list-item-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #2563eb;
+  background-color: rgba(37, 99, 235, 0.1);
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+}
+
+.seoul-hall-list-item-locked-message {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #6b7280;
+}
+
+/* Material Icons */
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+

@@ -15,7 +15,7 @@
 .teacher-detail-container {
   position: relative;
   width: 100%;
-  max-width: 28rem;
+  max-width: 480px;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -438,7 +438,7 @@
   bottom: 6rem;
   right: 50%;
   transform: translateX(50%);
-  max-width: 28rem;
+  max-width: 480px;
   width: calc(100% - 2rem);
   z-index: 50;
   pointer-events: none;

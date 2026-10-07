@@ -8,9 +8,13 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "deploy": "npm run build && firebase deploy --only hosting"
+    "deploy": "npm run build && firebase deploy --only hosting",
+    "cap:sync": "npm run build && npx cap sync",
+    "cap:open:android": "npx cap open android",
+    "cap:open:ios": "npx cap open ios"
   },
   "dependencies": {
+    "@capacitor/core": "^7.2.0",
     "firebase": "^10.7.1",
     "html2canvas": "^1.4.1",
     "react": "^18.2.0",
@@ -18,6 +22,9 @@
     "react-router-dom": "^6.20.0"
   },
   "devDependencies": {
+    "@capacitor/android": "^7.2.0",
+    "@capacitor/cli": "^7.2.0",
+    "@capacitor/ios": "^7.2.0",
     "@tailwindcss/vite": "^4.1.18",
     "@types/react": "^18.2.43",
     "@types/react-dom": "^18.2.17",

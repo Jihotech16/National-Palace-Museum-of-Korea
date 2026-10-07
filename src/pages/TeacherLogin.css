@@ -15,7 +15,7 @@
 .teacher-login-container {
   position: relative;
   width: 100%;
-  max-width: 28rem;
+  max-width: 480px;
   min-height: 100vh;
   display: flex;
   flex-direction: column;

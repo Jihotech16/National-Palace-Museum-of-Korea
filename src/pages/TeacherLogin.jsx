@@ -95,10 +95,6 @@ function TeacherLogin() {
     navigate(-1)
   }
 
-  const handleStudentLogin = () => {
-    navigate('/login')
-  }
-
   return (
     <div className="teacher-login-page">
       <div className="teacher-login-container">
@@ -120,9 +116,6 @@ function TeacherLogin() {
               <div className="teacher-login-icon-glow"></div>
               <div className="teacher-login-icon">
                 <span className="material-symbols-outlined">supervisor_account</span>
-                <div className="teacher-login-icon-badge">
-                  <span className="material-symbols-outlined">check</span>
-                </div>
               </div>
             </div>
             <div className="teacher-login-welcome-text">
@@ -264,20 +257,6 @@ function TeacherLogin() {
             </button>
           </form>
         </main>
-
-        <footer className="teacher-login-footer">
-          <p className="teacher-login-footer-text">
-            학생 계정으로 로그인하시겠습니까?
-          </p>
-          <button
-            className="teacher-login-footer-btn"
-            type="button"
-            onClick={handleStudentLogin}
-          >
-            <span className="material-symbols-outlined">backpack</span>
-            학생 로그인으로 이동
-          </button>
-        </footer>
       </div>
     </div>
   )

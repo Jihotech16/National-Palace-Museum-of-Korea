@@ -1,17 +1,83 @@
 import { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import { onAuthChange } from './firebase/auth'
-import LandingPage from './pages/LandingPage'
+import MainPage from './pages/MainPage'
+import PalaceLandingPage from './pages/PalaceLandingPage'
+import SeoulHistoryMuseum from './pages/SeoulHistoryMuseum'
+import SeoulHistoryMuseumHallList from './pages/SeoulHistoryMuseumHallList'
+import SeoulJoseonStart from './pages/SeoulHistoryMuseum/1_Seoul_Joseon/1_Start'
+import SeoulEmpireStart from './pages/SeoulHistoryMuseum/2_Seoul_Empire/1_Start'
+import SeoulColonialStart from './pages/SeoulHistoryMuseum/3_Seoul_Colonial/1_Start'
+import SeoulGrowthStart from './pages/SeoulHistoryMuseum/4_Seoul_Growth/1_Start'
+import SeoulJoseonQuestion01 from './pages/SeoulHistoryMuseum/1_Seoul_Joseon/Question01'
+import SeoulJoseonQuestion02 from './pages/SeoulHistoryMuseum/1_Seoul_Joseon/Question02'
+import SeoulJoseonQuestion03 from './pages/SeoulHistoryMuseum/1_Seoul_Joseon/Question03'
+import SeoulJoseonQuestion04 from './pages/SeoulHistoryMuseum/1_Seoul_Joseon/Question04'
+import SeoulJoseonQuestion05 from './pages/SeoulHistoryMuseum/1_Seoul_Joseon/Question05'
+import SeoulJoseonQuestion06 from './pages/SeoulHistoryMuseum/1_Seoul_Joseon/Question06'
+import SeoulJoseonQuestion07 from './pages/SeoulHistoryMuseum/1_Seoul_Joseon/Question07'
+import SeoulJoseonQuestion08 from './pages/SeoulHistoryMuseum/1_Seoul_Joseon/Question08'
+import SeoulJoseonQuestion09 from './pages/SeoulHistoryMuseum/1_Seoul_Joseon/Question09'
+import SeoulJoseonQuestion10 from './pages/SeoulHistoryMuseum/1_Seoul_Joseon/Question10'
+import SeoulJoseonQuestion11 from './pages/SeoulHistoryMuseum/1_Seoul_Joseon/Question11'
+import SeoulJoseonQuestion12 from './pages/SeoulHistoryMuseum/1_Seoul_Joseon/Question12'
+import SeoulJoseonQuestion13 from './pages/SeoulHistoryMuseum/1_Seoul_Joseon/Question13'
+import SeoulJoseonQuestion14 from './pages/SeoulHistoryMuseum/1_Seoul_Joseon/Question14'
+import SeoulJoseonQuestion15 from './pages/SeoulHistoryMuseum/1_Seoul_Joseon/Question15'
+import SeoulJoseonQuestion16 from './pages/SeoulHistoryMuseum/1_Seoul_Joseon/Question16'
+import SeoulJoseonQuestion17 from './pages/SeoulHistoryMuseum/1_Seoul_Joseon/Question17'
+import SeoulJoseonQuestion18 from './pages/SeoulHistoryMuseum/1_Seoul_Joseon/Question18'
+import SeoulJoseonQuestion19 from './pages/SeoulHistoryMuseum/1_Seoul_Joseon/Question19'
+import SeoulJoseonQuestion20 from './pages/SeoulHistoryMuseum/1_Seoul_Joseon/Question20'
+import SeoulJoseonQuestion21 from './pages/SeoulHistoryMuseum/1_Seoul_Joseon/Question21'
+import SeoulJoseonQuestion22 from './pages/SeoulHistoryMuseum/1_Seoul_Joseon/Question22'
+import SeoulJoseonQuestion23 from './pages/SeoulHistoryMuseum/1_Seoul_Joseon/Question23'
+import SeoulJoseonQuestion24 from './pages/SeoulHistoryMuseum/1_Seoul_Joseon/Question24'
+import SeoulEmpireQuestion01 from './pages/SeoulHistoryMuseum/2_Seoul_Empire/Question01'
+import SeoulEmpireQuestion02 from './pages/SeoulHistoryMuseum/2_Seoul_Empire/Question02'
+import SeoulEmpireQuestion03 from './pages/SeoulHistoryMuseum/2_Seoul_Empire/Question03'
+import SeoulEmpireQuestion04 from './pages/SeoulHistoryMuseum/2_Seoul_Empire/Question04'
+import SeoulEmpireQuestion05 from './pages/SeoulHistoryMuseum/2_Seoul_Empire/Question05'
+import SeoulEmpireQuestion06 from './pages/SeoulHistoryMuseum/2_Seoul_Empire/Question06'
+import SeoulEmpireQuestion07 from './pages/SeoulHistoryMuseum/2_Seoul_Empire/Question07'
+import SeoulEmpireQuestion08 from './pages/SeoulHistoryMuseum/2_Seoul_Empire/Question08'
+import SeoulEmpireQuestion09 from './pages/SeoulHistoryMuseum/2_Seoul_Empire/Question09'
+import SeoulEmpireQuestion10 from './pages/SeoulHistoryMuseum/2_Seoul_Empire/Question10'
+import SeoulColonialQuestion01 from './pages/SeoulHistoryMuseum/3_Seoul_Colonial/Question01'
+import SeoulColonialQuestion02 from './pages/SeoulHistoryMuseum/3_Seoul_Colonial/Question02'
+import SeoulColonialQuestion03 from './pages/SeoulHistoryMuseum/3_Seoul_Colonial/Question03'
+import SeoulColonialQuestion04 from './pages/SeoulHistoryMuseum/3_Seoul_Colonial/Question04'
+import SeoulColonialQuestion05 from './pages/SeoulHistoryMuseum/3_Seoul_Colonial/Question05'
+import SeoulColonialQuestion06 from './pages/SeoulHistoryMuseum/3_Seoul_Colonial/Question06'
+import SeoulColonialQuestion07 from './pages/SeoulHistoryMuseum/3_Seoul_Colonial/Question07'
+import SeoulColonialQuestion08 from './pages/SeoulHistoryMuseum/3_Seoul_Colonial/Question08'
+import SeoulColonialQuestion09 from './pages/SeoulHistoryMuseum/3_Seoul_Colonial/Question09'
+import SeoulColonialQuestion10 from './pages/SeoulHistoryMuseum/3_Seoul_Colonial/Question10'
+import SeoulGrowthQuestion01 from './pages/SeoulHistoryMuseum/4_Seoul_Growth/Question01'
+import SeoulGrowthQuestion02 from './pages/SeoulHistoryMuseum/4_Seoul_Growth/Question02'
+import SeoulGrowthQuestion03 from './pages/SeoulHistoryMuseum/4_Seoul_Growth/Question03'
+import SeoulGrowthQuestion04 from './pages/SeoulHistoryMuseum/4_Seoul_Growth/Question04'
+import SeoulGrowthQuestion05 from './pages/SeoulHistoryMuseum/4_Seoul_Growth/Question05'
+import SeoulGrowthQuestion06 from './pages/SeoulHistoryMuseum/4_Seoul_Growth/Question06'
+import SeoulGrowthQuestion07 from './pages/SeoulHistoryMuseum/4_Seoul_Growth/Question07'
+import SeoulGrowthQuestion08 from './pages/SeoulHistoryMuseum/4_Seoul_Growth/Question08'
+import SeoulGrowthQuestion09 from './pages/SeoulHistoryMuseum/4_Seoul_Growth/Question09'
+import SeoulGrowthQuestion10 from './pages/SeoulHistoryMuseum/4_Seoul_Growth/Question10'
+import SeoulGrowthQuestion11 from './pages/SeoulHistoryMuseum/4_Seoul_Growth/Question11'
+import SeoulGrowthQuestion12 from './pages/SeoulHistoryMuseum/4_Seoul_Growth/Question12'
+import SeoulGrowthQuestion13 from './pages/SeoulHistoryMuseum/4_Seoul_Growth/Question13'
+import SeoulGrowthQuestion14 from './pages/SeoulHistoryMuseum/4_Seoul_Growth/Question14'
+import SeoulGrowthQuestion15 from './pages/SeoulHistoryMuseum/4_Seoul_Growth/Question15'
 import UserGuide from './pages/UserGuide'
 import Login from './pages/Login'
-import TeacherLogin from './pages/TeacherLogin'
-import TeacherPage from './pages/TeacherPage'
-import TeacherClass from './pages/TeacherClass'
-import TeacherDetail from './pages/TeacherDetail'
-import TeacherMessage from './pages/TeacherMessage'
-import TeacherMessageDetail from './pages/TeacherMessageDetail'
-import TeacherEditMessage from './pages/TeacherEditMessage'
-import TeacherQuestionManagement from './pages/TeacherQuestionManagement'
+import TeacherLogin from './pages/teacher/TeacherLogin'
+import TeacherPage from './pages/teacher/TeacherPage'
+import TeacherClass from './pages/teacher/TeacherClass'
+import TeacherDetail from './pages/teacher/TeacherDetail'
+import TeacherMessage from './pages/teacher/TeacherMessage'
+import TeacherMessageDetail from './pages/teacher/TeacherMessageDetail'
+import TeacherEditMessage from './pages/teacher/TeacherEditMessage'
+import TeacherQuestionManagement from './pages/teacher/TeacherQuestionManagement'
 import JoseonRoyalCourtStart from './pages/1_King_of_Joseon/1_Start'
 import Question01_King from './pages/1_King_of_Joseon/Question01_King'
 import Question02_Seal from './pages/1_King_of_Joseon/Question02_Seal'
@@ -71,6 +137,7 @@ import ActivityAnimal from './pages/activities/ActivityAnimal'
 import ActivityPortrait from './pages/activities/ActivityPortrait'
 import ActivityScience from './pages/activities/ActivityScience'
 import ActivityDraw from './pages/activities/ActivityDraw'
+import ChoiceMuseum from './pages/ChoiceMuseum'
 import ExhibitionHallList from './pages/ExhibitionHallList'
 import StudentClear from './pages/StudentClear'
 import StudentMessage from './pages/StudentMessage'
@@ -84,15 +151,15 @@ function App() {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
-  const [redirectPath, setRedirectPath] = useState('/exhibition-hall-list')
+  const [redirectPath, setRedirectPath] = useState('/choice-museum')
 
   useEffect(() => {
     try {
       const unsubscribe = onAuthChange(async (user) => {
         setUser(user)
         if (user) {
-          // 로그인 시 전시관 목록으로 리다이렉트
-          setRedirectPath('/exhibition-hall-list')
+          // 로그인 시 박물관 선택 페이지로 리다이렉트
+          setRedirectPath('/choice-museum')
         }
         setLoading(false)
         setError(null)
@@ -185,7 +252,7 @@ function App() {
         />
         <Route 
           path="/" 
-          element={<LandingPage />} 
+          element={<MainPage />} 
         />
         <Route 
           path="/userguide" 
@@ -426,6 +493,414 @@ function App() {
         <Route 
           path="/activity/draw" 
           element={user ? <ActivityDraw user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/choice-museum" 
+          element={user ? <ChoiceMuseum user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/landing" 
+          element={user ? <PalaceLandingPage /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/seoul-history-museum" 
+          element={user ? <SeoulHistoryMuseum /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/seoul-history-museum-hall-list" 
+          element={user ? <SeoulHistoryMuseumHallList user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/1_Seoul_Joseon/1_Start" 
+          element={user ? <SeoulJoseonStart /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/SeoulHistoryMuseum/1_Seoul_Joseon/Question01" 
+          element={user ? <SeoulJoseonQuestion01 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/SeoulHistoryMuseum/1_Seoul_Joseon/Question02" 
+          element={user ? <SeoulJoseonQuestion02 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/SeoulHistoryMuseum/1_Seoul_Joseon/Question03" 
+          element={user ? <SeoulJoseonQuestion03 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/SeoulHistoryMuseum/1_Seoul_Joseon/Question04" 
+          element={user ? <SeoulJoseonQuestion04 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/SeoulHistoryMuseum/1_Seoul_Joseon/Question05" 
+          element={user ? <SeoulJoseonQuestion05 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/SeoulHistoryMuseum/1_Seoul_Joseon/Question06" 
+          element={user ? <SeoulJoseonQuestion06 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/SeoulHistoryMuseum/1_Seoul_Joseon/Question07" 
+          element={user ? <SeoulJoseonQuestion07 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/SeoulHistoryMuseum/1_Seoul_Joseon/Question08" 
+          element={user ? <SeoulJoseonQuestion08 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/SeoulHistoryMuseum/1_Seoul_Joseon/Question09" 
+          element={user ? <SeoulJoseonQuestion09 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/SeoulHistoryMuseum/1_Seoul_Joseon/Question10" 
+          element={user ? <SeoulJoseonQuestion10 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/SeoulHistoryMuseum/1_Seoul_Joseon/Question11" 
+          element={user ? <SeoulJoseonQuestion11 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/SeoulHistoryMuseum/1_Seoul_Joseon/Question12" 
+          element={user ? <SeoulJoseonQuestion12 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/SeoulHistoryMuseum/1_Seoul_Joseon/Question13" 
+          element={user ? <SeoulJoseonQuestion13 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/SeoulHistoryMuseum/1_Seoul_Joseon/Question14" 
+          element={user ? <SeoulJoseonQuestion14 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/SeoulHistoryMuseum/1_Seoul_Joseon/Question15" 
+          element={user ? <SeoulJoseonQuestion15 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/SeoulHistoryMuseum/1_Seoul_Joseon/Question16" 
+          element={user ? <SeoulJoseonQuestion16 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/SeoulHistoryMuseum/1_Seoul_Joseon/Question17" 
+          element={user ? <SeoulJoseonQuestion17 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/SeoulHistoryMuseum/1_Seoul_Joseon/Question18" 
+          element={user ? <SeoulJoseonQuestion18 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/SeoulHistoryMuseum/1_Seoul_Joseon/Question19" 
+          element={user ? <SeoulJoseonQuestion19 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/SeoulHistoryMuseum/1_Seoul_Joseon/Question20" 
+          element={user ? <SeoulJoseonQuestion20 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/SeoulHistoryMuseum/1_Seoul_Joseon/Question21" 
+          element={user ? <SeoulJoseonQuestion21 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/SeoulHistoryMuseum/1_Seoul_Joseon/Question22" 
+          element={user ? <SeoulJoseonQuestion22 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/SeoulHistoryMuseum/1_Seoul_Joseon/Question23" 
+          element={user ? <SeoulJoseonQuestion23 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/SeoulHistoryMuseum/1_Seoul_Joseon/Question24" 
+          element={user ? <SeoulJoseonQuestion24 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/2_Seoul_Empire/1_Start" 
+          element={user ? <SeoulEmpireStart /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/2_Seoul_Empire/Question01" 
+          element={user ? <SeoulEmpireQuestion01 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/2_Seoul_Empire/Question02" 
+          element={user ? <SeoulEmpireQuestion02 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/2_Seoul_Empire/Question03" 
+          element={user ? <SeoulEmpireQuestion03 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/2_Seoul_Empire/Question04" 
+          element={user ? <SeoulEmpireQuestion04 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/2_Seoul_Empire/Question05" 
+          element={user ? <SeoulEmpireQuestion05 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/2_Seoul_Empire/Question06" 
+          element={user ? <SeoulEmpireQuestion06 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/2_Seoul_Empire/Question07" 
+          element={user ? <SeoulEmpireQuestion07 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/2_Seoul_Empire/Question08" 
+          element={user ? <SeoulEmpireQuestion08 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/2_Seoul_Empire/Question09" 
+          element={user ? <SeoulEmpireQuestion09 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/2_Seoul_Empire/Question10" 
+          element={user ? <SeoulEmpireQuestion10 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/SeoulHistoryMuseum/2_Seoul_Empire/Question01" 
+          element={user ? <SeoulEmpireQuestion01 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/SeoulHistoryMuseum/2_Seoul_Empire/Question02" 
+          element={user ? <SeoulEmpireQuestion02 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/SeoulHistoryMuseum/2_Seoul_Empire/Question03" 
+          element={user ? <SeoulEmpireQuestion03 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/SeoulHistoryMuseum/2_Seoul_Empire/Question04" 
+          element={user ? <SeoulEmpireQuestion04 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/SeoulHistoryMuseum/2_Seoul_Empire/Question05" 
+          element={user ? <SeoulEmpireQuestion05 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/SeoulHistoryMuseum/2_Seoul_Empire/Question06" 
+          element={user ? <SeoulEmpireQuestion06 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/SeoulHistoryMuseum/2_Seoul_Empire/Question07" 
+          element={user ? <SeoulEmpireQuestion07 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/SeoulHistoryMuseum/2_Seoul_Empire/Question08" 
+          element={user ? <SeoulEmpireQuestion08 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/SeoulHistoryMuseum/2_Seoul_Empire/Question09" 
+          element={user ? <SeoulEmpireQuestion09 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/SeoulHistoryMuseum/2_Seoul_Empire/Question10" 
+          element={user ? <SeoulEmpireQuestion10 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/3_Seoul_Colonial/1_Start" 
+          element={user ? <SeoulColonialStart /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/3_Seoul_Colonial/Question01" 
+          element={user ? <SeoulColonialQuestion01 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/3_Seoul_Colonial/Question02" 
+          element={user ? <SeoulColonialQuestion02 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/3_Seoul_Colonial/Question03" 
+          element={user ? <SeoulColonialQuestion03 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/3_Seoul_Colonial/Question04" 
+          element={user ? <SeoulColonialQuestion04 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/3_Seoul_Colonial/Question05" 
+          element={user ? <SeoulColonialQuestion05 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/3_Seoul_Colonial/Question06" 
+          element={user ? <SeoulColonialQuestion06 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/3_Seoul_Colonial/Question07" 
+          element={user ? <SeoulColonialQuestion07 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/3_Seoul_Colonial/Question08" 
+          element={user ? <SeoulColonialQuestion08 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/3_Seoul_Colonial/Question09" 
+          element={user ? <SeoulColonialQuestion09 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/3_Seoul_Colonial/Question10" 
+          element={user ? <SeoulColonialQuestion10 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/SeoulHistoryMuseum/3_Seoul_Colonial/Question01" 
+          element={user ? <SeoulColonialQuestion01 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/SeoulHistoryMuseum/3_Seoul_Colonial/Question02" 
+          element={user ? <SeoulColonialQuestion02 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/SeoulHistoryMuseum/3_Seoul_Colonial/Question03" 
+          element={user ? <SeoulColonialQuestion03 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/SeoulHistoryMuseum/3_Seoul_Colonial/Question04" 
+          element={user ? <SeoulColonialQuestion04 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/SeoulHistoryMuseum/3_Seoul_Colonial/Question05" 
+          element={user ? <SeoulColonialQuestion05 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/SeoulHistoryMuseum/3_Seoul_Colonial/Question06" 
+          element={user ? <SeoulColonialQuestion06 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/SeoulHistoryMuseum/3_Seoul_Colonial/Question07" 
+          element={user ? <SeoulColonialQuestion07 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/SeoulHistoryMuseum/3_Seoul_Colonial/Question08" 
+          element={user ? <SeoulColonialQuestion08 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/SeoulHistoryMuseum/3_Seoul_Colonial/Question09" 
+          element={user ? <SeoulColonialQuestion09 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/SeoulHistoryMuseum/3_Seoul_Colonial/Question10" 
+          element={user ? <SeoulColonialQuestion10 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/4_Seoul_Growth/1_Start" 
+          element={user ? <SeoulGrowthStart /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/4_Seoul_Growth/Question01" 
+          element={user ? <SeoulGrowthQuestion01 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/4_Seoul_Growth/Question02" 
+          element={user ? <SeoulGrowthQuestion02 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/4_Seoul_Growth/Question03" 
+          element={user ? <SeoulGrowthQuestion03 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/4_Seoul_Growth/Question04" 
+          element={user ? <SeoulGrowthQuestion04 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/4_Seoul_Growth/Question05" 
+          element={user ? <SeoulGrowthQuestion05 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/4_Seoul_Growth/Question06" 
+          element={user ? <SeoulGrowthQuestion06 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/4_Seoul_Growth/Question07" 
+          element={user ? <SeoulGrowthQuestion07 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/4_Seoul_Growth/Question08" 
+          element={user ? <SeoulGrowthQuestion08 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/4_Seoul_Growth/Question09" 
+          element={user ? <SeoulGrowthQuestion09 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/4_Seoul_Growth/Question10" 
+          element={user ? <SeoulGrowthQuestion10 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/4_Seoul_Growth/Question11" 
+          element={user ? <SeoulGrowthQuestion11 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/4_Seoul_Growth/Question12" 
+          element={user ? <SeoulGrowthQuestion12 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/4_Seoul_Growth/Question13" 
+          element={user ? <SeoulGrowthQuestion13 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/4_Seoul_Growth/Question14" 
+          element={user ? <SeoulGrowthQuestion14 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/4_Seoul_Growth/Question15" 
+          element={user ? <SeoulGrowthQuestion15 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/SeoulHistoryMuseum/4_Seoul_Growth/Question01" 
+          element={user ? <SeoulGrowthQuestion01 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/SeoulHistoryMuseum/4_Seoul_Growth/Question02" 
+          element={user ? <SeoulGrowthQuestion02 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/SeoulHistoryMuseum/4_Seoul_Growth/Question03" 
+          element={user ? <SeoulGrowthQuestion03 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/SeoulHistoryMuseum/4_Seoul_Growth/Question04" 
+          element={user ? <SeoulGrowthQuestion04 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/SeoulHistoryMuseum/4_Seoul_Growth/Question05" 
+          element={user ? <SeoulGrowthQuestion05 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/SeoulHistoryMuseum/4_Seoul_Growth/Question06" 
+          element={user ? <SeoulGrowthQuestion06 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/SeoulHistoryMuseum/4_Seoul_Growth/Question07" 
+          element={user ? <SeoulGrowthQuestion07 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/SeoulHistoryMuseum/4_Seoul_Growth/Question08" 
+          element={user ? <SeoulGrowthQuestion08 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/SeoulHistoryMuseum/4_Seoul_Growth/Question09" 
+          element={user ? <SeoulGrowthQuestion09 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/SeoulHistoryMuseum/4_Seoul_Growth/Question10" 
+          element={user ? <SeoulGrowthQuestion10 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/SeoulHistoryMuseum/4_Seoul_Growth/Question11" 
+          element={user ? <SeoulGrowthQuestion11 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/SeoulHistoryMuseum/4_Seoul_Growth/Question12" 
+          element={user ? <SeoulGrowthQuestion12 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/SeoulHistoryMuseum/4_Seoul_Growth/Question13" 
+          element={user ? <SeoulGrowthQuestion13 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/SeoulHistoryMuseum/4_Seoul_Growth/Question14" 
+          element={user ? <SeoulGrowthQuestion14 user={user} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+          path="/SeoulHistoryMuseum/4_Seoul_Growth/Question15" 
+          element={user ? <SeoulGrowthQuestion15 user={user} /> : <Navigate to="/login" replace />} 
         />
         <Route 
           path="/exhibition-hall-list" 

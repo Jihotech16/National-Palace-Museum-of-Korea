@@ -1,0 +1,612 @@
+.choice-museum-container {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  max-width: 480px;
+  margin: 0 auto;
+  background-color: #221d10;
+  color: white;
+  font-family: 'Lexend', 'Noto Sans KR', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  border-left: 1px solid rgba(255, 255, 255, 0.05);
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+  padding-top: 0;
+}
+
+.choice-museum-loading {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #221d10;
+  color: #ecb613;
+  z-index: 1000;
+}
+
+/* Top App Bar - 헤더와 학생 정보를 함께 고정 */
+.choice-museum-header {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 480px;
+  z-index: 100;
+  background-color: #221d10;
+  border-left: 1px solid rgba(255, 255, 255, 0.05);
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.choice-museum-header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  padding-bottom: 0.5rem;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.choice-museum-header-left {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.choice-museum-header-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 9999px;
+  background-color: rgba(236, 182, 19, 0.2);
+  color: #ecb613;
+}
+
+.choice-museum-header-icon .material-symbols-outlined {
+  font-size: 1.5rem;
+}
+
+.choice-museum-header-title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+  margin: 0;
+}
+
+.choice-museum-logout-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 9999px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  color: #ecb613;
+}
+
+.choice-museum-logout-btn:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.choice-museum-logout-btn .material-symbols-outlined {
+  font-size: 1.5rem;
+}
+
+/* Student Info */
+.choice-museum-student-info {
+  padding: 0.25rem 1rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Spacer for fixed header */
+.choice-museum-header-spacer {
+  height: 0;
+  transition: height 0.2s;
+}
+
+.choice-museum-student-info-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(4px);
+}
+
+.choice-museum-student-info-badge .material-symbols-outlined {
+  font-size: 1.125rem;
+  color: #ecb613;
+}
+
+.choice-museum-student-info-text {
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.5;
+  text-align: center;
+  color: #ecb613;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Main Headline */
+.choice-museum-headline {
+  padding: 1rem 1rem 1rem;
+}
+
+.choice-museum-headline-title {
+  font-size: 1.625rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  background: linear-gradient(to right, white, rgba(255, 255, 255, 0.7));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0;
+}
+
+/* Museum Cards */
+.choice-museum-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 0 1rem 2rem;
+}
+
+.choice-museum-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  transition: all 0.3s;
+}
+
+.choice-museum-card-palace {
+  background-color: rgba(34, 29, 16, 0.8);
+  box-shadow: 0 4px 20px rgba(236, 182, 19, 0.15);
+  border: 1px solid rgba(236, 182, 19, 0.2);
+}
+
+.choice-museum-card-palace:hover {
+  border-color: rgba(236, 182, 19, 0.5);
+}
+
+.choice-museum-card-seoul {
+  background-color: rgba(34, 29, 16, 0.8);
+  box-shadow: 0 4px 20px rgba(236, 182, 19, 0.15);
+  border: 1px solid rgba(236, 182, 19, 0.2);
+}
+
+.choice-museum-card-seoul:hover {
+  border-color: rgba(236, 182, 19, 0.5);
+}
+
+.choice-museum-card-image {
+  width: 100%;
+  height: 12rem;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.choice-museum-card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(34, 29, 16, 0.95), transparent);
+  opacity: 0.9;
+}
+
+.choice-museum-card-badge {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.625rem;
+  border-radius: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: white;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+  z-index: 1;
+}
+
+.choice-museum-card-badge-available {
+  background-color: #ecb613;
+  box-shadow: 0 4px 6px -1px rgba(236, 182, 19, 0.4);
+}
+
+.choice-museum-card-badge-seoul {
+  background-color: #ecb613;
+  box-shadow: 0 4px 6px -1px rgba(236, 182, 19, 0.4);
+}
+
+.choice-museum-card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.25rem;
+  padding-top: 0.5rem;
+  position: relative;
+  margin-top: -1rem;
+}
+
+.choice-museum-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.choice-museum-card-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.25rem;
+}
+
+.choice-museum-card-label-palace {
+  color: #ecb613;
+}
+
+.choice-museum-card-label-seoul {
+  color: #ecb613;
+}
+
+.choice-museum-card-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: white;
+  margin: 0;
+}
+
+.choice-museum-card-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+}
+
+.choice-museum-card-icon-palace {
+  background-color: rgba(236, 182, 19, 0.1);
+  color: #ecb613;
+}
+
+.choice-museum-card-palace:hover .choice-museum-card-icon-palace {
+  background-color: #ecb613;
+  color: #221d10;
+}
+
+.choice-museum-card-icon-seoul {
+  background-color: rgba(236, 182, 19, 0.1);
+  color: #ecb613;
+}
+
+.choice-museum-card-seoul:hover .choice-museum-card-icon-seoul {
+  background-color: #ecb613;
+  color: #221d10;
+}
+
+.choice-museum-card-icon .material-symbols-outlined {
+  font-size: 1.25rem;
+}
+
+.choice-museum-card-description {
+  color: #94a3b8;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.choice-museum-card-button {
+  margin-top: 0.5rem;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  height: 3rem;
+  border-radius: 0.5rem;
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+}
+
+.choice-museum-card-button:active {
+  transform: scale(0.98);
+}
+
+.choice-museum-card-button-palace {
+  background-color: #ecb613;
+  box-shadow: 0 10px 15px -3px rgba(236, 182, 19, 0.25);
+  color: #221d10;
+}
+
+.choice-museum-card-button-palace:hover {
+  background-color: #d4a510;
+}
+
+.choice-museum-card-button-seoul {
+  background-color: #ecb613;
+  box-shadow: 0 10px 15px -3px rgba(236, 182, 19, 0.25);
+  color: #221d10;
+}
+
+.choice-museum-card-button-seoul:hover {
+  background-color: #d4a510;
+}
+
+.choice-museum-card-button .material-symbols-outlined {
+  font-size: 1.125rem;
+}
+
+.choice-museum-card-button-disabled {
+  background-color: #4b5563 !important;
+  color: #9ca3af !important;
+  cursor: not-allowed !important;
+  opacity: 0.6;
+  box-shadow: none !important;
+}
+
+.choice-museum-card-button-disabled:hover {
+  background-color: #4b5563 !important;
+  transform: none !important;
+}
+
+.choice-museum-card-button-disabled:active {
+  transform: none !important;
+}
+
+.choice-museum-card-disabled {
+  opacity: 0.8;
+}
+
+.choice-museum-card-badge-unavailable {
+  background-color: rgba(239, 68, 68, 0.9);
+  color: white;
+}
+
+.choice-museum-card-period-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.choice-museum-card-period-start {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: #ffffff;
+  padding: 0.75rem;
+  background: linear-gradient(135deg, rgba(236, 182, 19, 0.15), rgba(236, 182, 19, 0.05));
+  border-radius: 0.5rem;
+  border: 1px solid rgba(236, 182, 19, 0.3);
+  font-weight: 500;
+}
+
+.choice-museum-card-period-start .material-symbols-outlined {
+  font-size: 1.125rem;
+  color: #ecb613;
+  flex-shrink: 0;
+}
+
+.choice-museum-card-period-start strong {
+  color: #ecb613;
+  font-weight: 700;
+}
+
+.choice-museum-card-period-end {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  color: #d1d5db;
+  padding: 0.5rem 0.75rem;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 0.5rem;
+}
+
+.choice-museum-card-period-end .material-symbols-outlined {
+  font-size: 1rem;
+  color: #9ca3af;
+  flex-shrink: 0;
+}
+
+.choice-museum-card-period-error {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  color: #fca5a5;
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  background-color: rgba(239, 68, 68, 0.1);
+  border-radius: 0.375rem;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.choice-museum-card-period-error .material-symbols-outlined {
+  font-size: 1rem;
+  color: #fca5a5;
+}
+
+/* Coming Soon Section */
+.choice-museum-coming-soon {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 0 1rem 3rem;
+}
+
+.choice-museum-coming-soon-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.choice-museum-coming-soon-title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: white;
+  margin: 0;
+}
+
+.choice-museum-coming-soon-more {
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 1.5rem;
+}
+
+.choice-museum-coming-soon-cards {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  padding-bottom: 1rem;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.choice-museum-coming-soon-cards::-webkit-scrollbar {
+  display: none;
+}
+
+.choice-museum-coming-soon-card {
+  flex: none;
+  width: 10rem;
+}
+
+.choice-museum-coming-soon-card-image {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  background-color: #2a2a2a;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.choice-museum-coming-soon-card-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: grayscale(100%);
+  opacity: 0.3;
+}
+
+.choice-museum-coming-soon-card-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(1px);
+}
+
+.choice-museum-coming-soon-card-lock {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 9999px;
+  background-color: rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+  margin-bottom: 0.5rem;
+}
+
+.choice-museum-coming-soon-card-lock .material-symbols-outlined {
+  font-size: 1.5rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.choice-museum-coming-soon-card-text {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0;
+}
+
+.choice-museum-coming-soon-card-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(to bottom right, rgba(255, 255, 255, 0.05), transparent);
+}
+
+.choice-museum-coming-soon-card-placeholder .material-symbols-outlined {
+  font-size: 3rem;
+  color: rgba(255, 255, 255, 0.2);
+}
+
+.choice-museum-coming-soon-card-name {
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 0;
+}
+
+.choice-museum-coming-soon-card-name-placeholder {
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.4);
+  margin-bottom: 0;
+}
+
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  font-feature-settings: 'liga';
+  -webkit-font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+}
+

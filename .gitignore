@@ -23,4 +23,13 @@ dist-ssr
 *.sln
 *.sw?
 
+# Capacitor native (빌드 산출물)
+android/app/build
+android/build
+android/.gradle
+android/captures
+android/local.properties
+ios/App/Pods
+ios/DerivedData
+
 

@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { logout } from '../firebase/auth'
 import { getClassMessagesForStudent, markMessageAsRead } from '../firebase/firestore'
 import { doc, getDoc } from 'firebase/firestore'
 import { db } from '../firebase/config'
+import StudentLayout from '../components/StudentLayout'
 import './StudentMessage.css'
 
 function StudentMessage({ user }) {
@@ -74,18 +74,6 @@ function StudentMessage({ user }) {
     navigate(`/student/messages/${message.id}`)
   }
 
-  const handleBack = () => {
-    navigate('/exhibition-hall-list')
-  }
-
-  const handleLogout = async () => {
-    try {
-      await logout()
-      navigate('/login')
-    } catch (error) {
-      console.error('로그아웃 오류:', error)
-    }
-  }
 
   const handleComposeMessage = () => {
     navigate('/student/messages/compose')
@@ -102,27 +90,12 @@ function StudentMessage({ user }) {
   }, {})
 
   return (
-    <div className="student-message-page">
-      <div className="student-message-container">
-        <header className="student-message-header">
-          <button 
-            className="student-message-header-btn student-message-back-button"
-            onClick={handleBack}
-            type="button"
-          >
-            <span className="material-symbols-outlined">arrow_back_ios_new</span>
-          </button>
-          <h1 className="student-message-header-title">수신 메시지함</h1>
-          <button 
-            className="student-message-header-btn student-message-header-btn-notification"
-            onClick={() => navigate('/student/messages')}
-            type="button"
-          >
-            <span className="material-symbols-outlined">mail</span>
-          </button>
-        </header>
-
-        <main className="student-message-main">
+    <StudentLayout 
+      title="수신 메시지함" 
+      backPath="/exhibition-hall-list"
+      showMessageButton={false}
+    >
+      <main className="student-message-main">
           {loading ? (
             <div style={{ padding: '2rem', textAlign: 'center' }}>
               <p>메시지를 불러오는 중...</p>
@@ -187,36 +160,7 @@ function StudentMessage({ user }) {
         >
           <span className="material-symbols-outlined">edit</span>
         </button>
-
-        <nav className="student-message-navbar">
-          <button 
-            className="student-message-nav-item"
-            onClick={() => navigate('/exhibition-hall-list')}
-          >
-            <span className="material-symbols-outlined">museum</span>
-            <span>전시관</span>
-          </button>
-          <button className="student-message-nav-item active">
-            <span className="material-symbols-outlined">mail</span>
-            <span>메시지</span>
-          </button>
-          <button 
-            className="student-message-nav-item"
-            onClick={() => navigate('/student-clear')}
-          >
-            <span className="material-symbols-outlined">verified</span>
-            <span>수료증 확인</span>
-          </button>
-          <button 
-            className="student-message-nav-item"
-            onClick={handleLogout}
-          >
-            <span className="material-symbols-outlined">logout</span>
-            <span>로그아웃</span>
-          </button>
-        </nav>
-      </div>
-    </div>
+      </StudentLayout>
   )
 }
 

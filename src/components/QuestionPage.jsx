@@ -5,8 +5,13 @@ import { getNextActivityPath, getPreviousActivityPath, getActivityIdFromPath, ge
 import { checkAnswer, checkMultipleAnswers } from '../utils/answerCheck'
 import ActivityFooter from './ActivityFooter'
 import CorrectAnswer from './CorrectAnswer'
+import ErrorToast from './ErrorToast'
 import '../pages/activities/ActivityCommon.css'
 import '../pages/1_King_of_Joseon/1_Start.css'
+import '../pages/SeoulHistoryMuseum/1_Seoul_Joseon/1_Start.css'
+import '../pages/SeoulHistoryMuseum/2_Seoul_Empire/1_Start.css'
+import '../pages/SeoulHistoryMuseum/3_Seoul_Colonial/1_Start.css'
+import '../pages/SeoulHistoryMuseum/4_Seoul_Growth/1_Start.css'
 
 function QuestionPage({ user, questionData }) {
   const navigate = useNavigate()
@@ -37,8 +42,29 @@ function QuestionPage({ user, questionData }) {
   const previousPath = currentActivityId ? getPreviousActivityPath(currentActivityId) : null
   const exhibitionHall = currentActivityId ? getExhibitionHallFromActivityId(currentActivityId) : null
   
+  // 서울역사박물관 문제인지 확인
+  const isSeoulHistoryMuseum = location.pathname.includes('/SeoulHistoryMuseum/') ||
+    location.pathname.includes('/2_Seoul_Empire/') ||
+    location.pathname.includes('/3_Seoul_Colonial/') ||
+    location.pathname.includes('/4_Seoul_Growth/') ||
+    location.pathname.includes('/1_Seoul_Joseon/')
+  
   // 전시관 이름 결정
   const getExhibitionHallName = () => {
+    // 서울역사박물관 Zone 확인
+    if (location.pathname.includes('/1_Seoul_Joseon/')) {
+      return 'Zone 1'
+    }
+    if (location.pathname.includes('/2_Seoul_Empire/')) {
+      return 'Zone 2'
+    }
+    if (location.pathname.includes('/3_Seoul_Colonial/')) {
+      return 'Zone 3'
+    }
+    if (location.pathname.includes('/4_Seoul_Growth/')) {
+      return 'Zone 4'
+    }
+    // 고궁박물관 전시관
     if (exhibitionHall === '2_Royal_Life') {
       return '왕실생활'
     }
@@ -93,6 +119,19 @@ function QuestionPage({ user, questionData }) {
   const handleBack = () => {
     if (previousPath) {
       navigate(previousPath)
+    } else if (isSeoulHistoryMuseum) {
+      // 서울역사박물관의 경우 해당 Zone의 Start 페이지로
+      if (location.pathname.includes('/1_Seoul_Joseon/')) {
+        navigate('/1_Seoul_Joseon/1_Start')
+      } else if (location.pathname.includes('/2_Seoul_Empire/')) {
+        navigate('/2_Seoul_Empire/1_Start')
+      } else if (location.pathname.includes('/3_Seoul_Colonial/')) {
+        navigate('/3_Seoul_Colonial/1_Start')
+      } else if (location.pathname.includes('/4_Seoul_Growth/')) {
+        navigate('/4_Seoul_Growth/1_Start')
+      } else {
+        navigate('/seoul-history-museum-hall-list')
+      }
     } else {
       navigate('/1_King_of_Joseon/1_Start')
     }
@@ -151,6 +190,7 @@ function QuestionPage({ user, questionData }) {
         activityId={currentActivityId}
         userId={user.uid}
         userEmail={user.email}
+        theme={isSeoulHistoryMuseum ? 'blue' : 'purple'}
         onReplay={() => {
           setShowCorrectAnswer(false)
           setSaved(false)
@@ -260,24 +300,60 @@ function QuestionPage({ user, questionData }) {
     return 'activity-error'
   }
 
+  // Zone별 CSS 클래스 결정
+  const getZoneClass = (baseName) => {
+    if (!isSeoulHistoryMuseum) return `joseon-royal-court-${baseName}`
+    
+    if (location.pathname.includes('/2_Seoul_Empire/')) {
+      return `seoul-empire-${baseName}`
+    } else if (location.pathname.includes('/3_Seoul_Colonial/')) {
+      return `seoul-colonial-${baseName}`
+    } else if (location.pathname.includes('/4_Seoul_Growth/')) {
+      return `seoul-growth-${baseName}`
+    } else {
+      return `seoul-joseon-${baseName}`
+    }
+  }
+
   const paddingBottom = inputType === 'multiple' ? '420px' : '180px'
+  const containerClass = isSeoulHistoryMuseum 
+    ? getZoneClass('start-container')
+    : 'joseon-royal-court-start-container'
+  const headerClass = isSeoulHistoryMuseum
+    ? getZoneClass('header')
+    : 'joseon-royal-court-header'
+  const backButtonClass = isSeoulHistoryMuseum
+    ? getZoneClass('back-button')
+    : 'joseon-royal-court-back-button'
+  const headerTitleClass = isSeoulHistoryMuseum
+    ? getZoneClass('header-title')
+    : 'joseon-royal-court-header-title'
+  const searchButtonClass = isSeoulHistoryMuseum
+    ? getZoneClass('search-button')
+    : 'joseon-royal-court-search-button'
+  const contentClass = isSeoulHistoryMuseum
+    ? getZoneClass('content')
+    : 'joseon-royal-court-content'
 
   return (
-    <div className="joseon-royal-court-start-container">
-      <header className="joseon-royal-court-header">
+    <div className={containerClass}>
+      <header className={headerClass}>
         <button 
-          className="joseon-royal-court-back-button"
+          className={backButtonClass}
           onClick={handleBack}
         >
           <span className="material-symbols-outlined">arrow_back_ios_new</span>
         </button>
-        <h2 className="joseon-royal-court-header-title">{getExhibitionHallName()}</h2>
-        <button className="joseon-royal-court-search-button">
-          <span className="material-symbols-outlined">search</span>
+        <h2 className={headerTitleClass}>{getExhibitionHallName()}</h2>
+        <button 
+          className={searchButtonClass}
+          onClick={() => navigate('/student/messages')}
+        >
+          <span className="material-symbols-outlined">mail</span>
         </button>
       </header>
 
-      <main className="joseon-royal-court-content" style={{ paddingBottom }}>
+      <main className={contentClass} style={{ paddingBottom }}>
         <article className={getCardClass()} style={{ padding: '0 1rem', marginTop: '1rem' }}>
           <div className={getImageWrapperClass()}>
             <div 
@@ -303,14 +379,18 @@ function QuestionPage({ user, questionData }) {
           </div>
         </article>
 
-        {error && (
-          <div className={getErrorClass()}>
-            {error}
-          </div>
-        )}
+        <ErrorToast message={error} isVisible={!!error} />
       </main>
 
-      <div style={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 40 }}>
+      <div style={{ 
+        position: 'fixed', 
+        bottom: 0, 
+        left: '50%', 
+        transform: 'translateX(-50%)',
+        width: '100%',
+        maxWidth: '480px',
+        zIndex: 40 
+      }}>
         {inputType === 'multiple' ? (
           <ActivityFooter
             answerValue=""

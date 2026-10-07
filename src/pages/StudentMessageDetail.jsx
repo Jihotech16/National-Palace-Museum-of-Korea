@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { logout } from '../firebase/auth'
+import StudentLayout from '../components/StudentLayout'
 import './StudentMessageDetail.css'
 
 function StudentMessageDetail({ user }) {
@@ -84,54 +84,24 @@ function StudentMessageDetail({ user }) {
     }
   }
 
-  const handleBack = () => {
-    navigate('/student/messages')
-  }
-
   const handleMissionClick = () => {
     // 미션 정답 입력 화면으로 이동 (추후 구현)
     console.log('미션 정답 입력하러 가기')
   }
 
-  const handleLogout = async () => {
-    try {
-      await logout()
-      navigate('/login')
-    } catch (error) {
-      console.error('로그아웃 오류:', error)
-    }
-  }
-
   if (loading || !message) {
     return (
-      <div className="student-message-detail-page">
-        <div className="student-message-detail-container">
-          <div className="student-message-detail-loading">
-            <p>메시지를 불러오는 중...</p>
-          </div>
+      <StudentLayout title="메시지 상세" backPath="/student/messages" showMessageButton={false}>
+        <div className="student-message-detail-loading">
+          <p>메시지를 불러오는 중...</p>
         </div>
-      </div>
+      </StudentLayout>
     )
   }
 
   return (
-    <div className="student-message-detail-page">
-      <div className="student-message-detail-container">
-        <header className="student-message-detail-header">
-          <button 
-            className="student-message-detail-header-btn"
-            onClick={handleBack}
-            type="button"
-          >
-            <span className="material-symbols-outlined">arrow_back</span>
-          </button>
-          <h1 className="student-message-detail-header-title">메시지 상세</h1>
-          <div className="student-message-detail-header-btn" style={{ visibility: 'hidden' }}>
-            <span className="material-symbols-outlined">mail</span>
-          </div>
-        </header>
-
-        <main className="student-message-detail-main">
+    <StudentLayout title="메시지 상세" backPath="/student/messages" showMessageButton={false}>
+      <main className="student-message-detail-main">
           <div className="student-message-detail-card">
             <div className="student-message-detail-header-section">
               <div className="student-message-detail-avatar">
@@ -199,36 +169,7 @@ function StudentMessageDetail({ user }) {
             )}
           </div>
         </main>
-
-        <nav className="student-message-detail-navbar">
-          <button 
-            className="student-message-detail-nav-item"
-            onClick={() => navigate('/exhibition-hall-list')}
-          >
-            <span className="material-symbols-outlined">museum</span>
-            <span>전시관</span>
-          </button>
-          <button className="student-message-detail-nav-item active">
-            <span className="material-symbols-outlined">mail</span>
-            <span>메시지</span>
-          </button>
-          <button 
-            className="student-message-detail-nav-item"
-            onClick={() => navigate('/student-clear')}
-          >
-            <span className="material-symbols-outlined">verified</span>
-            <span>수료증 확인</span>
-          </button>
-          <button 
-            className="student-message-detail-nav-item"
-            onClick={handleLogout}
-          >
-            <span className="material-symbols-outlined">logout</span>
-            <span>로그아웃</span>
-          </button>
-        </nav>
-      </div>
-    </div>
+    </StudentLayout>
   )
 }
 

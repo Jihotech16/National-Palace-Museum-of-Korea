@@ -261,10 +261,13 @@ export const signInAsAdmin = async (password = 'Admin') => {
     }
 
     const email = 'admin@admin.local'
+    // Firebase 최소 비밀번호 길이 요구사항(6자)을 만족하도록 변환
+    // 사용자가 'Admin'을 입력하면 내부적으로 'Admin123'으로 변환
+    const adminPassword = password === 'Admin' ? 'Admin123' : password
     
     try {
-      // 기존 계정으로 로그인 시도
-      const userCredential = await signInWithEmailAndPassword(auth, email, password)
+      // 기존 계정으로 로그인 시도 (변환된 비밀번호 사용)
+      const userCredential = await signInWithEmailAndPassword(auth, email, adminPassword)
       return { 
         success: true, 
         user: userCredential.user 
@@ -273,7 +276,7 @@ export const signInAsAdmin = async (password = 'Admin') => {
       // 계정이 없으면 생성 후 로그인
       if (error.code === 'auth/user-not-found' || error.code === 'auth/invalid-credential') {
         try {
-          const userCredential = await createUserWithEmailAndPassword(auth, email, password)
+          const userCredential = await createUserWithEmailAndPassword(auth, email, adminPassword)
           return { 
             success: true, 
             user: userCredential.user 

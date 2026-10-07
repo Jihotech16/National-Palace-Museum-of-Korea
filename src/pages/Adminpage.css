@@ -15,7 +15,7 @@
 
 .admin-container {
   width: 100%;
-  max-width: 28rem;
+  max-width: 480px;
   min-height: 100vh;
   position: relative;
   background-color: #1a0b2e;
@@ -672,6 +672,222 @@
   margin-top: 0.125rem;
 }
 
+.admin-detail-period-display {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  background-color: rgba(0, 0, 0, 0.2);
+  padding: 1rem;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.admin-detail-period-dates {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.admin-detail-period-date {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  flex: 1;
+}
+
+.admin-detail-period-label {
+  font-size: 0.75rem;
+  color: #9ca3af;
+  font-weight: 500;
+}
+
+.admin-detail-period-value {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.admin-detail-period-separator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 0;
+  color: #9ca3af;
+}
+
+.admin-detail-period-separator .material-symbols-outlined {
+  font-size: 1rem;
+}
+
+.admin-detail-period-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1.5rem;
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+.admin-detail-period-empty .material-symbols-outlined {
+  font-size: 1.25rem;
+}
+
+.admin-detail-period-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.admin-detail-period-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem;
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.admin-detail-period-museum-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  color: #ffffff;
+  font-size: 0.875rem;
+}
+
+.admin-detail-period-museum-header .material-symbols-outlined {
+  font-size: 1.125rem;
+  color: #fbbf24;
+}
+
+.admin-detail-period-museum-name {
+  font-weight: 600;
+}
+
+.admin-detail-period-not-set {
+  color: #6b7280;
+  font-size: 0.875rem;
+  padding: 0.5rem 0;
+}
+
+.admin-modal-museum-select {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+}
+
+.admin-modal-museum-option {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  background-color: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #9ca3af;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.admin-modal-museum-option:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-color: rgba(251, 191, 36, 0.3);
+}
+
+.admin-modal-museum-option-active {
+  background-color: rgba(251, 191, 36, 0.1);
+  border-color: #fbbf24;
+  color: #fbbf24;
+}
+
+.admin-modal-museum-option .material-symbols-outlined {
+  font-size: 1.25rem;
+}
+
+.admin-detail-period-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.admin-detail-period-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem;
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.admin-detail-period-museum-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  color: #ffffff;
+  font-size: 0.875rem;
+}
+
+.admin-detail-period-museum-header .material-symbols-outlined {
+  font-size: 1.125rem;
+  color: #fbbf24;
+}
+
+.admin-detail-period-museum-name {
+  font-weight: 600;
+}
+
+.admin-detail-period-not-set {
+  color: #6b7280;
+  font-size: 0.875rem;
+  padding: 0.5rem 0;
+}
+
+.admin-modal-museum-select {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+}
+
+.admin-modal-museum-option {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  background-color: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #9ca3af;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.admin-modal-museum-option:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-color: rgba(251, 191, 36, 0.3);
+}
+
+.admin-modal-museum-option-active {
+  background-color: rgba(251, 191, 36, 0.1);
+  border-color: #fbbf24;
+  color: #fbbf24;
+}
+
+.admin-modal-museum-option .material-symbols-outlined {
+  font-size: 1.25rem;
+}
+
 .admin-detail-actions {
   padding-top: 1rem;
   padding-bottom: 1.5rem;
@@ -727,7 +943,7 @@
   pointer-events: auto;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   width: 100%;
-  max-width: 28rem;
+  max-width: 480px;
   margin: 0 auto;
   max-height: 90vh;
   overflow-y: auto;

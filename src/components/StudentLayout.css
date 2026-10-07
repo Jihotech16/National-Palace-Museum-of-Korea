@@ -1,0 +1,180 @@
+.student-layout-container {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  min-height: 100vh;
+  height: 100vh;
+  height: 100dvh;
+  background-color: #221d10;
+  color: white;
+  font-family: 'Public Sans', 'Noto Sans', sans-serif;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  padding-bottom: 72px;
+  overflow-y: hidden;
+}
+
+.student-layout-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1rem 0.5rem;
+  background-color: rgba(34, 29, 16, 0.95);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+}
+
+.student-layout-back-button {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 48px;
+  height: 48px;
+  color: #ecb613;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  transition: color 0.2s;
+}
+
+.student-layout-back-button:hover {
+  color: #d4a510;
+}
+
+.student-layout-title {
+  flex: 1;
+  text-align: center;
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  color: white;
+  margin: 0;
+}
+
+.student-layout-message-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  background: transparent;
+  border: none;
+  color: #ecb613;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.student-layout-message-button:hover {
+  color: #d4a510;
+}
+
+.student-layout-content {
+  flex: 1;
+  padding-bottom: 6rem;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+/* StudentClear 페이지에서만 padding-bottom 줄이기 */
+.student-layout-content:has(.student-clear-main) {
+  padding-bottom: 1rem;
+}
+
+/* 서울역사박물관 전시관 목록 페이지에서도 padding-bottom 줄이기 */
+.student-layout-content:has(.seoul-hall-list-content) {
+  padding-bottom: 1rem;
+}
+
+/* 하단 네비게이션 바 */
+.student-layout-navbar {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  background-color: #221d10;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  height: 72px;
+  padding: 0 0.5rem;
+  z-index: 50;
+}
+
+.student-layout-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  width: 100%;
+  height: 100%;
+  color: rgba(236, 182, 19, 0.7);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.student-layout-nav-item:hover {
+  color: #ecb613;
+}
+
+.student-layout-nav-item.active {
+  color: #ecb613;
+}
+
+.student-layout-nav-item span:first-child {
+  font-size: 24px;
+}
+
+.student-layout-nav-item.active span:first-child {
+  filter: drop-shadow(0 0 8px rgba(236, 182, 19, 0.5));
+}
+
+/* 서울역사박물관 네비게이션 바 스타일 (황금색으로 통일) */
+.student-layout-navbar-seoul .student-layout-nav-item {
+  color: rgba(236, 182, 19, 0.7);
+}
+
+.student-layout-navbar-seoul .student-layout-nav-item:hover {
+  color: #ecb613;
+}
+
+.student-layout-navbar-seoul .student-layout-nav-item.active {
+  color: #ecb613;
+}
+
+.student-layout-navbar-seoul .student-layout-nav-item.active span:first-child {
+  filter: drop-shadow(0 0 8px rgba(236, 182, 19, 0.5));
+}
+
+.student-layout-nav-item span:last-child {
+  font-size: 0.625rem;
+  font-weight: 500;
+}
+
+.student-layout-nav-item.active span:last-child {
+  font-weight: 700;
+}
+
+/* Material Icons */
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+.student-layout-nav-item.active .material-symbols-outlined {
+  font-variation-settings: 'FILL' 1;
+}
+
+

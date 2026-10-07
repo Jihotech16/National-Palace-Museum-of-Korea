@@ -149,6 +149,183 @@ export const ANSWERS = {
   },
   cheonsangyeolchabunyajido: {
     cheonsangyeolchabunyajidoAnswer: '천상열차분야지도' // 하늘을 여러 구역으로 나누어 놓은 천문도로 돌에 새겨 만들었으며, 1,467개의 별과 295개의 별자리가 새겨져 있는 각석
+  },
+  seoulJoseon01: {
+    seoulJoseon01Answer: '조선팔도고금총람도' // 1673년 지리학자 김수홍이 제작한 전국 지도
+  },
+  seoulJoseon02: {
+    seoulJoseon02Answer: '경복궁' // 조선전기 한양의 중심이었던 궁궐
+  },
+  seoulJoseon03: {
+    seoulJoseon03Answer: '별조자총통' // 임진왜란 이전에 만들어진 총통
+  },
+  seoulJoseon04: {
+    seoulJoseon04Answer: '사전총통' // 4개의 화살을 한 번에 발사할 수 있는 무기
+  },
+  seoulJoseon05: {
+    seoulJoseon05Answer: '북한산성' // 조선시대에 건설된 산성
+  },
+  seoulJoseon06: {
+    seoulJoseon06Answer: '금위영' // 숙종 8년에 창설된 5군영 중 하나
+  },
+  seoulJoseon07: {
+    seoulJoseon07Answer: '경현당' // 한양의 궁궐 건물
+  },
+  seoulJoseon08: {
+    seoulJoseon08Answer: '형조' // 조선시대 형벌과 소송을 담당한 관청
+  },
+  seoulJoseon09: {
+    seoulJoseon09Answer: '경국대전' // 한성부 관할 업무 규정을 실은 법전
+  },
+  seoulJoseon10: {
+    seoulJoseon10Answer: '이방' // 한성부 6방 중 관리의 근무 성적 평가를 담당한 기관
+  },
+  seoulJoseon11: {
+    seoulJoseon11Answer: '투호' // 조선시대 문인들이 즐기던 전통 놀이
+  },
+  seoulJoseon12: {
+    seoulJoseon12Answer: '패도' // 주로 은이나 상아로 만들었고, 허리에 차게 되어 있는 것
+  },
+  seoulJoseon13: {
+    seoulJoseon13Answer: '세조대' // 조선시대 남자들의 겉옷을 여미는 데 사용했던 것
+  },
+  seoulJoseon14: {
+    seoulJoseon14Answer: '면주전' // 운종가의 상점 중 국산 비단인 명주를 판매한 상점
+  },
+  seoulJoseon15: {
+    seoulJoseon15Answer: '과물전' // 운종가의 상점 중 각종 과일과 견과류를 판매한 상점
+  },
+  seoulJoseon16: {
+    seoulJoseon16Answer: '경통' // 조선시대에 과거를 준비하던 선비들이 들고다녔던 것
+  },
+  seoulJoseon17: {
+    seoulJoseon17Answer: '인평대군방전도' // 한양의 동쪽, 동촌과 아랫대를 그린 그림
+  },
+  seoulJoseon18: {
+    seoulJoseon18Answer: '거북이' // 개천의 준천 석조물에 담긴 동물 모양
+  },
+  seoulJoseon19: {
+    seoulJoseon19Answer: '제중신편' // 동의보감에 누락된 부분을 보충하고 번잡한 부분을 간략하게 요약한 서책
+  },
+  seoulJoseon20: {
+    seoulJoseon20Answer: '부적' // 사당패들이 거리에서 팔던 것
+  },
+  seoulJoseon21: {
+    seoulJoseon21Answer: '200' // 수기에 표기된 빛의 냥 수
+  },
+  seoulJoseon22: {
+    seoulJoseon22Answer: '이만승' // 선농단의 제관으로 임명된 인물
+  },
+  seoulJoseon23: {
+    seoulJoseon23Answer: '대동여지도' // 모든 길은 한양으로 - 조선 후기 김정호가 제작한 전국 지도
+  },
+  seoulJoseon24: {
+    seoulJoseon24Answer: '목민심서' // 경강 상업 발달로 성저십리 지역이 변화한 상황을 묘사한 책
+  },
+  seoulEmpire01: {
+    seoulEmpire01Answer: '당백전' // 흥선대원군 정권이 발행한 화폐
+  },
+  seoulEmpire02: {
+    seoulEmpire02Answer: '함녕전석연도' // 조선 후기 궁궐 내 건물인 함녕전의 석연을 그린 그림
+  },
+  seoulEmpire03: {
+    seoulEmpire03Answer: '치사' // 중화전진하도에서 대치사관이 읽고 있는 것
+  },
+  seoulEmpire04: {
+    seoulEmpire04Answer: '대한제국' // 대한제국 여권의 나라 이름
+  },
+  seoulEmpire05: {
+    seoulEmpire05Answer: '한성순보' // 조선 최초의 신문
+  },
+  seoulEmpire06: {
+    seoulEmpire06Answer: '7' // 팔괘장 7동 정장
+  },
+  seoulEmpire07: {
+    seoulEmpire07Answer: '고종' // 대한제국을 선포한 황제
+  },
+  seoulEmpire08: {
+    seoulEmpire08Answer: '입체사진' // 입체경으로 보는 것
+  },
+  seoulEmpire09: {
+    seoulEmpire09Answer: '전차승차표' // 전차를 타기 위한 표
+  },
+  seoulEmpire10: {
+    seoulEmpire10Answer: '회중시계' // 회중시계 광고지
+  },
+  seoulColonial01: {
+    seoulColonial01Answer: '동양척식주식회사' // 1909년 2월 13일에 개설된 회사
+  },
+  seoulColonial02: {
+    seoulColonial02Answer: '조선총독부' // 일제강점기 조선을 통치한 기관
+  },
+  seoulColonial03: {
+    seoulColonial03Answer: '영등포' // 토지구획정리계획 평면도 지역
+  },
+  seoulColonial04: {
+    seoulColonial04Answer: '조선박람회' // 전시장 안내 자료
+  },
+  seoulColonial05: {
+    seoulColonial05Answer: '신한청년당' // 기관지 발행 기관
+  },
+  seoulColonial06: {
+    seoulColonial06Answer: '경성역' // 사진 엽서의 장소
+  },
+  seoulColonial07: {
+    seoulColonial07Answer: '자동차운전면허증' // 일제강점기 운전면허증
+  },
+  seoulColonial08: {
+    seoulColonial08Answer: '조지야백화점' // 템플릿에서 소개하는 곳
+  },
+  seoulColonial09: {
+    seoulColonial09Answer: '전화번호부' // 일제강점기 전화번호부
+  },
+  seoulColonial10: {
+    seoulColonial10Answer: '경성거리' // 거리 모습을 담은 그림
+  },
+  seoulGrowth01: {
+    seoulGrowth01Answer: '해방' // 해방 기념 엽서
+  },
+  seoulGrowth02: {
+    seoulGrowth02Answer: '서울특별시민증' // 6·25 전쟁 이후 신원 파악을 위해 발행한 것
+  },
+  seoulGrowth03: {
+    seoulGrowth03Answer: '서울도시요람' // 6·25 전쟁 이후 서울의 현황을 정리한 책
+  },
+  seoulGrowth04: {
+    seoulGrowth04Answer: '강변도로' // 통행권의 목적지
+  },
+  seoulGrowth05: {
+    seoulGrowth05Answer: '돌격' // 안전모에 새겨진 "돌격 건설"
+  },
+  seoulGrowth06: {
+    seoulGrowth06Answer: '반포대교' // 기념메달의 다리
+  },
+  seoulGrowth07: {
+    seoulGrowth07Answer: '세탁' // 세탁기의 용도 (2글자)
+  },
+  seoulGrowth08: {
+    seoulGrowth08Answer: '10' // 컬러학습대백과 권 수
+  },
+  seoulGrowth09: {
+    seoulGrowth09Answer: '2' // 서초삼호아파트 시계 시간
+  },
+  seoulGrowth10: {
+    seoulGrowth10Answer: '맥심커피' // 서초삼호아파트에서 마신 커피
+  },
+  seoulGrowth11: {
+    seoulGrowth11Answer: '2' // 서초삼호아파트 안방 오리 마리 수
+  },
+  seoulGrowth12: {
+    seoulGrowth12Answer: '육상경기' // 86 서울아시안게임 입장권
+  },
+  seoulGrowth13: {
+    seoulGrowth13Answer: '9000' // 청일집 원조빈대떡 가격
+  },
+  seoulGrowth14: {
+    seoulGrowth14Answer: '55000' // 청일집 두부김치, 족발 대, 해물빈대떡 총 가격
+  },
+  seoulGrowth15: {
+    seoulGrowth15Answer: '무선호출기' // 페이저 제품 이름
   }
   // 다른 활동지의 정답도 여기에 추가 가능
 }
@@ -195,22 +372,38 @@ export const checkMultipleAnswers = (activityId, fieldName, userAnswers) => {
   return { correct: true }
 }
 
-// 정답 체크 함수 (대소문자, 공백 무시)
+// 정답 체크 함수 (대소문자, 공백 무시, 하지만 철자는 정확해야 함)
 export const checkAnswer = (activityId, fieldName, userAnswer) => {
   const answer = ANSWERS[activityId]?.[fieldName]
-  if (!answer) return { correct: true } // 정답이 정의되지 않은 경우 통과
+  if (!answer) {
+    return { 
+      correct: false, 
+      message: '정답이 정의되지 않았습니다.' 
+    }
+  }
   
-  // 대소문자, 공백 제거 후 비교
-  const normalizedAnswer = answer.replace(/\s+/g, '').toLowerCase()
-  const normalizedUserAnswer = userAnswer.replace(/\s+/g, '').toLowerCase()
+  // 공백 제거 및 정규화 (앞뒤 공백 제거, 중간 공백은 제거)
+  const normalizedAnswer = answer.trim().replace(/\s+/g, '').toLowerCase()
+  const normalizedUserAnswer = userAnswer.trim().replace(/\s+/g, '').toLowerCase()
   
-  // 오앗꽃/오얏꽃 둘 다 인정
+  // 빈 답변 체크
+  if (!normalizedUserAnswer || normalizedUserAnswer.length === 0) {
+    return {
+      correct: false,
+      message: '답을 입력해주세요.'
+    }
+  }
+  
+  // 오앗꽃/오얏꽃 둘 다 인정 (특수 케이스)
   if (activityId === 'plumBlossom' && fieldName === 'plumBlossomAnswer') {
-    if (normalizedUserAnswer === '오앗꽃' || normalizedUserAnswer === '오얏꽃') {
+    const normalizedPlum1 = '오앗꽃'.replace(/\s+/g, '').toLowerCase()
+    const normalizedPlum2 = '오얏꽃'.replace(/\s+/g, '').toLowerCase()
+    if (normalizedUserAnswer === normalizedPlum1 || normalizedUserAnswer === normalizedPlum2) {
       return { correct: true }
     }
   }
   
+  // 정확한 철자 비교 (공백 제거 후)
   if (normalizedUserAnswer === normalizedAnswer) {
     return { correct: true }
   } else {

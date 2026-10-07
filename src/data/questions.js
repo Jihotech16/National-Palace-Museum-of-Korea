@@ -47,6 +47,63 @@ import calendarImage from '../image/기해대통력.png'
 import ilseongjeongsiuiImage from '../image/일성정시의.jpg'
 import soilyeongImage from '../image/소일영.png'
 import cheonsangyeolchabunyajidoImage from '../image/천상열차분야지도.jpg'
+import joseonPaldoImage from '../image/SeoulHistoryMuseum/1_Seoul_Joseon/조선팔도고금총랑도.jpg'
+import gyeongbokgungImage from '../image/SeoulHistoryMuseum/1_Seoul_Joseon/경복궁.jpeg'
+import byuljojaImage from '../image/SeoulHistoryMuseum/1_Seoul_Joseon/별조자총통.jpeg'
+import sajeonImage from '../image/SeoulHistoryMuseum/1_Seoul_Joseon/사전총통.jpeg'
+import bukhansanseongImage from '../image/SeoulHistoryMuseum/1_Seoul_Joseon/북한지 북한산성.jpeg'
+import geumwiyeongImage from '../image/SeoulHistoryMuseum/1_Seoul_Joseon/금위영.png'
+import gyeongheondangImage from '../image/SeoulHistoryMuseum/1_Seoul_Joseon/경헌당.jpeg'
+import chugwangyecheopImage from '../image/SeoulHistoryMuseum/1_Seoul_Joseon/추관계첩.jpeg'
+import gyeonggukdaejeonImage from '../image/SeoulHistoryMuseum/1_Seoul_Joseon/경국대전.jpeg'
+import ibangImage from '../image/SeoulHistoryMuseum/1_Seoul_Joseon/이방.jpeg'
+import tuhoImage from '../image/SeoulHistoryMuseum/1_Seoul_Joseon/투호아집도.jpeg'
+import jangdoImage from '../image/SeoulHistoryMuseum/1_Seoul_Joseon/장도.jpeg'
+import sejodaeImage from '../image/SeoulHistoryMuseum/1_Seoul_Joseon/세조대.jpeg'
+import myeonjujeonImage from '../image/SeoulHistoryMuseum/1_Seoul_Joseon/면주전.jpeg'
+import gwamuljeonImage from '../image/SeoulHistoryMuseum/1_Seoul_Joseon/과물전.png'
+import gyeongtongImage from '../image/SeoulHistoryMuseum/1_Seoul_Joseon/경통.jpeg'
+import inpyungdaegunbangjeondoImage from '../image/SeoulHistoryMuseum/1_Seoul_Joseon/인평대군방전도.jpeg'
+import dolgeobugiImage from '../image/SeoulHistoryMuseum/1_Seoul_Joseon/돌거북이.jpeg'
+import jejungsinpyeonImage from '../image/SeoulHistoryMuseum/1_Seoul_Joseon/제중신편.jpeg'
+import pungsokdopyeongImage from '../image/SeoulHistoryMuseum/1_Seoul_Joseon/풍속도병.jpeg'
+import sugiImage from '../image/SeoulHistoryMuseum/1_Seoul_Joseon/수기.jpeg'
+import imanseungImage from '../image/SeoulHistoryMuseum/1_Seoul_Joseon/이만승 차첩.jpeg'
+import daedongyeojidoImage from '../image/SeoulHistoryMuseum/1_Seoul_Joseon/대동여지도.jpeg'
+import mokminsimseoImage from '../image/SeoulHistoryMuseum/1_Seoul_Joseon/목민심서.jpeg'
+import dangbaekjeonImage from '../image/SeoulHistoryMuseum/2_Seoul_Empire/당백전.png'
+import hamnyeongjeonseokyeondoImage from '../image/SeoulHistoryMuseum/2_Seoul_Empire/함녕전석연도.jpeg'
+import junghwajeonjinhadoImage from '../image/SeoulHistoryMuseum/2_Seoul_Empire/중화전진하도.jpeg'
+import daehanjegukYeogwonImage from '../image/SeoulHistoryMuseum/2_Seoul_Empire/대한제국 여권.jpeg'
+import hanseongsunboImage from '../image/SeoulHistoryMuseum/2_Seoul_Empire/한성순보.jpeg'
+import palgwaejang7dongjeongjangImage from '../image/SeoulHistoryMuseum/2_Seoul_Empire/팔괘장 7동 정장.jpeg'
+import gojongImage from '../image/SeoulHistoryMuseum/2_Seoul_Empire/고종.png'
+import ipchegyeongImage from '../image/SeoulHistoryMuseum/2_Seoul_Empire/입체경.jpeg'
+import jeonchaseungchabyoImage from '../image/SeoulHistoryMuseum/2_Seoul_Empire/전차승차표.jpeg'
+import hoejungsigyeGwanggojiImage from '../image/SeoulHistoryMuseum/2_Seoul_Empire/회중시계 광고지.jpeg'
+import yeonpyoImage from '../image/SeoulHistoryMuseum/3_Seoul_Colonial/연표.jpeg'
+import joseonchongdokbuImage from '../image/SeoulHistoryMuseum/3_Seoul_Colonial/조선총독부.jpg'
+import yeongdeungpoTojigyehoekImage from '../image/SeoulHistoryMuseum/3_Seoul_Colonial/영등포 토지계획.jpeg'
+import joseonbangnamhoeTemplateImage from '../image/SeoulHistoryMuseum/3_Seoul_Colonial/조선박람회 템플릿.jpeg'
+import sinhancheongnyeonImage from '../image/SeoulHistoryMuseum/3_Seoul_Colonial/신한청년.jpeg'
+import gyeongseongyeokSajinYeopseoImage from '../image/SeoulHistoryMuseum/3_Seoul_Colonial/경성역 사진엽서.jpg'
+import jadongchaUnjeonmyeonheojeungImage from '../image/SeoulHistoryMuseum/3_Seoul_Colonial/자동차운전면허증.jpg'
+import jogiabaekhwajeomImage from '../image/SeoulHistoryMuseum/3_Seoul_Colonial/조지아백화점.jpeg'
+import jeonhwabeonhobuImage from '../image/SeoulHistoryMuseum/3_Seoul_Colonial/전화번호부.jpeg'
+import gyeongseonggeoriImage from '../image/SeoulHistoryMuseum/3_Seoul_Colonial/경성거리.jpeg'
+import haebangGinyeomYeopseoImage from '../image/SeoulHistoryMuseum/4_Seoul_Growth/해방 기념 엽서.jpeg'
+import seoulteukbyeolsiminjeungImage from '../image/SeoulHistoryMuseum/4_Seoul_Growth/서울특별시민증.jpeg'
+import seouldosiyoramImage from '../image/SeoulHistoryMuseum/4_Seoul_Growth/서울도시요람.jpeg'
+import gangbyeondoroTonghaenggwonImage from '../image/SeoulHistoryMuseum/4_Seoul_Growth/강변도로 통행권.jpeg'
+import dolgyeokGeonseolAnjeonmoImage from '../image/SeoulHistoryMuseum/4_Seoul_Growth/돌격 건설 안전모.jpeg'
+import banpodaegyoMedalImage from '../image/SeoulHistoryMuseum/4_Seoul_Growth/반포대교 메달.jpeg'
+import setakgiImage from '../image/SeoulHistoryMuseum/4_Seoul_Growth/세탁기.jpeg'
+import keolleohaksupdaebaekgwaImage from '../image/SeoulHistoryMuseum/4_Seoul_Growth/컬러학습대백과.jpeg'
+import seochosamhoapateuImage from '../image/SeoulHistoryMuseum/4_Seoul_Growth/서초삼호아파트.jpeg'
+import seochosamhoapateuGeosilImage from '../image/SeoulHistoryMuseum/4_Seoul_Growth/서초삼호아파트 거실.jpeg'
+import yuksanggyeonggiIpjangwonImage from '../image/SeoulHistoryMuseum/4_Seoul_Growth/육상경기입장권.jpeg'
+import cheongiljipImage from '../image/SeoulHistoryMuseum/4_Seoul_Growth/청일집.jpeg'
+import museonhochulgiImage from '../image/SeoulHistoryMuseum/4_Seoul_Growth/무선호출기.jpeg'
 
 export const QUESTION_DATA = {
   sealKing: {
@@ -629,6 +686,714 @@ export const QUESTION_DATA = {
     answerField: 'cheonsangyeolchabunyajidoAnswer',
     answerPlaceholder: '각석의 이름을 입력하세요',
     explanation: '천상열차분야지도(天象列次分野之圖)는 하늘을 여러 구역으로 나누어 놓은 천문도로 돌에 새겨 만들었으며, 1,467개의 별과 295개의 별자리가 새겨져 있는 각석입니다. 이 천문도는 조선 시대의 뛰어난 천문학적 성취를 보여주는 중요한 과학 유물로, 하늘의 별자리와 별의 위치를 정확하게 기록한 세계적으로도 드문 천문도입니다. 천상열차분야지도는 조선의 과학 기술과 천문학적 지식을 집대성한 작품으로 평가받고 있습니다.',
+    customCss: null,
+    inputType: 'single'
+  },
+  seoulJoseon01: {
+    activityId: 'seoulJoseon01',
+    questionNumber: '01',
+    title: '무릇 수도는 나라의 중심에 있어야',
+    description: '1673년 지리학자 김수홍이 제작한 전국 지도로 전국의 지리 정보와 각 지역의 중요 인물, 역사 정보를 함께 기록한 인문지리 전국 지도인 이것은 무엇일까요?',
+    image: joseonPaldoImage,
+    answerField: 'seoulJoseon01Answer',
+    answerPlaceholder: '지도의 이름을 입력하세요',
+    explanation: '조선팔도고금총람도(朝鮮八道古今總覽圖)는 1673년 지리학자 김수홍이 제작한 전국 지도입니다. 이 지도는 전국의 지리 정보뿐만 아니라 각 지역의 중요 인물과 역사 정보를 함께 기록한 인문지리 전국 지도로, 조선시대 서울의 지리적 위치와 전국 각 지역의 정보를 한눈에 볼 수 있게 해주는 중요한 지도입니다.',
+    customCss: null,
+    inputType: 'single'
+  },
+  seoulJoseon02: {
+    activityId: 'seoulJoseon02',
+    questionNumber: '02',
+    title: '조선전기 한양의 모습',
+    description: '현재 서울의 원형이라고 할 수 있는 조선전기 한양의 모습을 형상화한 이 작품에서 사진의 위치는 현재의 어디일까요?',
+    image: gyeongbokgungImage,
+    answerField: 'seoulJoseon02Answer',
+    answerPlaceholder: '장소의 이름을 입력하세요',
+    explanation: '경복궁(景福宮)은 조선왕조 제1의 법궁으로, 1395년 태조 이성계가 건립한 궁궐입니다. 조선전기 한양의 중심이었던 경복궁은 현재 서울특별시 종로구에 위치하고 있으며, 조선왕조의 상징적인 건축물로 남아 있습니다. 이 작품에서 보이는 위치는 바로 경복궁으로, 조선시대 한양의 핵심 공간이었습니다.',
+    customCss: null,
+    inputType: 'single'
+  },
+  seoulJoseon03: {
+    activityId: 'seoulJoseon03',
+    questionNumber: '03',
+    title: '한양에서 발견된 무기들',
+    description: '임진왜란이 발발하기 이전에 만들어진 총통으로, 중간 탄환 1개, 작은 탄환 20개를 장전해서 사용했던 이 무기의 이름은 무엇일까요?',
+    image: byuljojaImage,
+    answerField: 'seoulJoseon03Answer',
+    answerPlaceholder: '무기의 이름을 입력하세요',
+    explanation: '별조자총통(別造字銃筒)은 임진왜란이 발발하기 이전에 만들어진 조선시대의 화포입니다. 중간 탄환 1개와 작은 탄환 20개를 장전해서 사용할 수 있었던 이 무기는 조선의 화포 기술을 보여주는 중요한 유물입니다. 임진왜란 당시 조선군이 사용한 화포 중 하나로, 당시의 군사 기술 수준을 알 수 있게 해주는 역사적 가치가 높은 무기입니다.',
+    customCss: null,
+    inputType: 'single'
+  },
+  seoulJoseon04: {
+    activityId: 'seoulJoseon04',
+    questionNumber: '04',
+    title: '한양에서 발견된 무기들',
+    description: '4개의 화살을 한 번에 장전하여 발사할 수 있다는 의미를 가진 무기로, 조선전기에 가장 보편적으로 사용되었던 이 무기의 이름은 무엇일까요?',
+    image: sajeonImage,
+    answerField: 'seoulJoseon04Answer',
+    answerPlaceholder: '무기의 이름을 입력하세요',
+    explanation: '사전총통(四箭銃筒)은 4개의 화살을 한 번에 장전하여 발사할 수 있다는 의미를 가진 조선시대의 화포입니다. 조선전기에 가장 보편적으로 사용되었던 이 무기는 조선의 화포 기술 발전을 보여주는 중요한 유물입니다. 사전총통은 조선의 군사 기술과 화포 제조 기술의 수준을 알 수 있게 해주는 역사적으로 중요한 무기입니다.',
+    customCss: null,
+    inputType: 'single'
+  },
+  seoulJoseon05: {
+    activityId: 'seoulJoseon05',
+    questionNumber: '05',
+    title: '수도방위체제의 확립과 경도, 사도 체제',
+    description: '위 그림은 어디에 대하여 그린 그림일까요?',
+    image: bukhansanseongImage,
+    answerField: 'seoulJoseon05Answer',
+    answerPlaceholder: '장소의 이름을 입력하세요',
+    explanation: '북한산성(北漢山城)은 조선시대에 건설된 산성으로, 한양을 방어하기 위한 중요한 요새였습니다. 이 그림은 북한산성의 모습을 그린 것으로, 조선시대 서울의 방어 체계와 산성 건축 기술을 보여주는 중요한 자료입니다. 북한산성은 조선의 국방 체계와 산성 건축 기술의 수준을 알 수 있게 해주는 역사적으로 중요한 유적입니다.',
+    customCss: null,
+    inputType: 'single'
+  },
+  seoulJoseon06: {
+    activityId: 'seoulJoseon06',
+    questionNumber: '06',
+    title: '도성삼군문분계지도',
+    description: '숙종 8년에 창설되어 국왕 호위와 한성(서울) 방어를 담당했던 핵심 중앙군 조직인 조선 후기 5군영 중 하나로 위 그림의 빗금 친 부분의 경비를 담당했던 군영은 어디일까요?',
+    image: geumwiyeongImage,
+    answerField: 'seoulJoseon06Answer',
+    answerPlaceholder: '군영의 이름을 입력하세요',
+    explanation: '금위영(禁衛營)은 숙종 8년(1682년)에 창설되어 국왕 호위와 한성(서울) 방어를 담당했던 조선 후기 5군영 중 하나입니다. 금위영은 도성삼군문분계지도에서 빗금 친 부분의 경비를 담당했던 핵심 중앙군 조직으로, 조선 후기 군사 체계의 중요한 부분이었습니다. 금위영은 국왕의 안전과 수도 방어를 책임진 중요한 군사 조직입니다.',
+    customCss: null,
+    inputType: 'single'
+  },
+  seoulJoseon07: {
+    activityId: 'seoulJoseon07',
+    questionNumber: '07',
+    title: '한양의 궁궐들',
+    description: '이곳은 어디를 표현한 그림일까요?',
+    image: gyeongheondangImage,
+    answerField: 'seoulJoseon07Answer',
+    answerPlaceholder: '장소의 이름을 입력하세요',
+    explanation: '경헌당(景賢堂)은 조선시대 궁궐 내의 건물로, 한양의 궁궐 건축을 보여주는 중요한 유적입니다. 이 그림은 경헌당의 모습을 표현한 것으로, 조선시대 궁궐 건축의 특징과 궁궐 내 공간의 구조를 알 수 있게 해주는 중요한 자료입니다. 경헌당은 조선시대 궁궐 건축과 궁중 문화를 이해하는 데 중요한 건물입니다.',
+    customCss: null,
+    inputType: 'single'
+  },
+  seoulJoseon08: {
+    activityId: 'seoulJoseon08',
+    questionNumber: '08',
+    title: '국가 경영 실무 관청들',
+    description: '위 그림은 어느 관청 관리들의 모습을 표현한 그림일까요?',
+    image: chugwangyecheopImage,
+    answerField: 'seoulJoseon08Answer',
+    answerPlaceholder: '관청의 이름을 입력하세요',
+    explanation: '형조(刑曹)는 조선시대 육조 중 하나로, 형벌과 소송을 담당했던 중앙 관청입니다. 추관계첩(秋官契帖)은 형조 관리들의 모습을 표현한 그림으로, 조선시대 관청의 운영과 관리들의 업무를 보여주는 중요한 자료입니다. 형조는 조선의 법률 체계와 행정 제도를 이해하는 데 중요한 관청입니다.',
+    customCss: null,
+    inputType: 'single'
+  },
+  seoulJoseon09: {
+    activityId: 'seoulJoseon09',
+    questionNumber: '09',
+    title: '한양을 관리하는 사람들',
+    description: '한성부 관할 업무에 대한 규정을 실은 이 법전의 이름은 무엇일까요?',
+    image: gyeonggukdaejeonImage,
+    answerField: 'seoulJoseon09Answer',
+    answerPlaceholder: '법전의 이름을 입력하세요',
+    explanation: '경국대전(經國大典)은 조선시대의 기본 법전으로, 한성부 관할 업무에 대한 규정을 포함하고 있습니다. 이 법전은 조선의 행정 제도와 법률 체계를 정리한 중요한 문서로, 조선시대 국가 운영의 근간이 되었습니다. 경국대전은 조선의 행정 체계와 법률 제도를 이해하는 데 필수적인 법전입니다.',
+    customCss: null,
+    inputType: 'single'
+  },
+  seoulJoseon10: {
+    activityId: 'seoulJoseon10',
+    questionNumber: '10',
+    title: '한양을 관리하는 사람들',
+    description: '조선후기 한성부 6방 중 관리의 근무 성적 평가를 담당했던 기관은 어디일까요?',
+    image: ibangImage,
+    answerField: 'seoulJoseon10Answer',
+    answerPlaceholder: '기관의 이름을 입력하세요',
+    explanation: '이방(吏房)은 조선후기 한성부 6방 중 하나로, 관리의 근무 성적 평가를 담당했던 기관입니다. 한성부는 조선시대 서울의 행정을 담당했던 관청으로, 6방으로 구성되어 있었습니다. 이방은 관리들의 인사와 평가를 담당하여 조선의 행정 체계를 유지하는 데 중요한 역할을 했습니다.',
+    customCss: null,
+    inputType: 'single'
+  },
+  seoulJoseon11: {
+    activityId: 'seoulJoseon11',
+    questionNumber: '11',
+    title: '도심 속 명승지, 서촌',
+    description: '위 그림은 문인 7명이 모여 술을 마시며 시를 짓고 어떠한 놀이를 즐기며 친목을 다지는 그림일까요?',
+    image: tuhoImage,
+    answerField: 'seoulJoseon11Answer',
+    answerPlaceholder: '놀이의 이름을 입력하세요',
+    explanation: '투호(投壺)는 조선시대 문인들이 즐기던 전통 놀이로, 화살을 항아리에 던져 넣는 놀이입니다. 투호아집도(投壺雅集圖)는 문인 7명이 모여 술을 마시며 시를 짓고 투호 놀이를 즐기며 친목을 다지는 모습을 그린 그림입니다. 이 그림은 조선시대 문인들의 문화와 여가 생활을 보여주는 중요한 자료입니다.',
+    customCss: null,
+    inputType: 'single'
+  },
+  seoulJoseon12: {
+    activityId: 'seoulJoseon12',
+    questionNumber: '12',
+    title: '운종가의 상인과 장인들',
+    description: '주로 은이나 상아로 만들었고, 허리에 차게 되어 있는 것을 무엇이라고 했을까요?',
+    image: jangdoImage,
+    answerField: 'seoulJoseon12Answer',
+    answerPlaceholder: '물건의 이름을 입력하세요',
+    explanation: '패도(佩刀)는 조선시대에 주로 은이나 상아로 만들었고, 허리에 차게 되어 있는 작은 칼입니다. 패도는 실용적인 도구이자 장식품으로 사용되었으며, 조선시대 사람들의 일상 생활과 문화를 보여주는 중요한 유물입니다. 운종가의 상인과 장인들 사이에서도 패도는 중요한 생활 도구였습니다.',
+    customCss: null,
+    inputType: 'single'
+  },
+  seoulJoseon13: {
+    activityId: 'seoulJoseon13',
+    questionNumber: '13',
+    title: '운종가의 상인과 장인들',
+    description: '조선시대 남자들의 겉옷을 여미는 데 사용했던 이것은 무엇일까요?',
+    image: sejodaeImage,
+    answerField: 'seoulJoseon13Answer',
+    answerPlaceholder: '물건의 이름을 입력하세요',
+    explanation: '세조대(細條帶)는 조선시대 남자들의 겉옷을 여미는 데 사용했던 띠입니다. 세조대는 옷을 단정하게 여미는 실용적인 도구로, 조선시대 남성 복식의 중요한 구성 요소였습니다. 운종가의 상인과 장인들도 일상적으로 세조대를 사용하여 옷을 여몄습니다.',
+    customCss: null,
+    inputType: 'single'
+  },
+  seoulJoseon14: {
+    activityId: 'seoulJoseon14',
+    questionNumber: '14',
+    title: '운종가에 늘어선 각종 상점들',
+    description: '운종가의 상점 중 국산 비단인 명주를 판매한 상점은 무엇일까요?',
+    image: myeonjujeonImage,
+    answerField: 'seoulJoseon14Answer',
+    answerPlaceholder: '상점의 이름을 입력하세요',
+    explanation: '면주전(綿紬廛)은 운종가의 상점 중 국산 비단인 명주를 판매한 상점입니다. 운종가는 조선시대 서울의 주요 상업 거리로, 다양한 상점들이 늘어서 있었습니다. 면주전은 명주를 전문적으로 판매하는 상점으로, 조선시대 상업 활동의 중요한 부분이었습니다.',
+    customCss: null,
+    inputType: 'single'
+  },
+  seoulJoseon15: {
+    activityId: 'seoulJoseon15',
+    questionNumber: '15',
+    title: '운종가에 늘어선 각종 상점들',
+    description: '운종가의 상점 중 각종 과일과 견과류를 판매한 상점은 무엇일까요?',
+    image: gwamuljeonImage,
+    answerField: 'seoulJoseon15Answer',
+    answerPlaceholder: '상점의 이름을 입력하세요',
+    explanation: '과물전(果物廛)은 운종가의 상점 중 각종 과일과 견과류를 판매한 상점입니다. 운종가는 조선시대 서울의 주요 상업 거리로, 다양한 상점들이 늘어서 있었습니다. 과물전은 과일과 견과류를 전문적으로 판매하는 상점으로, 조선시대 사람들의 일상 식품 공급에 중요한 역할을 했습니다.',
+    customCss: null,
+    inputType: 'single'
+  },
+  seoulJoseon16: {
+    activityId: 'seoulJoseon16',
+    questionNumber: '16',
+    title: '성균관과 반촌',
+    description: '조선시대에 과거를 준비하던 선비들이 들고다녔던 이것은 무엇일까요?',
+    image: gyeongtongImage,
+    answerField: 'seoulJoseon16Answer',
+    answerPlaceholder: '물건의 이름을 입력하세요',
+    explanation: '경통(經筒)은 조선시대에 과거를 준비하던 선비들이 들고다녔던 책을 넣는 통입니다. 경통은 선비들이 경서(經書)를 보관하고 휴대하기 위해 사용했던 도구로, 성균관과 반촌에서 공부하던 선비들의 필수품이었습니다. 경통은 조선시대 선비 문화와 교육 제도를 보여주는 중요한 유물입니다.',
+    customCss: null,
+    inputType: 'single'
+  },
+  seoulJoseon17: {
+    activityId: 'seoulJoseon17',
+    questionNumber: '17',
+    title: '한양의 동쪽, 동촌과 아랫대',
+    description: '위 사진은 어떤 그림의 일부분입니다.\n이 그림은 무엇일까요?',
+    image: inpyungdaegunbangjeondoImage,
+    answerField: 'seoulJoseon17Answer',
+    answerPlaceholder: '그림의 이름을 입력하세요',
+    explanation: '인평대군방전도(麟坪大君方田圖)는 조선시대 한양의 동쪽 지역인 동촌과 아랫대를 그린 그림입니다. 이 그림은 인평대군의 방전(方田)을 보여주는 지도로, 조선시대 한양의 동쪽 지역의 모습과 구조를 상세하게 기록한 중요한 역사 자료입니다. 인평대군방전도는 조선시대 서울의 동쪽 지역 개발과 생활상을 이해하는 데 중요한 자료입니다.',
+    customCss: null,
+    inputType: 'single'
+  },
+  seoulJoseon18: {
+    activityId: 'seoulJoseon18',
+    questionNumber: '18',
+    title: '개천의 준천',
+    description: '위 석조물은 어떤 동물 모양을 담고 있을까요?',
+    image: dolgeobugiImage,
+    answerField: 'seoulJoseon18Answer',
+    answerPlaceholder: '동물의 이름을 입력하세요',
+    explanation: '거북이는 조선시대 개천의 준천(浚川) 작업과 관련된 석조물에 자주 등장하는 동물 모양입니다. 거북이는 장수를 상징하는 동물로, 조선시대에는 하천 정비와 관련된 공사에서 거북이 모양의 석조물을 설치하여 하천의 안정과 풍수를 기원했습니다. 개천의 준천 작업은 조선시대 서울의 하천 관리와 도시 계획의 중요한 부분이었습니다.',
+    customCss: null,
+    inputType: 'single'
+  },
+  seoulJoseon19: {
+    activityId: 'seoulJoseon19',
+    questionNumber: '19',
+    title: '의관',
+    description: '동의보감에 누락된 부분을 보충하고 번잡한 부분은 간략하게 요약한 이 서책의 이름은?',
+    image: jejungsinpyeonImage,
+    answerField: 'seoulJoseon19Answer',
+    answerPlaceholder: '서책의 이름을 입력하세요',
+    explanation: '제중신편(濟衆新編)은 동의보감에 누락된 부분을 보충하고 번잡한 부분을 간략하게 요약한 의학 서책입니다. 이 책은 조선시대 의학 발전의 중요한 자료로, 동의보감의 내용을 보완하고 실용적으로 정리한 의학서입니다. 제중신편은 조선시대 의학 지식의 확장과 실용화를 보여주는 중요한 의학서입니다.',
+    customCss: null,
+    inputType: 'single'
+  },
+  seoulJoseon20: {
+    activityId: 'seoulJoseon20',
+    questionNumber: '20',
+    title: '풍속도병',
+    description: '위 그림은 사당패들이 거리에서 무엇을 팔고 있는 모습일까요?',
+    image: pungsokdopyeongImage,
+    answerField: 'seoulJoseon20Answer',
+    answerPlaceholder: '물건의 이름을 입력하세요',
+    explanation: '부적(符籍)은 조선시대 사당패들이 거리에서 팔던 것으로, 액운을 막고 복을 기원하는 종교적 도구였습니다. 사당패는 조선시대에 길거리에서 각종 물건을 팔거나 공연을 하며 생활하던 사람들로, 부적 판매는 그들의 주요 수입원 중 하나였습니다. 풍속도병에 그려진 사당패들의 모습은 조선시대 서민들의 일상 생활과 문화를 보여주는 중요한 자료입니다.',
+    customCss: null,
+    inputType: 'single'
+  },
+  seoulJoseon21: {
+    activityId: 'seoulJoseon21',
+    questionNumber: '21',
+    title: '수기',
+    description: '위 문서는 돈이나 물건을 빌려주거나 기탁할 때 주고받던 증서 중 하나입니다.\n위 문서에 표기되어있는 빛은 몇 냥일까요?',
+    image: sugiImage,
+    answerField: 'seoulJoseon21Answer',
+    answerPlaceholder: '냥 수를 입력하세요',
+    explanation: '수기(手記)는 조선시대 돈이나 물건을 빌려주거나 기탁할 때 주고받던 증서입니다. 위 문서에 표기된 빛은 200냥입니다. 수기는 조선시대 경제 활동과 금융 거래를 보여주는 중요한 문서로, 당시의 경제 생활과 사회 관계를 이해하는 데 중요한 자료입니다.',
+    customCss: null,
+    inputType: 'single'
+  },
+  seoulJoseon22: {
+    activityId: 'seoulJoseon22',
+    questionNumber: '22',
+    title: '조선 후기의 모습',
+    description: '위 문서는 누구를 선농단의 제관으로 임명한다는 문서인가요?',
+    image: imanseungImage,
+    answerField: 'seoulJoseon22Answer',
+    answerPlaceholder: '이름을 입력하세요',
+    explanation: '이만승(李萬昇)은 조선 후기 선농단(先農壇)의 제관(祭官)으로 임명된 인물입니다. 선농단은 농업의 신인 선농(先農)에게 제사를 지내던 제단으로, 조선시대 농업의 중요성을 보여주는 의례 장소였습니다. 차첩(差帖)은 관직 임명 문서로, 이만승을 선농단의 제관으로 임명한다는 내용을 담고 있습니다.',
+    customCss: null,
+    inputType: 'single'
+  },
+  seoulJoseon23: {
+    activityId: 'seoulJoseon23',
+    questionNumber: '23',
+    title: '모든 길은 한양으로',
+    description: '위 지도의 이름은 무엇일까요?',
+    image: daedongyeojidoImage,
+    answerField: 'seoulJoseon23Answer',
+    answerPlaceholder: '지도의 이름을 입력하세요',
+    explanation: '대동여지도(大東輿地圖)는 조선 후기 김정호가 제작한 전국 지도입니다. 이 지도는 조선시대 지도 제작의 최고 수준을 보여주는 지도로, 전국의 도로와 지형을 상세하게 기록했습니다. 대동여지도는 "모든 길은 한양으로"라는 말처럼 한양(서울)을 중심으로 한 전국의 교통망을 보여주는 중요한 지도입니다.',
+    customCss: null,
+    inputType: 'single'
+  },
+  seoulJoseon24: {
+    activityId: 'seoulJoseon24',
+    questionNumber: '24',
+    title: '모든 길은 한양으로',
+    description: '경강 상업 발달로 성저십리 지역이 변화한 상황을 묘사한 이 책의 이름은 무엇일까요?',
+    image: mokminsimseoImage,
+    answerField: 'seoulJoseon24Answer',
+    answerPlaceholder: '책의 이름을 입력하세요',
+    explanation: '목민심서(牧民心書)는 조선 후기 정약용이 지은 목민서(牧民書)로, 경강 상업 발달로 성저십리 지역이 변화한 상황을 묘사한 책입니다. 이 책은 조선 후기 서울 주변 지역의 경제적 변화와 상업 발달을 기록한 중요한 자료로, 성저십리 지역의 변화를 상세하게 기록했습니다. 목민심서는 조선 후기 서울의 경제와 사회 변화를 이해하는 데 중요한 자료입니다.',
+    customCss: null,
+    inputType: 'single'
+  },
+  seoulEmpire01: {
+    activityId: 'seoulEmpire01',
+    questionNumber: '01',
+    title: '도성 회복의 노력',
+    description: '흥선대원군 정권이 발행한 이 화폐의 이름은 무엇일까요?',
+    image: dangbaekjeonImage,
+    answerField: 'seoulEmpire01Answer',
+    answerPlaceholder: '화폐의 이름을 입력하세요',
+    explanation: '당백전(當百錢)은 흥선대원군 정권이 발행한 화폐입니다. 흥선대원군은 도성 회복과 재정 확보를 위해 당백전을 발행하여 재정을 보충하고자 했습니다. 당백전은 조선 후기 재정 위기를 해결하기 위한 시도였으나, 인플레이션을 유발하는 등의 문제가 발생했습니다.',
+    customCss: null,
+    inputType: 'single'
+  },
+  seoulEmpire02: {
+    activityId: 'seoulEmpire02',
+    questionNumber: '02',
+    title: '세계로 문을 열다',
+    description: '위 사진은 어떠한 그림의 일부입니다.\n이 그림의 이름은 무엇일까요?',
+    image: hamnyeongjeonseokyeondoImage,
+    answerField: 'seoulEmpire02Answer',
+    answerPlaceholder: '그림의 이름을 입력하세요',
+    explanation: '함녕전석연도(咸寧殿石蓮圖)는 조선 후기 궁궐 내 건물인 함녕전의 석연(石蓮)을 그린 그림입니다. 이 그림은 조선 후기 궁궐 건축과 장식 예술을 보여주는 중요한 자료로, 궁궐 내 건물의 세부 장식과 건축 양식을 이해하는 데 도움을 줍니다.',
+    customCss: null,
+    inputType: 'single'
+  },
+  seoulEmpire03: {
+    activityId: 'seoulEmpire03',
+    questionNumber: '03',
+    title: '중화전의 모습',
+    description: '위 장면은 대치사관이 무엇을 읽고 있는 장면일까요?',
+    image: junghwajeonjinhadoImage,
+    answerField: 'seoulEmpire03Answer',
+    answerPlaceholder: '답을 입력하세요',
+    explanation: '중화전진하도(中和殿進賀圖)에서 대치사관이 읽고 있는 것은 치사(致詞)입니다. 치사는 외국 사신이 조선 국왕에게 인사를 드릴 때 읽는 인사말로, 외교 의례의 중요한 부분이었습니다. 이 그림은 조선 후기 외교 의례와 궁궐 내 의식의 모습을 보여주는 중요한 자료입니다.',
+    customCss: null,
+    inputType: 'single'
+  },
+  seoulEmpire04: {
+    activityId: 'seoulEmpire04',
+    questionNumber: '04',
+    title: '개화의 바람',
+    description: '위 문서는 어느 나라의 여권일까요?',
+    image: daehanjegukYeogwonImage,
+    answerField: 'seoulEmpire04Answer',
+    answerPlaceholder: '나라의 이름을 입력하세요',
+    explanation: '대한제국 여권은 1897년 고종이 대한제국을 선포한 이후 발급된 여권입니다. 대한제국은 조선이 근대 국가로 전환하는 과정에서 황제국 체제를 도입하여 독립과 자주권을 강화하고자 한 시도였으며, 여권 발급은 근대적 외교 제도의 일환으로 중요한 의미를 가집니다.',
+    customCss: null,
+    inputType: 'single'
+  },
+  seoulEmpire05: {
+    activityId: 'seoulEmpire05',
+    questionNumber: '05',
+    title: '개화의 바람',
+    description: '개화사상을 보급하기 위해 1883년 저동에 박문국을 설치하고 발간한 이 신문의 이름은?',
+    image: hanseongsunboImage,
+    answerField: 'seoulEmpire05Answer',
+    answerPlaceholder: '신문의 이름을 입력하세요',
+    explanation: '한성순보(漢城旬報)는 개화사상을 보급하기 위해 1883년 저동에 박문국을 설치하고 발간한 신문입니다. 한성순보는 조선 최초의 근대적 신문으로, 개화사상과 서양 문물을 소개하여 조선의 근대화에 기여했습니다. 박문국은 조선 정부가 설립한 최초의 근대적 출판 기관으로, 신문 발행과 함께 서적 출판도 담당했습니다.',
+    customCss: null,
+    inputType: 'single'
+  },
+  seoulEmpire06: {
+    activityId: 'seoulEmpire06',
+    questionNumber: '06',
+    title: '대한제국 훈장',
+    description: '위 사진의 훈장은 팔괘장 몇 동 정장일까요(숫자만 입력)?',
+    image: palgwaejang7dongjeongjangImage,
+    answerField: 'seoulEmpire06Answer',
+    answerPlaceholder: '동 수를 입력하세요',
+    explanation: '팔괘장 7동 정장은 대한제국 시기 발급된 훈장입니다. 팔괘장은 대한제국의 훈장 제도 중 하나로, 공로를 인정받은 인물에게 수여되었습니다. 동(同)은 훈장의 등급을 나타내는 단위로, 숫자가 높을수록 더 높은 등급의 훈장입니다. 7동 정장은 팔괘장 중 7등급 정장을 의미합니다.',
+    customCss: null,
+    inputType: 'single'
+  },
+  seoulEmpire07: {
+    activityId: 'seoulEmpire07',
+    questionNumber: '07',
+    title: '대한제국과 경운궁',
+    description: '위 사진의 인물은 누구일까요?',
+    image: gojongImage,
+    answerField: 'seoulEmpire07Answer',
+    answerPlaceholder: '인물의 이름을 입력하세요',
+    explanation: '고종(高宗)은 조선의 26대 왕이자 대한제국의 초대 황제입니다. 고종은 1897년 대한제국을 선포하여 황제국 체제를 도입했으며, 근대 국가 건설을 위한 다양한 개혁을 추진했습니다. 경운궁(덕수궁)은 고종이 거처했던 궁궐로, 대한제국의 법궁이었습니다.',
+    customCss: null,
+    inputType: 'single'
+  },
+  seoulEmpire08: {
+    activityId: 'seoulEmpire08',
+    questionNumber: '08',
+    title: '근대화 프로젝트',
+    description: '위 물건은 어떠한 것을 보기 위한 물건일까요?',
+    image: ipchegyeongImage,
+    answerField: 'seoulEmpire08Answer',
+    answerPlaceholder: '답을 입력하세요',
+    explanation: '입체경(立體鏡)은 입체사진을 보기 위한 기구입니다. 입체사진은 두 개의 사진을 나란히 배치하여 입체감을 느낄 수 있게 한 사진으로, 19세기 말부터 20세기 초까지 유행했던 사진 기술입니다. 대한제국 시기 서양 문물이 유입되면서 입체경과 입체사진도 함께 도입되어 근대적 시각 문화의 일부가 되었습니다.',
+    customCss: null,
+    inputType: 'single'
+  },
+  seoulEmpire09: {
+    activityId: 'seoulEmpire09',
+    questionNumber: '09',
+    title: '신문물의 일상과 변화',
+    description: '위 물건은 어떤 물건인가요?(5글자)',
+    image: jeonchaseungchabyoImage,
+    answerField: 'seoulEmpire09Answer',
+    answerPlaceholder: '물건의 이름을 입력하세요',
+    explanation: '전차승차표(電車乘車票)는 전차를 이용할 때 사용하는 승차권입니다. 대한제국 시기 서울에 전차가 도입되면서 전차승차표도 함께 사용되었습니다. 전차는 근대 도시 교통의 상징으로, 서울의 근대화를 보여주는 중요한 시설이었습니다.',
+    customCss: null,
+    inputType: 'single'
+  },
+  seoulEmpire10: {
+    activityId: 'seoulEmpire10',
+    questionNumber: '10',
+    title: '신문물의 일상과 변화',
+    description: '위 사진은 어떠한 물건을 광고하기 위한 광고지 일까요?',
+    image: hoejungsigyeGwanggojiImage,
+    answerField: 'seoulEmpire10Answer',
+    answerPlaceholder: '물건의 이름을 입력하세요',
+    explanation: '회중시계(懷中時計) 광고지는 회중시계를 광고하기 위한 광고지입니다. 대한제국 시기 서양 문물이 유입되면서 회중시계와 같은 근대적 생활용품도 함께 도입되었고, 이를 홍보하기 위한 광고지가 제작되었습니다. 이는 근대적 상업 문화와 광고 산업의 시작을 보여주는 중요한 자료입니다.',
+    customCss: null,
+    inputType: 'single'
+  },
+  seoulColonial01: {
+    activityId: 'seoulColonial01',
+    questionNumber: '01',
+    title: '일제강점기의 서울',
+    description: '1909년 2월 13일에 개설된 회사의 이름은?',
+    image: yeonpyoImage,
+    answerField: 'seoulColonial01Answer',
+    answerPlaceholder: '회사의 이름을 입력하세요',
+    explanation: '동양척식주식회사(東洋拓殖株式會社)는 1909년 2월 13일에 개설된 회사입니다. 일제강점기 일본이 한국의 토지와 자원을 수탈하기 위해 설립한 회사로, 한국의 농지와 산림을 강제로 수탈하여 일본인 이주민에게 분배하는 역할을 했습니다. 이는 일제의 식민지 수탈 정책의 핵심 기구 중 하나였습니다.',
+    customCss: null,
+    inputType: 'single'
+  },
+  seoulColonial02: {
+    activityId: 'seoulColonial02',
+    questionNumber: '02',
+    title: '빼앗긴 서울, 경성',
+    description: '일제강점기 조선의 입법, 사법, 행정의 모든 정무를 총괄하는 식민 통치의 핵심 기구는 무엇일까요?',
+    image: joseonchongdokbuImage,
+    answerField: 'seoulColonial02Answer',
+    answerPlaceholder: '기구의 이름을 입력하세요',
+    explanation: '조선총독부(朝鮮總督府)는 일제강점기 조선의 입법, 사법, 행정의 모든 정무를 총괄하는 식민 통치의 핵심 기구였습니다. 1910년 한일병합 이후 설치되어 1945년 해방까지 조선을 통치했습니다. 조선총독부는 경성(서울)에 본부를 두고, 조선총독이 모든 권력을 장악하여 식민지 통치를 수행했습니다.',
+    customCss: null,
+    inputType: 'single'
+  },
+  seoulColonial03: {
+    activityId: 'seoulColonial03',
+    questionNumber: '03',
+    title: '식민도시 경성의 도시계획',
+    description: '위 사진은 어느 지역의 시가지계획을 담은 토지구획정리계획 평면도 일까요?',
+    image: yeongdeungpoTojigyehoekImage,
+    answerField: 'seoulColonial03Answer',
+    answerPlaceholder: '지역의 이름을 입력하세요',
+    explanation: '영등포 토지구획정리계획 평면도는 일제강점기 영등포 지역의 시가지계획을 담은 도시계획도입니다. 일제는 경성(서울)의 확장과 산업화를 위해 영등포 지역을 개발하고 토지구획정리사업을 실시했습니다. 이는 식민도시 경성의 도시계획의 일환으로, 일본인 이주민을 위한 도시 개발과 산업 시설 확충을 목적으로 했습니다.',
+    customCss: null,
+    inputType: 'single'
+  },
+  seoulColonial04: {
+    activityId: 'seoulColonial04',
+    questionNumber: '04',
+    title: '변형되는 대한제국의 수도',
+    description: '위 템플릿은 어떤 전시장 안내 자료일까요?',
+    image: joseonbangnamhoeTemplateImage,
+    answerField: 'seoulColonial04Answer',
+    answerPlaceholder: '전시장의 이름을 입력하세요',
+    explanation: '조선박람회 템플릿은 일제강점기 조선박람회의 전시장 안내 자료입니다. 조선박람회는 일제가 조선의 식민지화와 일본의 우월성을 선전하기 위해 개최한 박람회로, 경성(서울)에서 여러 차례 개최되었습니다. 이 템플릿은 박람회의 전시장 안내와 일정을 안내하는 자료로 사용되었습니다.',
+    customCss: null,
+    inputType: 'single'
+  },
+  seoulColonial05: {
+    activityId: 'seoulColonial05',
+    questionNumber: '05',
+    title: '변형되는 대한제국의 수도',
+    description: '위 문서는 어떤 곳에서 발행한 기관지일까요?',
+    image: sinhancheongnyeonImage,
+    answerField: 'seoulColonial05Answer',
+    answerPlaceholder: '기관의 이름을 입력하세요',
+    explanation: '신한청년당(新韓靑年黨)은 1919년 3·1운동 이후 상해에서 조직된 독립운동 단체입니다. 신한청년당은 독립운동의 이론적 기반을 마련하고, 국내외 독립운동을 연결하는 역할을 했습니다. 이 기관지는 신한청년당의 활동과 독립운동의 방향을 알리는 중요한 자료였습니다.',
+    customCss: null,
+    inputType: 'single'
+  },
+  seoulColonial06: {
+    activityId: 'seoulColonial06',
+    questionNumber: '06',
+    title: '경성의 근대 대중교통',
+    description: '위 엽서은 어디의 모습을 담은 사진 엽서 일까요?',
+    image: gyeongseongyeokSajinYeopseoImage,
+    answerField: 'seoulColonial06Answer',
+    answerPlaceholder: '장소의 이름을 입력하세요',
+    explanation: '경성역 사진엽서는 일제강점기 경성역의 모습을 담은 사진 엽서입니다. 경성역은 1900년에 개통된 서울의 주요 철도역으로, 일제강점기 동안 경성(서울)의 대표적인 근대 건축물 중 하나였습니다. 이 엽서는 경성역의 모습을 기념품으로 판매하던 것으로, 일제강점기 서울의 근대 대중교통의 상징이었습니다.',
+    customCss: null,
+    inputType: 'single'
+  },
+  seoulColonial07: {
+    activityId: 'seoulColonial07',
+    questionNumber: '07',
+    title: '경성의 근대 대중교통',
+    description: '위 사진은 무엇일까요?',
+    image: jadongchaUnjeonmyeonheojeungImage,
+    answerField: 'seoulColonial07Answer',
+    answerPlaceholder: '답을 입력하세요',
+    explanation: '자동차운전면허증은 일제강점기 자동차를 운전하기 위해 필요한 면허증입니다. 일제강점기 경성(서울)에 자동차가 도입되면서 자동차 운전 면허 제도도 함께 도입되었습니다. 이 면허증은 일제강점기 서울의 근대 대중교통과 자동차 문화의 발전을 보여주는 중요한 자료입니다.',
+    customCss: null,
+    inputType: 'single'
+  },
+  seoulColonial08: {
+    activityId: 'seoulColonial08',
+    questionNumber: '08',
+    title: '경성 상점가',
+    description: '위 템플릿에서 소개하고 있는 곳은 어디일까요?',
+    image: jogiabaekhwajeomImage,
+    answerField: 'seoulColonial08Answer',
+    answerPlaceholder: '장소의 이름을 입력하세요',
+    explanation: '조지아백화점은 일제강점기 경성(서울)에 있었던 백화점입니다. 이 템플릿은 조지아백화점을 소개하는 안내 자료로, 일제강점기 경성의 상점가와 소비 문화를 보여주는 중요한 자료입니다. 조지아백화점은 당시 경성의 대표적인 백화점 중 하나로, 근대적 소비 문화의 상징이었습니다.',
+    customCss: null,
+    inputType: 'single'
+  },
+  seoulColonial09: {
+    activityId: 'seoulColonial09',
+    questionNumber: '09',
+    title: '일상을 바꾼 신문물',
+    description: '위 사진의 물건은 무엇일까요?',
+    image: jeonhwabeonhobuImage,
+    answerField: 'seoulColonial09Answer',
+    answerPlaceholder: '물건의 이름을 입력하세요',
+    explanation: '전화번호부는 일제강점기 경성(서울)에 전화가 도입되면서 만들어진 전화번호 안내서입니다. 전화가 보급되면서 사람들의 연락 방식이 변화했고, 전화번호부는 이러한 근대적 통신 문화의 상징이 되었습니다. 이 전화번호부는 일제강점기 서울의 일상 생활과 신문물의 확산을 보여주는 중요한 자료입니다.',
+    customCss: null,
+    inputType: 'single'
+  },
+  seoulColonial10: {
+    activityId: 'seoulColonial10',
+    questionNumber: '10',
+    title: '경성 학교생활',
+    description: '위 그림은 어느 거리의 모습을 담은 그림일까요?(답: OO거리)',
+    image: gyeongseonggeoriImage,
+    answerField: 'seoulColonial10Answer',
+    answerPlaceholder: '거리의 이름을 입력하세요',
+    explanation: '경성거리는 일제강점기 경성(서울)의 거리 모습을 담은 그림입니다. 이 그림은 일제강점기 경성의 학교생활과 일상 풍경을 보여주는 중요한 자료로, 당시 경성의 도시 모습과 사람들의 생활상을 알 수 있게 해줍니다.',
+    customCss: null,
+    inputType: 'single'
+  },
+  seoulGrowth01: {
+    activityId: 'seoulGrowth01',
+    questionNumber: '01',
+    title: '해방과 전쟁기, 서울',
+    description: '위 엽서는 무엇을 기념하기 위한 엽서일까요?',
+    image: haebangGinyeomYeopseoImage,
+    answerField: 'seoulGrowth01Answer',
+    answerPlaceholder: '답을 입력하세요',
+    explanation: '해방 기념 엽서는 1945년 8월 15일 일제로부터 해방을 기념하기 위해 만들어진 엽서입니다. 이 엽서는 해방의 기쁨과 새로운 출발에 대한 기대를 담고 있으며, 대한민국 수도 서울의 새로운 역사의 시작을 상징하는 중요한 자료입니다.',
+    customCss: null,
+    inputType: 'single'
+  },
+  seoulGrowth02: {
+    activityId: 'seoulGrowth02',
+    questionNumber: '02',
+    title: '해방과 전쟁기, 서울',
+    description: '6∙25 전쟁 이후 신원 파악을 위해 서울시에서 발행한 이것은 무엇일까요?',
+    image: seoulteukbyeolsiminjeungImage,
+    answerField: 'seoulGrowth02Answer',
+    answerPlaceholder: '답을 입력하세요',
+    explanation: '서울특별시민증은 6·25 전쟁 이후 신원 파악을 위해 서울시에서 발행한 신분증입니다. 전쟁으로 인해 많은 사람들이 피난을 가고 돌아오면서 신원 확인이 필요했고, 서울특별시민증은 이러한 상황에서 시민의 신원을 확인하고 관리하기 위해 발급되었습니다. 이는 전쟁 이후 서울의 복구와 재건 과정에서 중요한 역할을 했습니다.',
+    customCss: null,
+    inputType: 'single'
+  },
+  seoulGrowth03: {
+    activityId: 'seoulGrowth03',
+    questionNumber: '03',
+    title: '해방과 전쟁기, 서울',
+    description: '6∙25 전쟁 이후 서울의 현황을 정리하기 위해 발간한 이 책의 이름은 무엇일까요?',
+    image: seouldosiyoramImage,
+    answerField: 'seoulGrowth03Answer',
+    answerPlaceholder: '책의 이름을 입력하세요',
+    explanation: '서울도시요람(서울都市要覽)은 6·25 전쟁 이후 서울의 현황을 정리하기 위해 발간한 책입니다. 전쟁으로 큰 피해를 입은 서울의 복구와 재건을 위해 서울의 인구, 행정, 경제, 문화 등 각 분야의 현황을 종합적으로 정리한 자료로, 전쟁 이후 서울의 재건 계획 수립에 중요한 기초 자료가 되었습니다.',
+    customCss: null,
+    inputType: 'single'
+  },
+  seoulGrowth04: {
+    activityId: 'seoulGrowth04',
+    questionNumber: '04',
+    title: '한강개발',
+    description: '위 통행권은 어디를 통행하기 위한 통행권이었을까요?',
+    image: gangbyeondoroTonghaenggwonImage,
+    answerField: 'seoulGrowth04Answer',
+    answerPlaceholder: '장소의 이름을 입력하세요',
+    explanation: '강변도로 통행권은 한강 강변도로를 통행하기 위한 통행권입니다. 한강개발 사업의 일환으로 건설된 강변도로는 서울의 교통 인프라 확충과 한강 주변 개발에 중요한 역할을 했습니다. 이 통행권은 강변도로 이용을 위한 것으로, 한강 개발과 서울의 도시 확장을 보여주는 중요한 자료입니다.',
+    customCss: null,
+    inputType: 'single'
+  },
+  seoulGrowth05: {
+    activityId: 'seoulGrowth05',
+    questionNumber: '05',
+    title: '도심의 현대화・고도화',
+    description: '사진의 안전모에는 서울특별시와 OO 건설이 새겨져 있습니다. 여기서 OO은 무엇일까요?',
+    image: dolgyeokGeonseolAnjeonmoImage,
+    answerField: 'seoulGrowth05Answer',
+    answerPlaceholder: '답을 입력하세요',
+    explanation: '돌격 건설 안전모는 서울특별시의 도심 현대화와 고도화 사업을 추진할 때 사용된 안전모입니다. "돌격 건설"은 빠른 속도로 건설 사업을 추진한다는 의미로, 서울의 급속한 도시 개발과 현대화를 상징합니다. 이 안전모는 서울의 도심 재개발과 고층 건물 건설 등 도시 현대화 과정을 보여주는 중요한 자료입니다.',
+    customCss: null,
+    inputType: 'single'
+  },
+  seoulGrowth06: {
+    activityId: 'seoulGrowth06',
+    questionNumber: '06',
+    title: '강남의 탄생',
+    description: '위 기념메달은 어느 다리의 개통을 기념한 메달일까요?',
+    image: banpodaegyoMedalImage,
+    answerField: 'seoulGrowth06Answer',
+    answerPlaceholder: '다리의 이름을 입력하세요',
+    explanation: '반포대교 메달은 반포대교의 개통을 기념한 메달입니다. 반포대교는 한강을 가로지르는 다리로, 강남 개발의 핵심 인프라 중 하나였습니다. 반포대교의 개통은 강남 지역 개발의 중요한 전환점이 되었으며, 서울의 도시 확장과 강남의 탄생을 상징하는 중요한 사건이었습니다.',
+    customCss: null,
+    inputType: 'single'
+  },
+  seoulGrowth07: {
+    activityId: 'seoulGrowth07',
+    questionNumber: '07',
+    title: '문화예술 속 서울',
+    description: '위 사진의 제품의 용도는 무엇일까요?(2글자)',
+    image: setakgiImage,
+    answerField: 'seoulGrowth07Answer',
+    answerPlaceholder: '용도를 입력하세요',
+    explanation: '세탁기는 옷을 세탁하기 위한 가전제품입니다. 서울의 경제 성장과 함께 가전제품이 보급되면서 가정의 생활 방식이 변화했고, 세탁기는 이러한 변화를 상징하는 대표적인 가전제품 중 하나였습니다. 세탁기의 보급은 서울 시민들의 생활 수준 향상과 현대적 생활 문화의 확산을 보여주는 중요한 자료입니다.',
+    customCss: null,
+    inputType: 'single'
+  },
+  seoulGrowth08: {
+    activityId: 'seoulGrowth08',
+    questionNumber: '08',
+    title: '문화예술 속 서울',
+    description: '서초삼호아파트 9동 000호에서 컬러학습대백과는 몇 권이 있을까요?',
+    image: keolleohaksupdaebaekgwaImage,
+    answerField: 'seoulGrowth08Answer',
+    answerPlaceholder: '권 수를 입력하세요',
+    explanation: '컬러학습대백과는 서울의 교육 열풍과 학습 문화를 보여주는 대표적인 학습 참고서입니다. 서초삼호아파트는 강남 개발의 상징적인 아파트 단지 중 하나로, 이곳에서 컬러학습대백과 10권이 있었던 것은 당시 서울 시민들의 교육에 대한 관심과 투자를 보여주는 중요한 자료입니다.',
+    customCss: null,
+    inputType: 'single'
+  },
+  seoulGrowth09: {
+    activityId: 'seoulGrowth09',
+    questionNumber: '09',
+    title: '문화예술 속 서울',
+    description: '서초삼호아파트 9동 000호의 시간은 몇시 일까요?(숫자, 분을 제외한 시만 입력, 1~12로)',
+    image: seochosamhoapateuImage,
+    answerField: 'seoulGrowth09Answer',
+    answerPlaceholder: '시를 입력하세요',
+    explanation: '서초삼호아파트는 강남 개발의 상징적인 아파트 단지 중 하나입니다. 이 사진에서 보이는 시계는 당시 서울 시민들의 일상 생활을 보여주는 중요한 자료로, 아파트 생활과 현대적 주거 문화의 확산을 상징합니다.',
+    customCss: null,
+    inputType: 'single'
+  },
+  seoulGrowth10: {
+    activityId: 'seoulGrowth10',
+    questionNumber: '10',
+    title: '문화예술 속 서울',
+    description: '서초삼호아파트 9동 000호의 사람들은 어떤 커피를 주로 마셨을까요?',
+    image: seochosamhoapateuGeosilImage,
+    answerField: 'seoulGrowth10Answer',
+    answerPlaceholder: '커피의 이름을 입력하세요(00커피, 4글자)',
+    explanation: '맥심커피는 1980년대 서울에서 대중화된 인스턴트 커피 브랜드입니다. 서초삼호아파트 거실에서 맥심커피를 마신 것은 당시 서울 시민들의 생활 방식과 소비 문화를 보여주는 중요한 자료입니다. 맥심커피는 한국의 커피 문화 확산에 중요한 역할을 했으며, 아파트 생활과 함께 현대적 생활 문화의 상징이 되었습니다.',
+    customCss: null,
+    inputType: 'single'
+  },
+  seoulGrowth11: {
+    activityId: 'seoulGrowth11',
+    questionNumber: '11',
+    title: '문화예술 속 서울',
+    description: '서초삼호아파트 9동 000호의 안방 안에는 오리가 몇 마리 있을까요?(숫자만 입력)',
+    image: seochosamhoapateuImage,
+    answerField: 'seoulGrowth11Answer',
+    answerPlaceholder: '마리 수를 입력하세요',
+    explanation: '서초삼호아파트는 강남 개발의 상징적인 아파트 단지 중 하나입니다. 안방에 있는 오리 장식은 당시 서울 시민들의 주거 공간과 인테리어 문화를 보여주는 중요한 자료로, 아파트 생활과 현대적 주거 문화의 확산을 상징합니다.',
+    customCss: null,
+    inputType: 'single'
+  },
+  seoulGrowth12: {
+    activityId: 'seoulGrowth12',
+    questionNumber: '12',
+    title: '1988 올림픽과 서울',
+    description: '위 입장권은 86 서울아시안게임 어떤 경기의 입장권일까요?',
+    image: yuksanggyeonggiIpjangwonImage,
+    answerField: 'seoulGrowth12Answer',
+    answerPlaceholder: '경기의 이름을 입력하세요(~경기)',
+    explanation: '육상경기 입장권은 1986년 서울아시안게임의 육상경기 입장권입니다. 1986년 서울아시안게임은 1988년 서울올림픽을 앞두고 서울의 국제적 위상을 높이는 중요한 대회였습니다. 이 입장권은 서울이 국제 스포츠 행사를 성공적으로 개최할 수 있는 역량을 보여주는 중요한 자료입니다.',
+    customCss: null,
+    inputType: 'single'
+  },
+  seoulGrowth13: {
+    activityId: 'seoulGrowth13',
+    questionNumber: '13',
+    title: '청일집에서',
+    description: '청일집에서 판매하는 "원조빈대떡"의 가격은 얼마일까요?(숫자만 입력)',
+    image: cheongiljipImage,
+    answerField: 'seoulGrowth13Answer',
+    answerPlaceholder: '가격을 입력하세요',
+    explanation: '청일집은 서울의 대표적인 빈대떡 전문점입니다. 원조빈대떡의 가격은 9000원으로, 서울의 음식 문화와 가격 변동을 보여주는 중요한 자료입니다. 청일집은 서울의 전통 음식 문화를 보존하고 발전시킨 대표적인 음식점으로, 서울 시민들의 일상 생활과 음식 문화를 이해하는 데 중요한 의미를 가집니다.',
+    customCss: null,
+    inputType: 'single'
+  },
+  seoulGrowth14: {
+    activityId: 'seoulGrowth14',
+    questionNumber: '14',
+    title: '청일집에서',
+    description: '청일집에서 두부김치 1개, 족발 대 1개, 해물빈대떡 1개를 주문하면 총 얼마일까요?(숫자만 입력)',
+    image: cheongiljipImage,
+    answerField: 'seoulGrowth14Answer',
+    answerPlaceholder: '총 가격을 입력하세요',
+    explanation: '청일집은 서울의 대표적인 빈대떡 전문점입니다. 두부김치, 족발 대, 해물빈대떡을 주문하면 총 55000원입니다. 청일집은 서울의 전통 음식 문화를 보존하고 발전시킨 대표적인 음식점으로, 서울 시민들의 일상 생활과 음식 문화를 이해하는 데 중요한 의미를 가집니다.',
+    customCss: null,
+    inputType: 'single'
+  },
+  seoulGrowth15: {
+    activityId: 'seoulGrowth15',
+    questionNumber: '15',
+    title: '오늘날의 서울',
+    description: '위 사진의 제품의 이름은?',
+    image: museonhochulgiImage,
+    answerField: 'seoulGrowth15Answer',
+    answerPlaceholder: '제품의 이름을 입력하세요',
+    explanation: '무선호출기(페이저)는 1990년대 서울에서 널리 사용되었던 통신 기기입니다. 무선호출기는 전화를 받을 수 없을 때 메시지를 받을 수 있는 기기로, 서울의 통신 문화 발전을 보여주는 중요한 자료입니다. 무선호출기는 휴대폰이 보급되기 전까지 서울 시민들의 주요 통신 수단 중 하나였습니다.',
     customCss: null,
     inputType: 'single'
   }

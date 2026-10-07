@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { onAuthChange } from '../firebase/auth'
+import { Timestamp, deleteField } from 'firebase/firestore'
 import { 
   getAllSchools, 
   createSchool, 
   updateSchoolPassword, 
+  updateSchool,
   deleteSchool,
   getSchoolInfo 
 } from '../firebase/firestore'
@@ -20,6 +22,7 @@ function Adminpage() {
   const [showDetailView, setShowDetailView] = useState(false)
   const [selectedSchool, setSelectedSchool] = useState(null)
   const [showPasswordModal, setShowPasswordModal] = useState(false)
+  const [showPeriodModal, setShowPeriodModal] = useState(false)
   
   // 새 학교 등록 폼 상태
   const [newSchool, setNewSchool] = useState({
@@ -34,6 +37,21 @@ function Adminpage() {
     newPassword: '',
     confirmPassword: ''
   })
+  
+  // 박물관 활동 기간 폼 상태
+  const [periodForm, setPeriodForm] = useState({
+    museum: 'palace', // 'palace' 또는 'seoul'
+    startDate: '',
+    startTime: '09:00', // 기본 시작 시간
+    endDate: '',
+    endTime: '18:00' // 기본 종료 시간
+  })
+  
+  // 박물관 정보
+  const museums = [
+    { id: 'palace', name: '국립고궁박물관', icon: 'museum' },
+    { id: 'seoul', name: '서울역사박물관', icon: 'location_city' }
+  ]
 
   useEffect(() => {
     // 관리자 인증 확인
@@ -188,6 +206,183 @@ function Adminpage() {
   const handleSchoolClick = async (school) => {
     setSelectedSchool(school)
     setShowDetailView(true)
+    // 기존 기간 데이터를 폼에 설정 (palace 기본값)
+    const museumId = 'palace'
+    const museumPeriods = school.museumPeriods || {}
+    const period = museumPeriods[museumId] || {}
+    
+    let startDate = ''
+    let startTime = '09:00'
+    let endDate = ''
+    let endTime = '18:00'
+    
+    if (period.startDate?.toDate) {
+      const start = new Date(period.startDate.toDate())
+      // 한국 시간으로 변환
+      const koreaStart = new Date(start.toLocaleString('en-US', { timeZone: 'Asia/Seoul' }))
+      startDate = koreaStart.toISOString().split('T')[0]
+      startTime = `${String(koreaStart.getHours()).padStart(2, '0')}:${String(koreaStart.getMinutes()).padStart(2, '0')}`
+    }
+    
+    if (period.endDate?.toDate) {
+      const end = new Date(period.endDate.toDate())
+      // 한국 시간으로 변환
+      const koreaEnd = new Date(end.toLocaleString('en-US', { timeZone: 'Asia/Seoul' }))
+      endDate = koreaEnd.toISOString().split('T')[0]
+      endTime = `${String(koreaEnd.getHours()).padStart(2, '0')}:${String(koreaEnd.getMinutes()).padStart(2, '0')}`
+    }
+    
+    setPeriodForm({ museum: museumId, startDate, startTime, endDate, endTime })
+  }
+  
+  const handleMuseumChange = (museumId) => {
+    // 박물관 변경 시 해당 박물관의 기간 데이터를 폼에 로드
+    if (!selectedSchool) return
+    
+    const museumPeriods = selectedSchool.museumPeriods || {}
+    const period = museumPeriods[museumId] || {}
+    
+    let startDate = ''
+    let startTime = '09:00'
+    let endDate = ''
+    let endTime = '18:00'
+    
+    if (period.startDate?.toDate) {
+      const start = new Date(period.startDate.toDate())
+      // 한국 시간으로 변환
+      const koreaStart = new Date(start.toLocaleString('en-US', { timeZone: 'Asia/Seoul' }))
+      startDate = koreaStart.toISOString().split('T')[0]
+      startTime = `${String(koreaStart.getHours()).padStart(2, '0')}:${String(koreaStart.getMinutes()).padStart(2, '0')}`
+    }
+    
+    if (period.endDate?.toDate) {
+      const end = new Date(period.endDate.toDate())
+      // 한국 시간으로 변환
+      const koreaEnd = new Date(end.toLocaleString('en-US', { timeZone: 'Asia/Seoul' }))
+      endDate = koreaEnd.toISOString().split('T')[0]
+      endTime = `${String(koreaEnd.getHours()).padStart(2, '0')}:${String(koreaEnd.getMinutes()).padStart(2, '0')}`
+    }
+    
+    setPeriodForm({ museum: museumId, startDate, startTime, endDate, endTime })
+  }
+
+  const handleUpdatePeriod = async (e) => {
+    e.preventDefault()
+    setError('')
+    
+    if (!periodForm.startDate || !periodForm.startTime || !periodForm.endDate || !periodForm.endTime) {
+      setError('시작일, 시작 시간, 종료일, 종료 시간을 모두 입력해주세요.')
+      return
+    }
+    
+    // 한국 시간으로 날짜와 시간 결합하여 비교
+    const startDateTimeStr = `${periodForm.startDate}T${periodForm.startTime}:00+09:00`
+    const endDateTimeStr = `${periodForm.endDate}T${periodForm.endTime}:00+09:00`
+    const startDateTime = new Date(startDateTimeStr)
+    const endDateTime = new Date(endDateTimeStr)
+    
+    if (startDateTime > endDateTime) {
+      setError('종료일시는 시작일시 이후여야 합니다.')
+      return
+    }
+
+    try {
+      // 한국 시간 기준으로 날짜와 시간을 합쳐서 Date 객체 생성
+      // 한국 시간대(UTC+9)의 날짜/시간 문자열을 만들고, 이를 UTC로 변환
+      const [startHour, startMinute] = periodForm.startTime.split(':').map(Number)
+      const [endHour, endMinute] = periodForm.endTime.split(':').map(Number)
+      
+      // ISO 8601 형식으로 한국 시간대 문자열 생성
+      // "YYYY-MM-DDTHH:mm:ss+09:00" 형식
+      const startDateTimeStr = `${periodForm.startDate}T${String(startHour).padStart(2, '0')}:${String(startMinute).padStart(2, '0')}:00+09:00`
+      const endDateTimeStr = `${periodForm.endDate}T${String(endHour).padStart(2, '0')}:${String(endMinute).padStart(2, '0')}:00+09:00`
+      
+      // ISO 8601 문자열을 Date 객체로 변환 (자동으로 UTC로 변환됨)
+      const startUTC = new Date(startDateTimeStr)
+      const endUTC = new Date(endDateTimeStr)
+      
+      // 유효성 검사
+      if (isNaN(startUTC.getTime()) || isNaN(endUTC.getTime())) {
+        setError('날짜와 시간 형식이 올바르지 않습니다.')
+        return
+      }
+      
+      // 화면의 selectedSchool은 오래된 값일 수 있으므로, 저장 직전 최신 문서를 읽어 병합 (다른 박물관 기간 유실 방지)
+      const freshResult = await getSchoolInfo(selectedSchool.schoolCode)
+      const schoolData = freshResult.success ? freshResult.data : selectedSchool
+
+      let currentPeriods = schoolData.museumPeriods || {}
+
+      // 기존 museumStartDate, museumEndDate가 있으면 palace로 마이그레이션
+      if (schoolData.museumStartDate && schoolData.museumEndDate && !currentPeriods.palace) {
+        currentPeriods = {
+          palace: {
+            startDate: schoolData.museumStartDate,
+            endDate: schoolData.museumEndDate
+          },
+          ...currentPeriods
+        }
+      }
+
+      // 선택한 박물관의 기간 업데이트
+      const updates = {
+        museumPeriods: {
+          ...currentPeriods,
+          [periodForm.museum]: {
+            startDate: Timestamp.fromDate(startUTC),
+            endDate: Timestamp.fromDate(endUTC)
+          }
+        }
+      }
+
+      // 기존 museumStartDate, museumEndDate 필드 제거 (마이그레이션 후)
+      if (schoolData.museumStartDate || schoolData.museumEndDate) {
+        updates.museumStartDate = deleteField()
+        updates.museumEndDate = deleteField()
+      }
+
+      console.log('Firestore 업데이트:', { schoolCode: selectedSchool.schoolCode, updates })
+      const result = await updateSchool(selectedSchool.schoolCode, updates)
+      
+      if (result.success) {
+        setShowPeriodModal(false)
+        await loadSchools()
+        // 선택된 학교 정보도 업데이트
+        const updatedResult = await getSchoolInfo(selectedSchool.schoolCode)
+        if (updatedResult.success) {
+          setSelectedSchool(updatedResult.data)
+          // 업데이트된 기간 데이터를 폼에 다시 설정
+          const updatedPeriods = updatedResult.data.museumPeriods || {}
+          const updatedPeriod = updatedPeriods[periodForm.museum] || {}
+          
+          let startDate = ''
+          let startTime = '09:00'
+          let endDate = ''
+          let endTime = '18:00'
+          
+          if (updatedPeriod.startDate?.toDate) {
+            const start = new Date(updatedPeriod.startDate.toDate())
+            const koreaStart = new Date(start.toLocaleString('en-US', { timeZone: 'Asia/Seoul' }))
+            startDate = koreaStart.toISOString().split('T')[0]
+            startTime = `${String(koreaStart.getHours()).padStart(2, '0')}:${String(koreaStart.getMinutes()).padStart(2, '0')}`
+          }
+          
+          if (updatedPeriod.endDate?.toDate) {
+            const end = new Date(updatedPeriod.endDate.toDate())
+            const koreaEnd = new Date(end.toLocaleString('en-US', { timeZone: 'Asia/Seoul' }))
+            endDate = koreaEnd.toISOString().split('T')[0]
+            endTime = `${String(koreaEnd.getHours()).padStart(2, '0')}:${String(koreaEnd.getMinutes()).padStart(2, '0')}`
+          }
+          
+          setPeriodForm({ ...periodForm, startDate, startTime, endDate, endTime })
+        }
+      } else {
+        setError(result.error || '기간 설정에 실패했습니다.')
+      }
+    } catch (err) {
+      console.error('기간 설정 오류:', err)
+      setError('기간 설정 중 오류가 발생했습니다.')
+    }
   }
 
   const generateSchoolCode = () => {
@@ -392,6 +587,116 @@ function Adminpage() {
                     </div>
                   </div>
 
+                  <div className="admin-detail-section">
+                    <h3 className="admin-detail-section-title">
+                      <span className="material-symbols-outlined">event</span>
+                      박물관 활동 기간
+                    </h3>
+                    <div className="admin-detail-security-card">
+                      <div className="admin-detail-security-header">
+                        <span className="admin-detail-security-label">활동 기간</span>
+                        <button
+                          className="admin-detail-security-change-btn"
+                          onClick={() => {
+                            const defaultMuseumId = 'palace'
+                            const museumPeriods = selectedSchool?.museumPeriods || {}
+                            const period = museumPeriods[defaultMuseumId] || {}
+                            let startDate = ''
+                            let startTime = '09:00'
+                            let endDate = ''
+                            let endTime = '18:00'
+                            if (period.startDate?.toDate) {
+                              const start = new Date(period.startDate.toDate())
+                              const koreaStart = new Date(start.toLocaleString('en-US', { timeZone: 'Asia/Seoul' }))
+                              startDate = koreaStart.toISOString().split('T')[0]
+                              startTime = `${String(koreaStart.getHours()).padStart(2, '0')}:${String(koreaStart.getMinutes()).padStart(2, '0')}`
+                            }
+                            if (period.endDate?.toDate) {
+                              const end = new Date(period.endDate.toDate())
+                              const koreaEnd = new Date(end.toLocaleString('en-US', { timeZone: 'Asia/Seoul' }))
+                              endDate = koreaEnd.toISOString().split('T')[0]
+                              endTime = `${String(koreaEnd.getHours()).padStart(2, '0')}:${String(koreaEnd.getMinutes()).padStart(2, '0')}`
+                            }
+                            setPeriodForm({ museum: defaultMuseumId, startDate, startTime, endDate, endTime })
+                            setShowPeriodModal(true)
+                          }}
+                        >
+                          설정하기
+                        </button>
+                      </div>
+                      <div className="admin-detail-period-display">
+                        {(() => {
+                          const museumPeriods = selectedSchool.museumPeriods || {}
+                          const hasAnyPeriod = Object.keys(museumPeriods).length > 0
+                          
+                          if (!hasAnyPeriod) {
+                            return (
+                              <div className="admin-detail-period-empty">
+                                <span className="material-symbols-outlined">event_busy</span>
+                                <span>활동 기간이 설정되지 않았습니다.</span>
+                              </div>
+                            )
+                          }
+                          
+                          return (
+                            <div className="admin-detail-period-list">
+                              {museums.map((museum) => {
+                                const period = museumPeriods[museum.id] || {}
+                                const hasPeriod = period.startDate && period.endDate
+                                
+                                return (
+                                  <div key={museum.id} className="admin-detail-period-item">
+                                    <div className="admin-detail-period-museum-header">
+                                      <span className="material-symbols-outlined">{museum.icon}</span>
+                                      <span className="admin-detail-period-museum-name">{museum.name}</span>
+                                    </div>
+                                    {hasPeriod ? (
+                                      <div className="admin-detail-period-dates">
+                                        <div className="admin-detail-period-date">
+                                          <span className="admin-detail-period-label">시작</span>
+                                          <span className="admin-detail-period-value">
+                                            {(() => {
+                                              if (!period.startDate?.toDate) return '-'
+                                              const start = new Date(period.startDate.toDate())
+                                              const koreaStart = new Date(start.toLocaleString('en-US', { timeZone: 'Asia/Seoul' }))
+                                              return `${koreaStart.toLocaleDateString('ko-KR')} ${String(koreaStart.getHours()).padStart(2, '0')}:${String(koreaStart.getMinutes()).padStart(2, '0')}`
+                                            })()}
+                                          </span>
+                                        </div>
+                                        <div className="admin-detail-period-separator">
+                                          <span className="material-symbols-outlined">arrow_forward</span>
+                                        </div>
+                                        <div className="admin-detail-period-date">
+                                          <span className="admin-detail-period-label">종료</span>
+                                          <span className="admin-detail-period-value">
+                                            {(() => {
+                                              if (!period.endDate?.toDate) return '-'
+                                              const end = new Date(period.endDate.toDate())
+                                              const koreaEnd = new Date(end.toLocaleString('en-US', { timeZone: 'Asia/Seoul' }))
+                                              return `${koreaEnd.toLocaleDateString('ko-KR')} ${String(koreaEnd.getHours()).padStart(2, '0')}:${String(koreaEnd.getMinutes()).padStart(2, '0')}`
+                                            })()}
+                                          </span>
+                                        </div>
+                                      </div>
+                                    ) : (
+                                      <div className="admin-detail-period-not-set">
+                                        <span>기간 미설정</span>
+                                      </div>
+                                    )}
+                                  </div>
+                                )
+                              })}
+                            </div>
+                          )
+                        })()}
+                      </div>
+                      <p className="admin-detail-password-info">
+                        <span className="material-symbols-outlined">info</span>
+                        국립고궁박물관과 서울역사박물관은 각각 기간을 저장해야 합니다. 한쪽만 설정하면 다른 박물관은 기간 미설정으로 표시됩니다.
+                      </p>
+                    </div>
+                  </div>
+
                   <div className="admin-detail-actions">
                     <button
                       className="admin-detail-delete-btn"
@@ -543,6 +848,97 @@ function Adminpage() {
                   </button>
                   <button type="submit" className="admin-modal-submit-btn">
                     변경하기
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+
+        {/* 박물관 활동 기간 설정 모달 */}
+        {showPeriodModal && selectedSchool && (
+          <div className="admin-modal-overlay" onClick={() => setShowPeriodModal(false)}>
+            <div className="admin-modal" onClick={(e) => e.stopPropagation()}>
+              <div className="admin-modal-handle"></div>
+              <h3 className="admin-modal-title">
+                <span className="material-symbols-outlined">event</span>
+                박물관 활동 기간 설정
+              </h3>
+              <form className="admin-modal-form" onSubmit={handleUpdatePeriod}>
+                <div className="admin-modal-field">
+                  <label className="admin-modal-label">박물관</label>
+                  <div className="admin-modal-museum-select">
+                    {museums.map((museum) => (
+                      <button
+                        key={museum.id}
+                        type="button"
+                        className={`admin-modal-museum-option ${
+                          periodForm.museum === museum.id ? 'admin-modal-museum-option-active' : ''
+                        }`}
+                        onClick={() => handleMuseumChange(museum.id)}
+                      >
+                        <span className="material-symbols-outlined">{museum.icon}</span>
+                        <span>{museum.name}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div className="admin-modal-field">
+                  <label className="admin-modal-label">시작일 (한국시간)</label>
+                  <input
+                    className="admin-modal-input"
+                    type="date"
+                    value={periodForm.startDate}
+                    onChange={(e) => setPeriodForm({ ...periodForm, startDate: e.target.value })}
+                    required
+                  />
+                </div>
+                <div className="admin-modal-field">
+                  <label className="admin-modal-label">시작 시간</label>
+                  <input
+                    className="admin-modal-input"
+                    type="time"
+                    value={periodForm.startTime}
+                    onChange={(e) => setPeriodForm({ ...periodForm, startTime: e.target.value })}
+                    required
+                  />
+                </div>
+                <div className="admin-modal-field">
+                  <label className="admin-modal-label">종료일 (한국시간)</label>
+                  <input
+                    className="admin-modal-input"
+                    type="date"
+                    value={periodForm.endDate}
+                    onChange={(e) => setPeriodForm({ ...periodForm, endDate: e.target.value })}
+                    required
+                  />
+                </div>
+                <div className="admin-modal-field">
+                  <label className="admin-modal-label">종료 시간</label>
+                  <input
+                    className="admin-modal-input"
+                    type="time"
+                    value={periodForm.endTime}
+                    onChange={(e) => setPeriodForm({ ...periodForm, endTime: e.target.value })}
+                    required
+                  />
+                </div>
+                {error && (
+                  <div className="admin-error-message">{error}</div>
+                )}
+                <div className="admin-modal-actions">
+                  <button
+                    type="button"
+                    className="admin-modal-cancel-btn"
+                    onClick={() => {
+                      setShowPeriodModal(false)
+                      setError('')
+                    }}
+                  >
+                    취소
+                  </button>
+                  <button type="submit" className="admin-modal-submit-btn">
+                    저장하기
                   </button>
                 </div>
               </form>
