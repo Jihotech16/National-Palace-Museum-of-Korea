@@ -16,12 +16,28 @@ service cloud.firestore {
              request.auth.token.email.matches('.*@student\\.local$');
     }
     
-    // 교사인지 확인
-    function isTeacher() {
+    // 교사 이메일 형식인지 확인 (형식만으로는 권한 없음)
+    function hasTeacherEmail() {
       return isAuthenticated() && 
              request.auth.token.email != null &&
-             (request.auth.token.email.matches('.*@teacher\\.local$') ||
-              request.auth.token.email.matches('.*@teacher.local$'));
+             request.auth.token.email.matches('.*@teacher\\.local$');
+    }
+    
+    function teacherPath() {
+      return /databases/$(database)/documents/teachers/$(getTeacherIdFromEmail());
+    }
+    
+    // 교사인지 확인: 학교 비밀번호 확인을 통과해 등록된 교사 문서가 있어야 함
+    function isTeacher() {
+      return hasTeacherEmail() &&
+             exists(teacherPath()) &&
+             get(teacherPath()).data.get('passwordHash', '') != '';
+    }
+    
+    // 요청한 학교 비밀번호 해시가 schoolSecrets의 해시와 같은지 확인
+    function matchesSchoolPassword(data) {
+      return exists(/databases/$(database)/documents/schoolSecrets/$(data.schoolCode)) &&
+             data.passwordHash == get(/databases/$(database)/documents/schoolSecrets/$(data.schoolCode)).data.passwordHash;
     }
     
     // 이메일에서 학번 추출
@@ -35,11 +51,10 @@ service cloud.firestore {
     }
     
     // 관리자인지 확인
-    // 관리자는 admin@admin.local 형식의 이메일을 사용
+    // 관리자는 Firebase Console에서 만든 admin@admin.local 계정 하나뿐
     function isAdmin() {
       return isAuthenticated() && 
-             request.auth.token.email != null &&
-             request.auth.token.email.matches('.*@admin\\.local$');
+             request.auth.token.email == 'admin@admin.local';
     }
     
     // ========== 컬렉션별 규칙 ==========
@@ -120,22 +135,28 @@ service cloud.firestore {
     
     // teachers 컬렉션: 교사 계정 정보
     match /teachers/{teacherId} {
-      // 공개 읽기 허용 (로그인 전에 비밀번호 확인을 위해 필요)
-      // 주의: 비밀번호가 평문으로 저장되어 있으므로 보안상 주의 필요
-      allow read: if true;
+      // 교사 본인과 관리자만 읽기 가능
+      allow get: if hasTeacherEmail() && getTeacherIdFromEmail() == teacherId;
+      allow read: if isAdmin();
       
-      // 교사는 자신의 계정을 생성할 수 있음 (로그인 시 자동 생성)
+      // 교사 등록/재확인: 학교 비밀번호 해시가 맞아야 하고, 문서 ID와 학교/학년/반이 일치해야 함
       // teacherId는 {schoolCode}-{grade}-{classNum} 형식
-      // 교사 이메일도 동일한 형식이므로, 인증 후에만 자신의 계정 생성 가능
-      allow create: if isTeacher() && 
-        getTeacherIdFromEmail() == teacherId;
+      allow create, update: if hasTeacherEmail() &&
+        getTeacherIdFromEmail() == teacherId &&
+        request.resource.data.teacherId == teacherId &&
+        request.resource.data.schoolCode is string &&
+        teacherId == request.resource.data.schoolCode + '-' + string(request.resource.data.grade) + '-' + string(request.resource.data.classNum) &&
+        !('password' in request.resource.data) &&
+        matchesSchoolPassword(request.resource.data);
       
-      // 교사는 자신의 계정 정보 업데이트 가능 (lastLogin 등)
-      allow update: if isTeacher() && 
-        getTeacherIdFromEmail() == teacherId;
-      
-      // 삭제는 관리자만 가능
-      allow delete: if false;
+      // 관리자는 정리(평문 비밀번호 제거, 학교 삭제 시 교사 삭제) 가능
+      allow update, delete: if isAdmin();
+    }
+    
+    // schoolSecrets 컬렉션: 학교 비밀번호 해시 (공개 읽기 금지)
+    match /schoolSecrets/{schoolCode} {
+      allow read, write: if isAdmin();
+      allow get: if isTeacher() && get(teacherPath()).data.schoolCode == schoolCode;
     }
     
     // messages 컬렉션: 채팅 메시지
@@ -163,6 +184,7 @@ service cloud.firestore {
     // 학교 목록은 로그인 전에도 조회 가능해야 하므로 공개 읽기 허용
     match /schools/{schoolCode} {
       // 누구나 읽기 가능 (로그인 전 학생도 학교 목록을 볼 수 있어야 함)
+      // 비밀번호는 여기 두지 않고 schoolSecrets에 해시로 저장
       allow read: if true;
       
       // 쓰기는 관리자만 가능

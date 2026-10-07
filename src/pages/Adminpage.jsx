@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { onAuthChange } from '../firebase/auth'
+import { onAuthChange, ADMIN_EMAIL } from '../firebase/auth'
 import { Timestamp, deleteField } from 'firebase/firestore'
 import { 
   getAllSchools, 
@@ -8,7 +8,9 @@ import {
   updateSchoolPassword, 
   updateSchool,
   deleteSchool,
-  getSchoolInfo 
+  getSchoolInfo,
+  verifySchoolPassword,
+  migratePlaintextPasswords
 } from '../firebase/firestore'
 import './Adminpage.css'
 
@@ -61,8 +63,12 @@ function Adminpage() {
         console.log('현재 인증된 사용자:', { email, uid: user.uid })
         
         // 관리자 이메일 형식 확인
-        if (email && email.includes('@admin.local')) {
-          // 관리자로 인증됨, 학교 목록 로드
+        if (email === ADMIN_EMAIL) {
+          // 관리자로 인증됨: 예전 평문 비밀번호가 남아 있으면 해시로 옮긴 뒤 학교 목록 로드
+          const migration = await migratePlaintextPasswords()
+          if (!migration.success) {
+            console.error('평문 비밀번호 이전 실패:', migration.error)
+          }
           await loadSchools()
         } else {
           // 관리자가 아니면 로그인 페이지로 리다이렉트
@@ -172,13 +178,13 @@ function Adminpage() {
 
     try {
       // 현재 비밀번호 확인
-      const schoolResult = await getSchoolInfo(selectedSchool.schoolCode)
-      if (!schoolResult.success) {
-        setError('학교 정보를 불러올 수 없습니다.')
+      const verifyResult = await verifySchoolPassword(selectedSchool.schoolCode, passwordForm.currentPassword)
+      if (!verifyResult.success) {
+        setError(verifyResult.error || '학교 정보를 불러올 수 없습니다.')
         return
       }
       
-      if (schoolResult.data.password !== passwordForm.currentPassword) {
+      if (!verifyResult.match) {
         setError('현재 비밀번호가 일치하지 않습니다.')
         return
       }

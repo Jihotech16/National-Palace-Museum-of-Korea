@@ -5,7 +5,7 @@ import {
   onAuthStateChanged
 } from 'firebase/auth'
 import { auth } from './config'
-import { getTeacherInfo, updateTeacherLastLogin, createTeacherAccount, createOrUpdateStudent, parseStudentId } from './firestore'
+import { registerTeacher, createOrUpdateStudent, parseStudentId } from './firestore'
 
 // 학번을 이메일 형식으로 변환 (예: 2024001 -> 2024001@student.local)
 const studentIdToEmail = (studentId) => {
@@ -170,22 +170,23 @@ export const signInAsTeacher = async (schoolCode, grade, classNum, password) => 
 
     // Firebase Auth로 먼저 로그인 시도
     const email = teacherIdToEmail(schoolCode, grade, classNum)
-    console.log('교사 로그인 시도:', { schoolCode, grade, classNum, email })
     
     let userCredential
+    let createdNow = false
     
     try {
       // 기존 계정으로 로그인 시도
       userCredential = await signInWithEmailAndPassword(auth, email, password)
-      console.log('기존 계정으로 로그인 성공')
     } catch (error) {
-      // 계정이 없으면 생성 후 로그인
+      // 계정이 없으면 생성 (권한은 아래 학교 비밀번호 확인을 통과해야 생김)
       if (error.code === 'auth/user-not-found' || error.code === 'auth/invalid-credential') {
         try {
-          console.log('계정이 없습니다. Firebase Authentication에 계정 생성 중...')
           userCredential = await createUserWithEmailAndPassword(auth, email, password)
-          console.log('Firebase Authentication 계정 생성 완료')
+          createdNow = true
         } catch (signUpError) {
+          if (signUpError.code === 'auth/email-already-in-use') {
+            return { success: false, error: '비밀번호가 올바르지 않습니다.' }
+          }
           return { 
             success: false, 
             error: signUpError.message || '로그인에 실패했습니다.' 
@@ -196,41 +197,19 @@ export const signInAsTeacher = async (schoolCode, grade, classNum, password) => 
       }
     }
     
-    // 인증 후 Firestore에서 교사 정보 확인
-    let teacherInfoResult = await getTeacherInfo(schoolCode, grade, classNum)
-    
-    // 계정이 없으면 자동으로 생성
-    if (!teacherInfoResult.success) {
-      console.log('Firestore에 교사 계정이 없습니다. 자동 생성합니다...')
-      const createResult = await createTeacherAccount(schoolCode, grade, classNum, password)
-      
-      if (!createResult.success) {
-        console.error('계정 생성 실패:', createResult.error)
-        // Firestore 계정 생성 실패해도 Firebase Authentication 로그인은 성공했으므로 계속 진행
-        console.warn('Firestore 계정 생성 실패했지만 로그인은 성공했습니다.')
-      } else {
-        console.log('Firestore 교사 계정 자동 생성 완료')
+    // 학교 비밀번호 확인: 보안 규칙이 schoolSecrets의 해시와 비교해 교사 등록을 허용함
+    const registerResult = await registerTeacher(schoolCode, grade, classNum, password)
+    if (!registerResult.success) {
+      // 방금 만든 계정이면 지워서 진짜 교사가 이 반으로 가입할 수 있게 둠
+      if (createdNow) {
+        await userCredential.user.delete().catch(() => {})
       }
-    } else {
-      const teacherData = teacherInfoResult.data
-      console.log('교사 데이터 조회 성공:', { 
-        schoolCode: teacherData.schoolCode, 
-        grade: teacherData.grade, 
-        classNum: teacherData.classNum,
-        hasPassword: !!teacherData.password 
-      })
-      
-      // 비밀번호 확인 (기존 계정인 경우, Firestore에 비밀번호가 저장되어 있다면)
-      if (teacherData.password && teacherData.password !== password) {
-        console.warn('비밀번호 불일치')
-        // Firebase Authentication은 성공했지만 Firestore 비밀번호와 불일치
-        // 이 경우에도 로그인은 허용하되 경고만 표시
-        console.warn('Firestore 비밀번호와 불일치하지만 Firebase Authentication 로그인은 성공했습니다.')
+      await signOut(auth).catch(() => {})
+      if (registerResult.code === 'permission-denied') {
+        return { success: false, error: '학교 코드 또는 학교 비밀번호가 올바르지 않습니다.' }
       }
+      return { success: false, error: registerResult.error || '교사 확인에 실패했습니다.' }
     }
-    
-    // 로그인 시간 업데이트
-    await updateTeacherLastLogin(schoolCode, grade, classNum)
     
     return { 
       success: true, 
@@ -251,7 +230,9 @@ export const signInAsTeacher = async (schoolCode, grade, classNum, password) => 
 }
 
 // 관리자 로그인
-export const signInAsAdmin = async (password = 'Admin') => {
+export const ADMIN_EMAIL = 'admin@admin.local'
+
+export const signInAsAdmin = async (password) => {
   try {
     if (!auth) {
       return { 
@@ -260,38 +241,17 @@ export const signInAsAdmin = async (password = 'Admin') => {
       }
     }
 
-    const email = 'admin@admin.local'
-    // Firebase 최소 비밀번호 길이 요구사항(6자)을 만족하도록 변환
-    // 사용자가 'Admin'을 입력하면 내부적으로 'Admin123'으로 변환
-    const adminPassword = password === 'Admin' ? 'Admin123' : password
-    
-    try {
-      // 기존 계정으로 로그인 시도 (변환된 비밀번호 사용)
-      const userCredential = await signInWithEmailAndPassword(auth, email, adminPassword)
-      return { 
-        success: true, 
-        user: userCredential.user 
-      }
-    } catch (error) {
-      // 계정이 없으면 생성 후 로그인
-      if (error.code === 'auth/user-not-found' || error.code === 'auth/invalid-credential') {
-        try {
-          const userCredential = await createUserWithEmailAndPassword(auth, email, adminPassword)
-          return { 
-            success: true, 
-            user: userCredential.user 
-          }
-        } catch (signUpError) {
-          return { 
-            success: false, 
-            error: signUpError.message || '로그인에 실패했습니다.' 
-          }
-        }
-      }
-      return { success: false, error: error.message }
+    // 관리자 계정은 Firebase Console에서 미리 만들어 둔 admin@admin.local 하나만 사용 (자동 생성 안 함)
+    const userCredential = await signInWithEmailAndPassword(auth, ADMIN_EMAIL, password)
+    return { 
+      success: true, 
+      user: userCredential.user 
     }
   } catch (error) {
     console.error('관리자 로그인 오류:', error)
+    if (error.code === 'auth/invalid-credential' || error.code === 'auth/wrong-password' || error.code === 'auth/user-not-found') {
+      return { success: false, error: '관리자 비밀번호가 올바르지 않습니다.' }
+    }
     return { 
       success: false, 
       error: error.message || '로그인 중 오류가 발생했습니다.' 

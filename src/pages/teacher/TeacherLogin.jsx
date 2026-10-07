@@ -23,8 +23,8 @@ function TeacherLogin() {
     e.preventDefault()
     setError('')
     
-    // 관리자 로그인 체크 (학교 코드: Admin, 비밀번호: Admin)
-    if (schoolCode === 'Admin' && password === 'Admin') {
+    // 관리자 로그인 체크 (학교 코드: Admin, 비밀번호: 관리자 계정 비밀번호)
+    if (schoolCode === 'Admin') {
       setLoading(true)
       try {
         const result = await signInAsAdmin(password)

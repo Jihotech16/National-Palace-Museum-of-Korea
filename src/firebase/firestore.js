@@ -11,11 +11,13 @@ import {
   orderBy,
   serverTimestamp,
   runTransaction,
-  increment
+  increment,
+  deleteField
 } from 'firebase/firestore'
 import { db } from './config'
 import { checkAnswer, checkMultipleAnswers, ANSWERS } from '../utils/answerCheck'
 import { getExhibitionHallFromActivityId } from '../utils/activityOrder'
+import { sha256Hex } from '../utils/hash'
 
 // 사용자 활동지 데이터 저장 (구조 문서 기반)
 export const saveActivityData = async (userId, activityId, data, questionData = null, userEmail = null) => {
@@ -273,8 +275,8 @@ export const getTeacherInfo = async (schoolCode, grade, classNum) => {
   }
 }
 
-// 교사 정보 저장 (관리자가 사용)
-export const createTeacherAccount = async (schoolCode, grade, classNum, password) => {
+// 교사 등록/재확인: 학교 비밀번호 해시가 schoolSecrets와 일치해야 보안 규칙이 허용함
+export const registerTeacher = async (schoolCode, grade, classNum, password) => {
   try {
     if (!db) {
       return { success: false, error: 'Firestore가 초기화되지 않았습니다.' }
@@ -282,21 +284,24 @@ export const createTeacherAccount = async (schoolCode, grade, classNum, password
     
     const teacherId = `${schoolCode}-${grade}-${classNum}`
     const teacherRef = doc(db, 'teachers', teacherId)
+    const passwordHash = await sha256Hex(password)
+    const existing = await getDoc(teacherRef)
     
     await setDoc(teacherRef, {
       teacherId, // 문서 ID와 동일한 값 저장
       schoolCode: String(schoolCode),
       grade: Number(grade),
       classNum: Number(classNum),
-      password, // 평문 저장 (보안을 위해 나중에 해시로 변경 가능)
-      createdAt: serverTimestamp(),
-      lastLogin: null
-    })
+      passwordHash,
+      password: deleteField(), // 예전 평문 비밀번호 필드 제거
+      lastLogin: serverTimestamp(),
+      ...(existing.exists() ? {} : { createdAt: serverTimestamp() })
+    }, { merge: true })
     
     return { success: true }
   } catch (error) {
-    console.error('교사 계정 생성 오류:', error)
-    return { success: false, error: error.message }
+    console.error('교사 등록 오류:', error)
+    return { success: false, error: error.message, code: error.code }
   }
 }
 
@@ -387,10 +392,10 @@ export const createSchool = async (schoolName, schoolCode, password) => {
     await setDoc(schoolRef, {
       schoolName,
       schoolCode,
-      password, // 평문 저장 (보안을 위해 나중에 해시로 변경 가능)
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp()
     })
+    await setSchoolPasswordHash(schoolCode, password)
     
     return { success: true }
   } catch (error) {
@@ -420,12 +425,70 @@ export const updateSchool = async (schoolCode, updates) => {
   }
 }
 
+// 학교 비밀번호 해시 저장 (schoolSecrets는 공개 읽기가 막힌 별도 컬렉션)
+const setSchoolPasswordHash = async (schoolCode, password) => {
+  const passwordHash = await sha256Hex(password)
+  await setDoc(doc(db, 'schoolSecrets', schoolCode), {
+    passwordHash,
+    updatedAt: serverTimestamp()
+  })
+}
+
+// 학교 비밀번호 확인 (관리자, 또는 해당 학교 교사만 읽을 수 있음)
+export const verifySchoolPassword = async (schoolCode, password) => {
+  try {
+    if (!db) {
+      return { success: false, error: 'Firestore가 초기화되지 않았습니다.' }
+    }
+    const secretDoc = await getDoc(doc(db, 'schoolSecrets', schoolCode))
+    if (!secretDoc.exists()) {
+      return { success: false, error: '학교 비밀번호 정보를 찾을 수 없습니다.' }
+    }
+    const passwordHash = await sha256Hex(password)
+    return { success: true, match: secretDoc.data().passwordHash === passwordHash }
+  } catch (error) {
+    console.error('학교 비밀번호 확인 오류:', error)
+    return { success: false, error: error.message }
+  }
+}
+
 // 학교 비밀번호 변경
 export const updateSchoolPassword = async (schoolCode, newPassword) => {
   try {
-    return await updateSchool(schoolCode, { password: newPassword })
+    await setSchoolPasswordHash(schoolCode, newPassword)
+    return await updateSchool(schoolCode, { password: deleteField() })
   } catch (error) {
     console.error('학교 비밀번호 변경 오류:', error)
+    return { success: false, error: error.message }
+  }
+}
+
+// 예전 평문 비밀번호를 schoolSecrets 해시로 옮기고, 교사 문서의 평문 비밀번호도 제거 (관리자 화면에서 실행)
+export const migratePlaintextPasswords = async () => {
+  try {
+    if (!db) {
+      return { success: false, error: 'Firestore가 초기화되지 않았습니다.' }
+    }
+    let migrated = 0
+    const schoolsSnapshot = await getDocs(collection(db, 'schools'))
+    for (const schoolDoc of schoolsSnapshot.docs) {
+      const data = schoolDoc.data()
+      if (typeof data.password === 'string' && data.password) {
+        await setSchoolPasswordHash(schoolDoc.id, data.password)
+        await updateDoc(schoolDoc.ref, { password: deleteField() })
+        migrated++
+      }
+    }
+    const teachersSnapshot = await getDocs(collection(db, 'teachers'))
+    for (const teacherDoc of teachersSnapshot.docs) {
+      if (teacherDoc.data().password !== undefined) {
+        await updateDoc(teacherDoc.ref, { password: deleteField() })
+        migrated++
+      }
+    }
+    return { success: true, migrated }
+  } catch (error) {
+    console.error('비밀번호 이전 오류:', error)
     return { success: false, error: error.message }
   }
 }
@@ -476,8 +539,11 @@ export const deleteAllSchoolData = async (schoolCode, password) => {
       return { success: false, error: '학교 정보를 찾을 수 없습니다.' }
     }
     
-    const schoolData = schoolDoc.data()
-    if (schoolData.password !== password) {
+    const verifyResult = await verifySchoolPassword(schoolCode, password)
+    if (!verifyResult.success) {
+      return { success: false, error: verifyResult.error }
+    }
+    if (!verifyResult.match) {
       return { success: false, error: '비밀번호가 일치하지 않습니다.' }
     }
     
