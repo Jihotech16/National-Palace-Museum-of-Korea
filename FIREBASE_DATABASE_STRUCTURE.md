@@ -4,7 +4,18 @@
 
 학생 로그인 시 교사와 자동으로 연동되도록 설계된 Firebase Firestore 데이터베이스 구조입니다.
 
-## 학번 형식
+## ⚠️ 학생 입장 방식 변경 (개인정보 미수집)
+
+아래 문서의 "학번 형식"과 `@student.local` 이메일 계정 방식은 **더 이상 사용하지 않습니다.** 현재 구조:
+
+- 학생은 **익명 로그인** 후 교사가 만든 **수업 코드 + 번호**로 입장합니다. 이름·학교명·이메일은 받지 않습니다.
+- `sessions/{code}`: 수업 코드 (`classId`, `active`, `expiresAt` — 7일)
+- `users/{classId}-{번호}`: 학생 기록. 저장 가능한 필드는 보안 규칙으로 고정 (`studentId, classId, schoolCode, grade, classNum, number, sessionCode, members, lastLogin, expiresAt`)
+- `members/{익명 uid}`: 기기 → 학생 문서 연결 (본인만 읽기)
+- `users/{id}/activities/{activityId}`: 답안·진도. 그리기 활동 그림은 서버에 올리지 않고 기기에만 저장
+- 모든 학생 문서에 `expiresAt`(30일)을 넣고 `firestore.indexes.json`의 TTL 정책으로 자동 삭제합니다.
+
+## 학번 형식 (예전 방식)
 
 학번은 다음과 같은 형식으로 구성됩니다:
 - **형식**: `{schoolCode}{grade}{classNum}{number}`

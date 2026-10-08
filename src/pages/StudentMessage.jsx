@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { getClassMessagesForStudent, markMessageAsRead } from '../firebase/firestore'
+import { getClassMessagesForStudent, markMessageAsRead, resolveStudentId } from '../firebase/firestore'
 import { doc, getDoc } from 'firebase/firestore'
 import { db } from '../firebase/config'
 import StudentLayout from '../components/StudentLayout'
@@ -23,8 +23,7 @@ function StudentMessage({ user }) {
     try {
       setLoading(true)
       // user 객체에서 email을 가져오거나, user 자체가 email 문자열일 수 있음
-      const userEmail = user?.email || user
-      const result = await getClassMessagesForStudent(userEmail)
+      const result = await getClassMessagesForStudent()
       if (result.success) {
         setMessages(result.messages || [])
       } else {
@@ -41,20 +40,14 @@ function StudentMessage({ user }) {
 
   const handleMessageClick = async (message) => {
     // 메시지 읽음 처리
-    const userEmail = user?.email || user
-    if (message.unread && userEmail) {
+    if (message.unread && user?.uid) {
       try {
-        // userEmail에서 학번 추출
-        const studentId = userEmail.replace('@student.local', '')
+        // 이 기기가 연결된 학생 문서에서 classId 가져오기
+        const studentId = await resolveStudentId(user.uid)
+        const userDoc = studentId ? await getDoc(doc(db, 'users', studentId)) : null
         
-        // 학생 정보에서 classId 가져오기
-        const userRef = doc(db, 'users', studentId)
-        const userDoc = await getDoc(userRef)
-        
-        if (userDoc.exists()) {
-          const userData = userDoc.data()
-          const { schoolCode, grade, classNum } = userData
-          const classId = `${schoolCode}-${grade}-${classNum}`
+        if (userDoc?.exists()) {
+          const { classId } = userDoc.data()
           
           // 읽음 처리
           await markMessageAsRead(message.id, classId, studentId)

@@ -12,12 +12,33 @@ import {
   serverTimestamp,
   runTransaction,
   increment,
-  deleteField
+  deleteField,
+  arrayUnion,
+  writeBatch,
+  Timestamp
 } from 'firebase/firestore'
-import { db } from './config'
+import { db, auth } from './config'
 import { checkAnswer, checkMultipleAnswers, ANSWERS } from '../utils/answerCheck'
 import { getExhibitionHallFromActivityId } from '../utils/activityOrder'
 import { sha256Hex } from '../utils/hash'
+
+// ========== 개인정보 최소화 ==========
+// 학생은 익명 로그인 + 수업 코드 + 번호로만 입장합니다.
+// 학생 문서 ID(studentId)는 `${classId}-${번호}` 형식이며 이름·학교명은 저장하지 않습니다.
+// 모든 학생 데이터에는 expiresAt을 넣어 Firestore TTL 정책으로 자동 삭제되게 합니다.
+export const RETENTION_DAYS = 30
+export const SESSION_VALID_DAYS = 7
+
+const daysFromNow = (days) => Timestamp.fromMillis(Date.now() + days * 24 * 60 * 60 * 1000)
+
+// 로그인한 기기(익명 uid)를 학생 문서 ID로 바꿉니다.
+// 교사 화면처럼 이미 studentId를 넘기는 경우에는 그대로 돌려줍니다.
+export const resolveStudentId = async (userId) => {
+  if (!userId) return null
+  if (!auth?.currentUser || auth.currentUser.uid !== userId) return userId
+  const memberDoc = await getDoc(doc(db, 'members', userId))
+  return memberDoc.exists() ? memberDoc.data().studentId : null
+}
 
 // 사용자 활동지 데이터 저장 (구조 문서 기반)
 export const saveActivityData = async (userId, activityId, data, questionData = null, userEmail = null) => {
@@ -30,35 +51,9 @@ export const saveActivityData = async (userId, activityId, data, questionData = 
       return { success: false, error: '사용자 ID가 없습니다.' }
     }
     
-    // userId가 Firebase Auth UID인 경우, userEmail에서 학번 추출
-    // userEmail 형식: {studentId}@student.local
-    let studentId = userId
-    
-    // userId가 Firebase Auth UID 형식인지 확인 (28자 길이의 랜덤 문자열)
-    const isFirebaseUID = userId && userId.length > 20 && !/^\d+$/.test(userId)
-    
-    if (isFirebaseUID) {
-      // Firebase Auth UID인 경우, userEmail 파라미터에서 학번 추출
-      // userEmail 형식: {studentId}@student.local
-      if (userEmail && typeof userEmail === 'string' && userEmail.includes('@student.local')) {
-        // userEmail에서 학번 추출
-        studentId = userEmail.replace('@student.local', '')
-      } else {
-        // userEmail이 없으면 users/{userId} 문서에서 studentId 찾기 시도
-        const userRef = doc(db, 'users', userId)
-        const userDoc = await getDoc(userRef)
-        
-        if (userDoc.exists()) {
-          const userData = userDoc.data()
-          studentId = userData.studentId || userId
-        } else {
-          console.error('학번을 찾을 수 없습니다. user.email을 전달해야 합니다.')
-          return { success: false, error: '학번을 찾을 수 없습니다. user.email에서 학번을 추출할 수 없습니다.' }
-        }
-      }
-    } else {
-      // userId가 이미 학번 형식인 경우 (6자리 숫자)
-      studentId = userId
+    const studentId = await resolveStudentId(userId)
+    if (!studentId) {
+      return { success: false, error: '수업 정보를 찾을 수 없습니다. 다시 입장해주세요.' }
     }
     
     const activityRef = doc(db, 'users', studentId, 'activities', activityId)
@@ -100,7 +95,8 @@ export const saveActivityData = async (userId, activityId, data, questionData = 
       answerField,
       ...data,  // 학생이 입력한 답변
       correctAnswer: correctAnswer || existingData.correctAnswer || '',
-      updatedAt: serverTimestamp()
+      updatedAt: serverTimestamp(),
+      expiresAt: daysFromNow(RETENTION_DAYS)
     }
     
     // 단일 답변인 경우 studentAnswer 필드 추가
@@ -137,7 +133,8 @@ export const saveActivityData = async (userId, activityId, data, questionData = 
 // 활동지 완료 상태 확인
 export const checkActivityCompleted = async (userId, activityId) => {
   try {
-    const activityRef = doc(db, 'users', userId, 'activities', activityId)
+    const studentId = await resolveStudentId(userId)
+    const activityRef = doc(db, 'users', studentId, 'activities', activityId)
     const docSnap = await getDoc(activityRef)
     
     if (docSnap.exists()) {
@@ -154,23 +151,9 @@ export const checkActivityCompleted = async (userId, activityId) => {
 // 사용자 활동지 데이터 불러오기
 export const getActivityData = async (userId, activityId, userEmail = null) => {
   try {
-    // userId가 Firebase Auth UID인 경우, userEmail에서 학번 추출
-    let studentId = userId
-    const isFirebaseUID = userId && userId.length > 20 && !/^\d+$/.test(userId)
-    
-    if (isFirebaseUID) {
-      if (userEmail && userEmail.includes('@student.local')) {
-        studentId = userEmail.replace('@student.local', '')
-      } else {
-        // userEmail이 없으면 users/{userId} 문서에서 studentId 찾기 시도
-        const userRef = doc(db, 'users', userId)
-        const userDoc = await getDoc(userRef)
-        
-        if (userDoc.exists()) {
-          const userData = userDoc.data()
-          studentId = userData.studentId || userId
-        }
-      }
+    const studentId = await resolveStudentId(userId)
+    if (!studentId) {
+      return { success: false, error: '수업 정보를 찾을 수 없습니다.' }
     }
     
     const activityRef = doc(db, 'users', studentId, 'activities', activityId)
@@ -193,24 +176,9 @@ export const getAllActivityStatus = async (userId, userEmail = null) => {
       return { success: false, error: 'Firestore가 초기화되지 않았습니다.', status: {} }
     }
     
-    // userId가 Firebase Auth UID인 경우, userEmail에서 학번 추출
-    let studentId = userId
-    const isFirebaseUID = userId && userId.length > 20 && !/^\d+$/.test(userId)
-    
-    if (isFirebaseUID) {
-      if (userEmail && typeof userEmail === 'string' && userEmail.includes('@student.local')) {
-        // userEmail에서 학번 추출
-        studentId = userEmail.replace('@student.local', '')
-      } else {
-        // userEmail이 없으면 users/{userId} 문서에서 studentId 찾기 시도
-        const userRef = doc(db, 'users', userId)
-        const userDoc = await getDoc(userRef)
-        
-        if (userDoc.exists()) {
-          const userData = userDoc.data()
-          studentId = userData.studentId || userId
-        }
-      }
+    const studentId = await resolveStudentId(userId)
+    if (!studentId) {
+      return { success: false, error: '수업 정보를 찾을 수 없습니다.', status: {} }
     }
     
     const activitiesRef = collection(db, 'users', studentId, 'activities')
@@ -947,153 +915,149 @@ export const parseStudentId = (studentId) => {
   return { schoolCode, grade, classNum, number }
 }
 
-// 학생 정보 저장/업데이트 (로그인 시 호출)
-export const createOrUpdateStudent = async (studentId, schoolCode, grade, classNum, number, schoolName) => {
+// ========== 수업 코드 (교사가 만들고 학생이 입력) ==========
+
+// 헷갈리기 쉬운 글자(0/O, 1/I/L)는 뺀 6자리 코드
+const SESSION_CODE_CHARS = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789'
+
+const generateSessionCode = () => {
+  const values = crypto.getRandomValues(new Uint32Array(6))
+  return Array.from(values, (v) => SESSION_CODE_CHARS[v % SESSION_CODE_CHARS.length]).join('')
+}
+
+const normalizeSessionCode = (code) => String(code || '').trim().toUpperCase().replace(/[^A-Z0-9]/g, '')
+
+const isSessionOpen = (session) =>
+  session && session.active === true && session.expiresAt?.toMillis?.() > Date.now()
+
+// 교사: 우리 반의 사용 중인 수업 코드 조회
+export const getActiveClassSession = async (schoolCode, grade, classNum) => {
+  try {
+    const classId = `${schoolCode}-${grade}-${classNum}`
+    const sessionsQuery = query(
+      collection(db, 'sessions'),
+      where('classId', '==', classId),
+      where('active', '==', true)
+    )
+    const snapshot = await getDocs(sessionsQuery)
+    const open = snapshot.docs
+      .map((d) => d.data())
+      .filter(isSessionOpen)
+      .sort((a, b) => b.expiresAt.toMillis() - a.expiresAt.toMillis())
+    return { success: true, session: open[0] || null }
+  } catch (error) {
+    console.error('수업 코드 조회 오류:', error)
+    return { success: false, error: error.message, session: null }
+  }
+}
+
+// 교사: 새 수업 코드 만들기 (기존 코드는 닫음)
+export const createClassSession = async (schoolCode, grade, classNum) => {
+  try {
+    const classId = `${schoolCode}-${grade}-${classNum}`
+    const current = await getActiveClassSession(schoolCode, grade, classNum)
+    if (current.session) {
+      await updateDoc(doc(db, 'sessions', current.session.code), { active: false })
+    }
+
+    // 코드가 겹치면 다시 만듭니다
+    for (let attempt = 0; attempt < 5; attempt++) {
+      const code = generateSessionCode()
+      const sessionRef = doc(db, 'sessions', code)
+      const created = await runTransaction(db, async (transaction) => {
+        const existing = await transaction.get(sessionRef)
+        if (existing.exists()) return false
+        transaction.set(sessionRef, {
+          code,
+          classId,
+          schoolCode: String(schoolCode),
+          grade: Number(grade),
+          classNum: Number(classNum),
+          active: true,
+          createdAt: serverTimestamp(),
+          expiresAt: daysFromNow(SESSION_VALID_DAYS)
+        })
+        return true
+      })
+      if (created) {
+        const snap = await getDoc(sessionRef)
+        return { success: true, session: snap.data() }
+      }
+    }
+    return { success: false, error: '수업 코드를 만들지 못했습니다. 다시 시도해주세요.' }
+  } catch (error) {
+    console.error('수업 코드 생성 오류:', error)
+    return { success: false, error: error.message }
+  }
+}
+
+// 교사: 수업 코드 닫기 (더 이상 새로 입장할 수 없음)
+export const closeClassSession = async (code) => {
+  try {
+    await updateDoc(doc(db, 'sessions', normalizeSessionCode(code)), { active: false })
+    return { success: true }
+  } catch (error) {
+    console.error('수업 코드 닫기 오류:', error)
+    return { success: false, error: error.message }
+  }
+}
+
+// 학생: 수업 코드 + 번호로 입장
+// 익명 로그인된 상태(uid)에서 호출합니다. 같은 번호로 다른 기기에서 들어와도 같은 기록을 이어 씁니다.
+export const joinClassSession = async (uid, sessionCode, number) => {
   try {
     if (!db) {
       return { success: false, error: 'Firestore가 초기화되지 않았습니다.' }
     }
-    
-    // 숫자 변환 및 유효성 검사
-    // grade, classNum, number가 이미 숫자인지 확인
-    let gradeNum, classNumNum, numberNum
-    
-    if (typeof grade === 'number') {
-      gradeNum = isNaN(grade) ? 0 : grade
-    } else {
-      const gradeStr = String(grade || '').trim()
-      gradeNum = gradeStr === '' || isNaN(Number(gradeStr)) ? 0 : Number(gradeStr)
+
+    const code = normalizeSessionCode(sessionCode)
+    const numberNum = Number(number)
+    if (!code || !Number.isInteger(numberNum) || numberNum < 1 || numberNum > 99) {
+      return { success: false, error: '수업 코드와 번호를 확인해주세요.' }
     }
-    
-    if (typeof classNum === 'number') {
-      classNumNum = isNaN(classNum) ? 0 : classNum
-    } else {
-      const classNumStr = String(classNum || '').trim()
-      classNumNum = classNumStr === '' || isNaN(Number(classNumStr)) ? 0 : Number(classNumStr)
+
+    const sessionDoc = await getDoc(doc(db, 'sessions', code))
+    const session = sessionDoc.exists() ? sessionDoc.data() : null
+    if (!isSessionOpen(session)) {
+      return { success: false, error: '사용할 수 없는 수업 코드입니다.\n선생님께 코드를 다시 확인해주세요.' }
     }
-    
-    if (typeof number === 'number') {
-      numberNum = isNaN(number) ? 0 : number
-    } else {
-      const numberStr = String(number || '').trim()
-      numberNum = numberStr === '' || isNaN(Number(numberStr)) ? 0 : Number(numberStr)
-    }
-    
-    const schoolCodeStr = String(schoolCode || '1').trim()
-    
-    // 디버깅: 값 확인
-    console.log('createOrUpdateStudent - 입력값:', { 
-      studentId, 
-      schoolCode, 
-      grade, 
-      classNum, 
-      number, 
-      schoolName,
-      gradeType: typeof grade,
-      classNumType: typeof classNum,
-      numberType: typeof number
+
+    const { classId, schoolCode, grade, classNum } = session
+    const studentId = `${classId}-${numberNum}`
+    const expiresAt = daysFromNow(RETENTION_DAYS)
+
+    // 학생 문서와 기기 연결 문서를 한 번에 씁니다 (보안 규칙이 두 문서를 함께 검사)
+    const batch = writeBatch(db)
+    batch.set(doc(db, 'users', studentId), {
+      studentId,
+      classId,
+      schoolCode,
+      grade,
+      classNum,
+      number: numberNum,
+      sessionCode: code,
+      members: arrayUnion(uid),
+      lastLogin: serverTimestamp(),
+      expiresAt
+    }, { merge: true })
+    batch.set(doc(db, 'members', uid), {
+      studentId,
+      classId,
+      schoolCode,
+      expiresAt
     })
-    console.log('createOrUpdateStudent - 변환된 값:', { 
-      gradeNum, 
-      classNumNum, 
-      numberNum, 
-      schoolCodeStr,
-      gradeNumType: typeof gradeNum,
-      classNumNumType: typeof classNumNum,
-      numberNumType: typeof numberNum
-    })
-    
-    const classId = `${schoolCodeStr}-${gradeNum}-${classNumNum}`
-    
-    // 트랜잭션으로 여러 문서를 원자적으로 업데이트
-    await runTransaction(db, async (transaction) => {
-      // 모든 읽기를 먼저 수행
-      const userRef = doc(db, 'users', studentId)
-      const studentInClassRef = doc(db, 'classes', classId, 'students', studentId)
-      const classRef = doc(db, 'classes', classId)
-      
-      const userDoc = await transaction.get(userRef)
-      const studentInClassDoc = await transaction.get(studentInClassRef)
-      const classDoc = await transaction.get(classRef)
-      
-      // 모든 쓰기 작업 수행
-      // 1. users/{studentId} 문서 생성/업데이트
-      if (userDoc.exists()) {
-        // 기존 문서 업데이트 (값이 잘못 저장된 경우를 대비해 모든 필드 업데이트)
-        transaction.update(userRef, {
-          schoolCode: schoolCodeStr,
-          grade: gradeNum,
-          classNum: classNumNum,
-          number: numberNum,
-          schoolName: schoolName || userDoc.data()?.schoolName || null,
-          lastLogin: serverTimestamp(),
-          lastActivity: serverTimestamp()
-        })
-      } else {
-        // 새 문서 생성
-        transaction.set(userRef, {
-          studentId,
-          schoolCode: schoolCodeStr,
-          grade: gradeNum,
-          classNum: classNumNum,
-          number: numberNum,
-          schoolName: schoolName || null,
-          createdAt: serverTimestamp(),
-          lastLogin: serverTimestamp(),
-          lastActivity: serverTimestamp()
-        })
-      }
-      
-      // 2. classes/{classId}/students/{studentId} 문서 생성/업데이트
-      const isNewStudent = !studentInClassDoc.exists()
-      
-      if (studentInClassDoc.exists()) {
-        // 기존 문서 업데이트
-        transaction.update(studentInClassRef, {
-          isActive: true
-        })
-      } else {
-        // 새 문서 생성
-        transaction.set(studentInClassRef, {
-          studentId,
-          number: numberNum,
-          joinedAt: serverTimestamp(),
-          isActive: true
-        })
-      }
-      
-      // 3. classes/{classId} 문서 생성/업데이트
-      if (classDoc.exists()) {
-        // 기존 문서 업데이트 (totalStudents는 학생이 새로 추가된 경우에만 증가)
-        if (isNewStudent) {
-          transaction.update(classRef, {
-            totalStudents: increment(1),
-            updatedAt: serverTimestamp()
-          })
-        } else {
-          transaction.update(classRef, {
-            updatedAt: serverTimestamp()
-          })
-        }
-      } else {
-        // 새 문서 생성
-        // teacherId는 교사가 로그인할 때 설정되므로 여기서는 null로 설정
-        transaction.set(classRef, {
-          classId,
-          schoolCode: schoolCodeStr,
-          grade: gradeNum,
-          classNum: classNumNum,
-          teacherId: null, // 교사가 로그인할 때 설정됨
-          totalStudents: 1,
-          createdAt: serverTimestamp(),
-          updatedAt: serverTimestamp()
-        })
-      }
-    })
-    
-    return { success: true }
+    batch.set(doc(db, 'classes', classId, 'students', studentId), {
+      studentId,
+      number: numberNum,
+      isActive: true,
+      joinedAt: serverTimestamp(),
+      expiresAt
+    }, { merge: true })
+    await batch.commit()
+
+    return { success: true, studentId }
   } catch (error) {
-    console.error('학생 정보 저장 오류:', error)
+    console.error('수업 입장 오류:', error)
     return { success: false, error: error.message }
   }
 }
@@ -1101,30 +1065,15 @@ export const createOrUpdateStudent = async (studentId, schoolCode, grade, classN
 // ========== 메시지 관련 함수 ==========
 
 // 학생의 반 메시지 조회
-export const getClassMessagesForStudent = async (userEmail = null) => {
+export const getClassMessagesForStudent = async () => {
   try {
     if (!db) {
       return { success: false, error: 'Firestore가 초기화되지 않았습니다.', messages: [] }
     }
 
-    // userEmail에서 학번 추출
-    let studentId = null
-    let email = userEmail
-    
-    // userEmail이 없으면 Firebase Authentication에서 현재 사용자 이메일 가져오기
-    if (!email) {
-      const { auth } = await import('./config')
-      if (auth && auth.currentUser && auth.currentUser.email) {
-        email = auth.currentUser.email
-      }
-    }
-    
-    // 이메일에서 학번 추출
-    if (email && typeof email === 'string' && email.includes('@student.local')) {
-      studentId = email.replace('@student.local', '')
-    } else {
-      console.error('학번을 찾을 수 없습니다. userEmail:', userEmail, 'email:', email)
-      return { success: false, error: '학번을 찾을 수 없습니다. 로그인 상태를 확인해주세요.', messages: [] }
+    const studentId = await resolveStudentId(auth?.currentUser?.uid)
+    if (!studentId) {
+      return { success: false, error: '수업 정보를 찾을 수 없습니다. 다시 입장해주세요.', messages: [] }
     }
 
     // 학생 정보 조회 (classId 계산을 위해)

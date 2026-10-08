@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { onAuthChange, logout } from '../../firebase/auth'
 import { getTeacherInfo, getStudentsProgress, getActiveStudentsCount, deleteAllSchoolData } from '../../firebase/firestore'
 import { formatTeacherGroupLabel } from '../../utils/teacherGroupLabel'
+import ClassCodeCard from './ClassCodeCard'
 import './TeacherPage.css'
 
 function TeacherPage() {
@@ -251,6 +252,8 @@ function TeacherPage() {
                   오늘도 학생들과 즐거운 박물관 탐험 되세요.
                 </p>
               </section>
+
+              <ClassCodeCard teacherData={teacherData} />
 
           <section 
             className="teacher-activity-card teacher-activity-card-clickable"

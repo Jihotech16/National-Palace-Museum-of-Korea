@@ -868,3 +868,127 @@
   color: var(--ink-3);
   font-size: 22px;
 }
+
+/* ==========================================================
+   수업 코드 카드
+   ========================================================== */
+.teacher-code-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 20px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.teacher-code-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.teacher-code-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.teacher-code-subtitle {
+  margin-top: 4px;
+  font-size: 13px;
+  color: var(--ink-3);
+}
+
+.teacher-code-icon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: var(--radius);
+  background: var(--gold-soft);
+  color: var(--gold);
+  font-size: 22px;
+}
+
+.teacher-code-value {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  height: 72px;
+  font-family: var(--font-serif);
+  font-size: 34px;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  color: var(--ink);
+  background: var(--paper-sunken);
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--radius);
+}
+
+.teacher-code-value .material-symbols-outlined {
+  font-size: 20px;
+  letter-spacing: 0;
+  color: var(--ink-3);
+}
+
+.teacher-code-meta,
+.teacher-code-empty {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--ink-3);
+}
+
+.teacher-code-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.teacher-code-actions .teacher-code-btn {
+  flex: 1;
+}
+
+.teacher-code-btn {
+  height: 44px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  transition: background-color 0.15s ease;
+}
+
+.teacher-code-btn:hover:not(:disabled) {
+  background: var(--paper-sunken);
+}
+
+.teacher-code-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.teacher-code-btn-primary {
+  height: 48px;
+  color: var(--ink-inverse);
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.teacher-code-btn-primary:hover:not(:disabled) {
+  background: var(--accent-hover);
+}
+
+.teacher-code-btn-danger {
+  color: var(--danger);
+}
+
+.teacher-code-error {
+  font-size: 13px;
+  color: var(--danger);
+}

@@ -1,126 +1,48 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { signInWithStudentId } from '../firebase/auth'
-import { getAllSchools } from '../firebase/firestore'
+import { signInWithClassCode } from '../firebase/auth'
+import { auth } from '../firebase/config'
+import { resolveStudentId, RETENTION_DAYS } from '../firebase/firestore'
 import './Login.css'
 
 function Login() {
   useEffect(() => {
     // 라이트(한지) 테마 사용
     document.documentElement.classList.remove('dark')
-    return () => {
-      // 필요시 언마운트 시 제거
-    }
   }, [])
-  const [schools, setSchools] = useState([])
-  const [selectedSchool, setSelectedSchool] = useState('')
-  const [schoolSearchQuery, setSchoolSearchQuery] = useState('')
-  const [grade, setGrade] = useState('')
-  const [classNum, setClassNum] = useState('')
+  const [sessionCode, setSessionCode] = useState('')
   const [number, setNumber] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
-  const [loadingSchools, setLoadingSchools] = useState(true)
-  const [schoolError, setSchoolError] = useState('')
   const navigate = useNavigate()
 
-  // 학교 목록 로드
+  // 이미 이 기기로 입장한 학생이면 바로 박물관 선택으로 이동
   useEffect(() => {
-    const loadSchools = async () => {
-      setLoadingSchools(true)
-      setSchoolError('')
-      const result = await getAllSchools()
-      if (result.success) {
-        setSchools(result.schools || [])
-        if (result.schools && result.schools.length === 0) {
-          setSchoolError('등록된 학교가 없습니다.')
-        }
-      } else {
-        setSchoolError('학교 목록을 불러오는데 실패했습니다.')
-      }
-      setLoadingSchools(false)
-    }
-    loadSchools()
-  }, [])
-
-  // 필터링된 학교 목록
-  const filteredSchools = schools.filter(school => 
-    school.schoolName?.toLowerCase().includes(schoolSearchQuery.toLowerCase()) ||
-    school.id?.toLowerCase().includes(schoolSearchQuery.toLowerCase())
-  )
-
-  // 학교 선택 핸들러
-  const handleSchoolSelect = (schoolId) => {
-    setSelectedSchool(schoolId)
-    const selected = schools.find(s => s.id === schoolId)
-    if (selected) {
-      setSchoolSearchQuery(selected.schoolName || selected.id)
-    }
-  }
-
-  // 선택된 값들로부터 학번 생성 (학교 + 학년 + 반 + 번호)
-  const generateStudentId = () => {
-    if (!selectedSchool || !grade || !classNum || !number) {
-      return ''
-    }
-    // 선택된 학교의 schoolCode 사용
-    const selectedSchoolData = schools.find(s => s.id === selectedSchool)
-    const schoolCode = selectedSchoolData?.schoolCode || '1'
-    
-    // 형식: 학교(1자리) + 학년(1자리) + 반(2자리) + 번호(2자리) = 6자리
-    const formattedClass = String(classNum).padStart(2, '0')
-    const formattedNumber = String(number).padStart(2, '0')
-    return `${schoolCode}${grade}${formattedClass}${formattedNumber}`
-  }
+    const user = auth?.currentUser
+    if (!user?.isAnonymous) return
+    resolveStudentId(user.uid).then((studentId) => {
+      if (studentId) navigate('/choice-museum', { replace: true })
+    })
+  }, [navigate])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     setError('')
+
+    if (!sessionCode.trim() || !number) {
+      setError('수업 코드와 번호를 모두 입력해주세요.')
+      return
+    }
+
     setLoading(true)
-
-    if (!selectedSchool || !grade || !classNum || !number) {
-      setError('학교, 학년, 반, 번호를 모두 입력해주세요.')
-      setLoading(false)
-      return
-    }
-
-    const studentId = generateStudentId()
-    const selectedSchoolData = schools.find(s => s.id === selectedSchool)
-    const schoolName = selectedSchoolData?.schoolName || null
-    const schoolCode = selectedSchoolData?.schoolCode || '1'
-
-    // 숫자로 변환하여 전달 (빈 문자열 체크)
-    const gradeNum = grade && grade.trim() !== '' ? Number(grade) : null
-    const classNumNum = classNum && classNum.trim() !== '' ? Number(classNum) : null
-    const numberNum = number && number.trim() !== '' ? Number(number) : null
-
-    // 유효성 검사
-    if (isNaN(gradeNum) || isNaN(classNumNum) || isNaN(numberNum)) {
-      setError('학년, 반, 번호는 올바른 숫자여야 합니다.')
-      setLoading(false)
-      return
-    }
-
-    const result = await signInWithStudentId(
-      studentId, 
-      schoolName,
-      schoolCode,
-      gradeNum,
-      classNumNum,
-      numberNum
-    )
-
+    const result = await signInWithClassCode(sessionCode, Number(number))
     setLoading(false)
 
     if (result.success) {
       navigate('/choice-museum')
     } else {
-      // 에러 메시지 처리
-      let errorMessage = result.error || '로그인에 실패했습니다.'
-      
-      // 줄바꿈을 <br>로 변환하여 표시
-      const errorLines = errorMessage.split('\n')
-      
+      // 줄바꿈을 나눠서 표시
+      const errorLines = (result.error || '입장에 실패했습니다.').split('\n')
       setError(
         <div>
           {errorLines.map((line, index) => (
@@ -141,7 +63,7 @@ function Login() {
         >
           <span className="material-symbols-outlined">arrow_back</span>
         </button>
-        <h2 className="login-app-bar-title">로그인</h2>
+        <h2 className="login-app-bar-title">입장하기</h2>
         <div className="login-app-bar-spacer"></div>
       </div>
 
@@ -156,94 +78,28 @@ function Login() {
             탐험을 시작해볼까요?
           </h3>
           <p className="login-headline-subtitle">
-            반가워요! 학생 정보를 입력하고<br/>나만의 박물관 미션을 시작하세요.
+            선생님이 알려준 수업 코드와<br/>내 번호를 입력하고 미션을 시작하세요.
           </p>
         </div>
 
         {/* Form Section */}
         <form onSubmit={handleSubmit} className="login-form-new">
-          {/* School Input */}
+          {/* Class Code Input */}
           <label className="login-form-field-new">
-            <span className="login-form-label-new">학교</span>
-            <div className="login-school-input-wrapper">
-              <input 
-                className="login-school-input"
+            <span className="login-form-label-new">수업 코드</span>
+            <div className="login-input-wrapper-new">
+              <input
+                className="login-input-new login-code-input"
                 type="text"
-                value={schoolSearchQuery}
-                onChange={(e) => {
-                  setSchoolSearchQuery(e.target.value)
-                  if (selectedSchool) {
-                    const currentSchool = schools.find(s => s.id === selectedSchool)
-                    if (!e.target.value || e.target.value !== (currentSchool?.schoolName || currentSchool?.id)) {
-                      setSelectedSchool('')
-                    }
-                  }
-                }}
-                onFocus={() => {
-                  // 포커스 시 드롭다운 표시를 위한 처리
-                }}
-                placeholder="학교 이름을 검색하세요"
-                disabled={loadingSchools}
+                value={sessionCode}
+                onChange={(e) => setSessionCode(e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 6))}
+                placeholder="선생님이 알려준 6자리"
+                autoComplete="off"
+                autoCapitalize="characters"
+                spellCheck="false"
               />
-              <div className="login-school-input-icon">
-                <span className="material-symbols-outlined">search</span>
-              </div>
-              {/* School Dropdown */}
-              {schoolSearchQuery && filteredSchools.length > 0 && !selectedSchool && (
-                <div className="login-school-dropdown">
-                  {filteredSchools.map(school => (
-                    <div
-                      key={school.id}
-                      className="login-school-dropdown-item"
-                      onClick={() => handleSchoolSelect(school.id)}
-                    >
-                      {school.schoolName || school.id}
-                    </div>
-                  ))}
-                </div>
-              )}
             </div>
           </label>
-
-          {/* Grade & Class Row */}
-          <div className="login-form-row">
-            <label className="login-form-field-new login-form-field-flex">
-              <span className="login-form-label-new">학년</span>
-              <div className="login-input-wrapper-new">
-                <input 
-                  className="login-input-new"
-                  type="number"
-                  inputMode="numeric"
-                  pattern="\d*"
-                  value={grade}
-                  onChange={(e) => setGrade(e.target.value)}
-                  placeholder="1"
-                  min="1"
-                  max="6"
-                  autoComplete="off"
-                />
-                <span className="login-input-suffix">학년</span>
-              </div>
-            </label>
-            <label className="login-form-field-new login-form-field-flex">
-              <span className="login-form-label-new">반</span>
-              <div className="login-input-wrapper-new">
-                <input 
-                  className="login-input-new"
-                  type="number"
-                  inputMode="numeric"
-                  pattern="\d*"
-                  value={classNum}
-                  onChange={(e) => setClassNum(e.target.value)}
-                  placeholder="1"
-                  min="1"
-                  max="20"
-                  autoComplete="off"
-                />
-                <span className="login-input-suffix">반</span>
-              </div>
-            </label>
-          </div>
 
           {/* Number Row */}
           <label className="login-form-field-new">
@@ -258,14 +114,18 @@ function Login() {
                 onChange={(e) => setNumber(e.target.value)}
                 placeholder="1"
                 min="1"
-                max="50"
+                max="99"
                 autoComplete="off"
               />
               <span className="login-input-suffix">번</span>
             </div>
           </label>
 
-          {schoolError && <div className="login-error-message">{schoolError}</div>}
+          <p className="login-privacy-note">
+            <span className="material-symbols-outlined">verified_user</span>
+            이름이나 학교 같은 개인정보는 받지 않아요. 기록은 {RETENTION_DAYS}일 뒤 자동으로 지워져요.
+          </p>
+
           {error && <div className="login-error-message">{error}</div>}
         </form>
       </main>
@@ -279,7 +139,7 @@ function Login() {
             className="login-submit-button-new"
             disabled={loading}
           >
-            <span>{loading ? '처리 중...' : '로그인 및 박물관 선택하기'}</span>
+            <span>{loading ? '처리 중...' : '입장하기'}</span>
             <span className="material-symbols-outlined login-submit-icon-new">arrow_forward</span>
           </button>
         </div>

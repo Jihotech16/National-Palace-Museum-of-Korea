@@ -44,8 +44,7 @@ function ExhibitionHallList({ user }) {
   useEffect(() => {
     const loadActivityStatus = async () => {
       if (user && user.uid) {
-        // user.email에서 학번 추출하여 전달
-        const result = await getAllActivityStatus(user.uid, user.email)
+        const result = await getAllActivityStatus(user.uid)
         if (result.success) {
           setActivityStatus(result.status || {})
         }

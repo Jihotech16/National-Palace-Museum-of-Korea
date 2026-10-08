@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { logout } from '../firebase/auth'
 import { doc, getDoc } from 'firebase/firestore'
 import { db } from '../firebase/config'
-import { getSchoolInfo } from '../firebase/firestore'
+import { getSchoolInfo, resolveStudentId } from '../firebase/firestore'
 import seoulMuseumImage from '../image/SeoulHistoryMuseum/서울역사박물관.jpeg'
 import palaceMuseumImage from '../image/NationalPalaceMuseum/국립고궁박물관.jpg'
 import './ChoiceMuseum.css'
@@ -52,27 +52,13 @@ function ChoiceMuseum({ user }) {
     try {
       setLoading(true)
       
-      // user.uid가 Firebase Auth UID인 경우, user.email에서 학번 추출
-      let studentId = user.uid
-      const isFirebaseUID = user.uid && user.uid.length > 20 && !/^\d+$/.test(user.uid)
-      
-      if (isFirebaseUID) {
-        if (user.email && typeof user.email === 'string' && user.email.includes('@student.local')) {
-          // userEmail에서 학번 추출
-          studentId = user.email.replace('@student.local', '')
-        } else {
-          // userEmail이 없으면 users/{user.uid} 문서에서 studentId 찾기 시도
-          const userRef = doc(db, 'users', user.uid)
-          const userDoc = await getDoc(userRef)
-          
-          if (userDoc.exists()) {
-            const userData = userDoc.data()
-            studentId = userData.studentId || user.uid
-          }
-        }
+      // 이 기기(익명 로그인)가 연결된 학생 문서 찾기
+      const studentId = await resolveStudentId(user.uid)
+      if (!studentId) {
+        // 아직 수업 코드로 입장하지 않은 기기
+        navigate('/login', { replace: true })
+        return
       }
-      
-      // 학번으로 users 문서 읽기
       const userRef = doc(db, 'users', studentId)
       const userDoc = await getDoc(userRef)
       
@@ -81,7 +67,7 @@ function ChoiceMuseum({ user }) {
         const schoolCode = data.schoolCode || null
         setStudentInfo({
           schoolCode,
-          schoolName: data.schoolName || '',
+          schoolName: '',
           grade: data.grade || 0,
           classNum: data.classNum || 0,
           number: data.number || 0
@@ -92,6 +78,8 @@ function ChoiceMuseum({ user }) {
           const schoolResult = await getSchoolInfo(schoolCode)
           if (schoolResult.success && schoolResult.data) {
             const data = schoolResult.data
+            // 학교 이름은 학생 문서에 저장하지 않고, 공개된 학교 정보에서 화면 표시용으로만 읽음
+            setStudentInfo((prev) => ({ ...prev, schoolName: data.schoolName || '' }))
             let periods = data.museumPeriods || null
             // 구버전 단일 필드(museumStartDate/End)만 있는 학교: 고궁 기간으로 간주 (학생 화면에서도 인식)
             const legacyStart = data.museumStartDate

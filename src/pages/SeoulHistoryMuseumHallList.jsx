@@ -49,13 +49,13 @@ function SeoulHistoryMuseumHallList({ user }) {
   // 사용자 진행률 가져오기
   useEffect(() => {
     const fetchProgress = async () => {
-      if (!user?.uid && !user?.email) {
+      if (!user?.uid) {
         setLoading(false)
         return
       }
 
       try {
-        const result = await getAllActivityStatus(user.uid, user.email)
+        const result = await getAllActivityStatus(user.uid)
         if (result.success && result.status) {
           const progress = {}
           

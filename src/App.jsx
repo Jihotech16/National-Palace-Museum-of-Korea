@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
-import { onAuthChange } from './firebase/auth'
+import { onAuthChange, logout } from './firebase/auth'
 import MainPage from './pages/MainPage'
 import PalaceLandingPage from './pages/PalaceLandingPage'
 import SeoulHistoryMuseum from './pages/SeoulHistoryMuseum'
@@ -51,6 +51,11 @@ function App() {
   useEffect(() => {
     try {
       const unsubscribe = onAuthChange(async (user) => {
+        // 예전 학번 계정(@student.local)은 개인정보 정책 변경으로 더 이상 쓰지 않음 → 로그아웃 후 수업 코드로 다시 입장
+        if (user?.email?.endsWith('@student.local')) {
+          await logout()
+          return
+        }
         setUser(user)
         if (user) {
           // 로그인 시 박물관 선택 페이지로 리다이렉트
@@ -96,7 +101,7 @@ function App() {
       <Routes>
         <Route 
           path="/login" 
-          element={user ? <Navigate to={redirectPath} replace /> : <Login />} 
+          element={user && !user.isAnonymous ? <Navigate to={redirectPath} replace /> : <Login />} 
         />
         <Route 
           path="/teacher-login" 

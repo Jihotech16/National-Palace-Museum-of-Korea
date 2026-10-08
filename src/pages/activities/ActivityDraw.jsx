@@ -1,8 +1,10 @@
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
-import { saveActivityData, getActivityData } from '../../firebase/firestore'
+import { saveActivityData } from '../../firebase/firestore'
 import { getNextActivityPath, getPreviousActivityPath, getActivityIdFromPath } from '../../utils/activityOrder'
 import './ActivityCommon.css'
+
+const DRAWING_STORAGE_KEY = 'activityDrawing'
 
 function ActivityDraw({ user }) {
   const navigate = useNavigate()
@@ -36,9 +38,15 @@ function ActivityDraw({ user }) {
     ctx.lineJoin = 'round'
   }
 
+  // 그림은 개인정보가 담길 수 있어 서버에 올리지 않고 이 기기에만 저장
   const loadCanvas = async () => {
-    const result = await getActivityData(user.uid, 'draw')
-    if (result.success && result.data && result.data.canvasData) {
+    let savedDrawing = null
+    try {
+      savedDrawing = localStorage.getItem(DRAWING_STORAGE_KEY)
+    } catch {
+      savedDrawing = null
+    }
+    if (savedDrawing) {
       const canvas = canvasRef.current
       if (!canvas) return
 
@@ -47,7 +55,7 @@ function ActivityDraw({ user }) {
       img.onload = () => {
         ctx.drawImage(img, 0, 0)
       }
-      img.src = result.data.canvasData
+      img.src = savedDrawing
     } else {
       setupCanvas()
     }
@@ -98,9 +106,14 @@ function ActivityDraw({ user }) {
     const canvas = canvasRef.current
     if (!canvas) return
 
-    const canvasData = canvas.toDataURL('image/png')
+    try {
+      localStorage.setItem(DRAWING_STORAGE_KEY, canvas.toDataURL('image/png'))
+    } catch {
+      // 저장 공간이 부족해도 완료 처리는 계속 진행
+    }
+    // 서버에는 완료 여부만 기록
     const result = await saveActivityData(user.uid, 'draw', {
-      canvasData: canvasData
+      drawingCompleted: true
     })
     if (result.success) {
       setSaved(true)

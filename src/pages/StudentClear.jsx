@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { doc, getDoc } from 'firebase/firestore'
 import { db } from '../firebase/config'
-import { getAllActivityStatus } from '../firebase/firestore'
+import { getAllActivityStatus, getSchoolInfo, resolveStudentId } from '../firebase/firestore'
 import { EXHIBITION_HALL_ACTIVITIES } from '../utils/activityOrder'
 import html2canvas from 'html2canvas'
 import StudentLayout from '../components/StudentLayout'
@@ -39,35 +39,23 @@ function StudentClear({ user }) {
     try {
       setLoading(true)
       
-      // user.uid가 Firebase Auth UID인 경우, user.email에서 학번 추출
-      let studentId = user.uid
-      const isFirebaseUID = user.uid && user.uid.length > 20 && !/^\d+$/.test(user.uid)
-      
-      if (isFirebaseUID) {
-        if (user.email && typeof user.email === 'string' && user.email.includes('@student.local')) {
-          // userEmail에서 학번 추출
-          studentId = user.email.replace('@student.local', '')
-        } else {
-          // userEmail이 없으면 users/{user.uid} 문서에서 studentId 찾기 시도
-          const userRef = doc(db, 'users', user.uid)
-          const userDoc = await getDoc(userRef)
-          
-          if (userDoc.exists()) {
-            const userData = userDoc.data()
-            studentId = userData.studentId || user.uid
-          }
-        }
+      // 이 기기(익명 로그인)가 연결된 학생 문서 찾기
+      const studentId = await resolveStudentId(user.uid)
+      if (!studentId) {
+        // 아직 수업 코드로 입장하지 않은 기기
+        navigate('/login', { replace: true })
+        return
       }
-      
-      // 학번으로 users 문서 읽기
       const userRef = doc(db, 'users', studentId)
       const userDoc = await getDoc(userRef)
       
       if (userDoc.exists()) {
         const data = userDoc.data()
+        // 학교 이름은 학생 문서에 저장하지 않고, 공개된 학교 정보에서 화면 표시용으로만 읽음
+        const schoolResult = data.schoolCode ? await getSchoolInfo(data.schoolCode) : null
         setStudentInfo({
-          name: data.name || user.displayName || '학생',
-          schoolName: data.schoolName || '',
+          name: '학생',
+          schoolName: schoolResult?.data?.schoolName || '',
           grade: data.grade || 0,
           classNum: data.classNum || 0,
           number: data.number || 0
@@ -100,8 +88,7 @@ function StudentClear({ user }) {
     try {
       if (!user || !user.uid) return
       
-      // user.email에서 학번 추출하여 전달
-      const result = await getAllActivityStatus(user.uid, user.email)
+      const result = await getAllActivityStatus(user.uid)
       if (result.success) {
         const status = result.status || {}
         setActivityStatus(status)

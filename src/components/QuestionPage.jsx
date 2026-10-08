@@ -171,8 +171,7 @@ function QuestionPage({ user, questionData }) {
     }
 
     const saveData = { [answerField]: answer }
-    // user.email에서 학번 추출 (형식: {studentId}@student.local)
-    const result = await saveActivityData(user.uid, activityId, saveData, questionData, user.email)
+    const result = await saveActivityData(user.uid, activityId, saveData, questionData)
     
     if (result.success) {
       setSaved(true)

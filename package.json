@@ -11,7 +11,8 @@
     "deploy": "npm run build && firebase deploy --only hosting",
     "cap:sync": "npm run build && npx cap sync",
     "cap:open:android": "npx cap open android",
-    "cap:open:ios": "npx cap open ios"
+    "cap:open:ios": "npx cap open ios",
+    "test:rules": "firebase emulators:exec --only firestore --project demo-palace-rules \"node --test tests/firestore.rules.test.js\""
   },
   "dependencies": {
     "@capacitor/core": "^7.2.0",
@@ -25,6 +26,7 @@
     "@capacitor/android": "^7.2.0",
     "@capacitor/cli": "^7.2.0",
     "@capacitor/ios": "^7.2.0",
+    "@firebase/rules-unit-testing": "^3.0.4",
     "@tailwindcss/vite": "^4.1.18",
     "@types/react": "^18.2.43",
     "@types/react-dom": "^18.2.17",
