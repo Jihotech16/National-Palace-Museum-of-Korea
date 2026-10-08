@@ -1,0 +1,351 @@
+/* ==========================================================
+   이용안내 — 한지 + 먹 테마
+   ========================================================== */
+.guide-container {
+  position: relative;
+  width: 100%;
+  max-width: var(--page-max);
+  margin: 0 auto;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--paper);
+  color: var(--ink);
+}
+
+/* 상단 바 */
+.guide-app-bar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  height: calc(var(--bar-h) + env(safe-area-inset-top));
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: env(safe-area-inset-top) 8px 0;
+  background: rgba(246, 241, 231, 0.92);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+
+.guide-app-bar-btn {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-full);
+  background: transparent;
+  color: var(--ink);
+  transition: background-color 0.15s ease;
+}
+
+.guide-app-bar-btn:hover {
+  background: var(--paper-sunken);
+}
+
+.guide-app-bar-btn .material-symbols-outlined {
+  font-size: 22px;
+}
+
+.guide-app-bar-title {
+  flex: 1;
+  text-align: center;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+/* 본문 */
+.guide-main {
+  flex: 1;
+  padding: 16px var(--gutter) 120px;
+}
+
+/* 히어로 */
+.guide-hero {
+  position: relative;
+  height: 140px;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  background: var(--paper-sunken);
+  margin-bottom: 24px;
+}
+
+.guide-hero-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.guide-hero-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(31, 27, 22, 0), rgba(31, 27, 22, 0.55));
+}
+
+.guide-hero-text {
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  bottom: 16px;
+}
+
+.guide-hero-label {
+  margin-bottom: 2px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.guide-hero-title {
+  font-family: var(--font-serif);
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: #fff;
+}
+
+/* 학교 공지 */
+.guide-notice {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 18px;
+  margin-bottom: 32px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+}
+
+.guide-notice-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.guide-notice-icon {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-full);
+  background: var(--gold-soft);
+  color: var(--gold);
+}
+
+.guide-notice-icon .material-symbols-outlined {
+  font-size: 20px;
+}
+
+.guide-notice-body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.guide-notice-title {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--ink);
+}
+
+.guide-notice-text {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+
+.guide-email-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 8px 8px 14px;
+  background: var(--paper-sunken);
+  border-radius: var(--radius);
+}
+
+.guide-email-text {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.guide-copy-btn {
+  flex-shrink: 0;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 14px;
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  border: 1px solid var(--line-strong);
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 700;
+  transition: background-color 0.15s ease, transform 0.1s ease;
+}
+
+.guide-copy-btn:hover {
+  background: var(--paper);
+}
+
+.guide-copy-btn:active {
+  transform: scale(0.98);
+}
+
+.guide-copy-btn .material-symbols-outlined {
+  font-size: 16px;
+}
+
+/* 섹션 제목 */
+.guide-section-head {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 16px;
+}
+
+.guide-section-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.guide-section-desc {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ink-3);
+}
+
+/* 단계 타임라인 */
+.guide-timeline {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.guide-timeline-line {
+  position: absolute;
+  left: 19px;
+  top: 20px;
+  bottom: 20px;
+  width: 1px;
+  background: var(--line-strong);
+}
+
+.guide-step {
+  position: relative;
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  gap: 14px;
+}
+
+.guide-step-marker {
+  position: relative;
+  z-index: 1;
+  width: 40px;
+  height: 40px;
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-full);
+  background: var(--surface);
+  border: 1px solid var(--line-strong);
+  color: var(--accent);
+}
+
+.guide-step-marker .material-symbols-outlined {
+  font-size: 20px;
+}
+
+.guide-step-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  padding: 14px 16px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.guide-step-chip {
+  margin-bottom: 4px;
+  padding: 2px 10px;
+  border-radius: var(--radius-full);
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.guide-step-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.guide-step-text {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+
+/* 하단 고정 버튼 */
+.guide-bottom-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 40;
+  background: linear-gradient(to bottom, rgba(246, 241, 231, 0), var(--paper) 30%);
+}
+
+.guide-bottom-bar-content {
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: 24px var(--gutter) max(16px, env(safe-area-inset-bottom));
+}
+
+.guide-start-btn {
+  width: 100%;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: var(--radius);
+  background: var(--accent);
+  color: var(--ink-inverse);
+  font-size: 16px;
+  font-weight: 700;
+  transition: background-color 0.15s ease, transform 0.1s ease;
+}
+
+.guide-start-btn:hover {
+  background: var(--accent-hover);
+}
+
+.guide-start-btn:active {
+  transform: scale(0.98);
+}
+
+.guide-start-btn .material-symbols-outlined {
+  font-size: 20px;
+}

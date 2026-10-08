@@ -335,18 +335,18 @@ function TeacherDetail() {
   const completedCount = getCompletedCount()
   const inProgressCount = getInProgressCount()
 
-  // 진행률에 따른 색상 결정
+  // 진행률에 따른 색상 결정 (완료 = 청록, 낮음 = 위험, 진행중 = 주홍)
   const getProgressColor = (progress) => {
-    if (progress >= 100) return '#7f13ec' // primary
-    if (progress < 30) return '#ef4444' // red
-    return '#7f13ec' // primary
+    if (progress >= 100) return 'var(--jade)'
+    if (progress < 30) return 'var(--danger)'
+    return 'var(--accent)'
   }
 
-  // 진행률에 따른 배경 색상 결정
+  // 진행률에 따른 배경(트랙) 색상 결정
   const getProgressBgColor = (progress) => {
-    if (progress >= 100) return '#4c1d95' // primary-dark
-    if (progress < 30) return '#3f1818' // dark red
-    return '#4c1d95' // primary-dark
+    if (progress >= 100) return 'var(--jade-soft)'
+    if (progress < 30) return 'var(--danger-soft)'
+    return 'var(--paper-sunken)'
   }
 
   // 진행률에 따른 텍스트 색상
@@ -396,7 +396,6 @@ function TeacherDetail() {
                 <p className="teacher-detail-stat-label">전체 학생</p>
               </div>
               <div className="teacher-detail-stat-card teacher-detail-stat-card-primary">
-                <div className="teacher-detail-stat-card-bg"></div>
                 <div className="teacher-detail-stat-icon teacher-detail-stat-icon-primary">
                   <span className="material-symbols-outlined">avg_pace</span>
                 </div>

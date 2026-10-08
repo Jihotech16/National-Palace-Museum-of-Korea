@@ -48,17 +48,10 @@ function Start() {
               backgroundPosition: 'center'
             }}
           >
-            <div className="seoul-joseon-image-overlay"></div>
-            
             {/* 위치 배지 */}
             <div className="seoul-joseon-location-badge">
               <span className="material-symbols-outlined">location_on</span>
               <span>Zone 1</span>
-            </div>
-
-            {/* 메시지 아이콘 */}
-            <div className="seoul-joseon-search-icon">
-              <span className="material-symbols-outlined">mail</span>
             </div>
           </div>
         </div>

@@ -137,24 +137,12 @@ function CorrectAnswer({
 
   return (
     <div className={containerClass}>
-      {/* 배경 효과 */}
-      <div className="correct-answer-background-effects">
-        <div className="correct-answer-bg-blur-1"></div>
-        <div className="correct-answer-bg-blur-2"></div>
-      </div>
-
       {/* 메인 콘텐츠 */}
       <div className="correct-answer-content">
-        {/* 축하 아이콘 */}
+        {/* 정답 아이콘 */}
         <div className="correct-answer-icon-wrapper">
           <div className="correct-answer-celebration-icon">
-            <span className="material-symbols-outlined fill-1">celebration</span>
-          </div>
-          <div className="correct-answer-star-1">
-            <span className="material-symbols-outlined">star</span>
-          </div>
-          <div className="correct-answer-star-2">
-            <span className="material-symbols-outlined">star</span>
+            <span className="material-symbols-outlined">check</span>
           </div>
         </div>
 

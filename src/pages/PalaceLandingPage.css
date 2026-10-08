@@ -1,22 +1,30 @@
+/* ==========================================================
+   국립고궁박물관 첫 화면 — 한지 + 먹 테마
+   ========================================================== */
 .landing-container {
   position: relative;
   width: 100%;
-  max-width: 480px;
+  max-width: var(--page-max);
   margin: 0 auto;
-  height: 100vh;
   min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
-  background-color: #191022;
-  font-family: 'Public Sans', 'Noto Sans KR', sans-serif;
-  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  background: var(--paper);
+  color: var(--ink);
 }
 
+/* 상단 사진 */
 .landing-background {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: clamp(240px, 44vh, 400px);
   z-index: 0;
+  overflow: hidden;
+  background: var(--paper-sunken);
 }
 
 .landing-bg-image {
@@ -25,26 +33,22 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  transition: transform 10s;
 }
 
-.landing-bg-image:hover {
-  transform: scale(1.05);
-}
-
+/* 브랜드 칩 가독성을 위한 옅은 상단 덮개 */
 .landing-gradient-overlay {
   position: absolute;
-  inset: 0;
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(25, 16, 34, 0.4), rgba(25, 16, 34, 1));
+  inset: 0 0 auto 0;
+  height: 96px;
+  background: linear-gradient(to bottom, rgba(31, 27, 22, 0.18), rgba(31, 27, 22, 0));
 }
 
+/* 사진 아래쪽을 한지 바탕으로 자연스럽게 연결 */
 .landing-gradient-bottom {
   position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 66.67%;
-  background: linear-gradient(to top, rgba(25, 16, 34, 1), rgba(25, 16, 34, 0.9), transparent);
+  inset: auto 0 0 0;
+  height: 60%;
+  background: linear-gradient(to bottom, rgba(246, 241, 231, 0), rgba(246, 241, 231, 0.85) 65%, var(--paper));
 }
 
 .landing-content {
@@ -53,127 +57,105 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  padding: 2rem 1.5rem;
-  padding-bottom: max(2rem, env(safe-area-inset-bottom));
 }
 
 .landing-top {
+  height: clamp(240px, 44vh, 400px);
+  flex-shrink: 0;
   display: flex;
-  width: 100%;
-  justify-content: space-between;
-  align-items: center;
-  padding-top: 2rem;
+  align-items: flex-start;
+  padding: max(16px, env(safe-area-inset-top)) var(--gutter) 0;
 }
 
 .landing-brand {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  opacity: 0.8;
+  gap: 6px;
+  height: 36px;
+  padding: 0 14px;
+  border-radius: var(--radius-full);
+  background: rgba(246, 241, 231, 0.92);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: background-color 0.15s ease;
+}
+
+.landing-brand:hover {
+  background: var(--surface);
 }
 
 .landing-brand .material-symbols-outlined {
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 1.5rem;
+  font-size: 18px;
+  color: var(--accent);
 }
 
 .landing-brand-text {
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 0.875rem;
-  font-weight: 500;
-  letter-spacing: 0.05em;
-}
-
-.landing-settings-btn {
-  border-radius: 9999px;
-  background: rgba(255, 255, 255, 0.1);
-  padding: 0.5rem;
-  backdrop-filter: blur(12px);
-  transition: background-color 0.3s;
-  border: none;
-  cursor: pointer;
-}
-
-.landing-settings-btn:hover {
-  background: rgba(255, 255, 255, 0.2);
-}
-
-.landing-settings-btn .material-symbols-outlined {
-  color: white;
-  font-size: 1.25rem;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
 }
 
 .landing-main {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  width: 100%;
-  max-width: 480px;
-  margin: 0 auto 1.5rem;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 0 var(--gutter) max(24px, env(safe-area-inset-bottom));
 }
 
 .landing-icon {
-  margin-bottom: 1.5rem;
-  border-radius: 1rem;
-  background: rgba(127, 19, 236, 0.2);
-  padding: 1rem;
-  border: 1px solid rgba(127, 19, 236, 0.5);
-  backdrop-filter: blur(4px);
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius);
+  background: var(--accent-soft);
+  color: var(--accent);
 }
 
 .landing-icon .material-symbols-outlined {
-  color: #7f13ec;
-  font-size: 3rem;
+  font-size: 28px;
 }
 
 .landing-title {
-  color: white;
-  text-align: center;
-  font-size: 2rem;
-  font-weight: 700;
+  font-family: var(--font-serif);
+  font-size: clamp(32px, 9vw, 40px);
+  font-weight: 900;
   line-height: 1.2;
   letter-spacing: -0.02em;
-  margin-bottom: 1rem;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  color: var(--ink);
 }
 
 .landing-title-accent {
-  color: #7f13ec;
+  color: var(--accent);
 }
 
 .landing-description {
-  color: #d1d5db;
-  text-align: center;
-  font-size: 1rem;
-  font-weight: 400;
+  font-size: 15px;
   line-height: 1.6;
-  margin-bottom: 2.5rem;
-  max-width: 320px;
+  color: var(--ink-2);
 }
 
 .landing-button-container {
-  width: 100%;
-  margin-bottom: 1rem;
+  margin-top: 20px;
 }
 
 .landing-primary-btn {
-  position: relative;
   width: 100%;
-  overflow: hidden;
-  border-radius: 0.75rem;
-  background: #7f13ec;
-  padding: 1rem;
-  color: white;
-  box-shadow: 0 0 20px rgba(127, 19, 236, 0.4);
-  transition: all 0.3s;
-  border: none;
-  cursor: pointer;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius);
+  background: var(--accent);
+  color: var(--ink-inverse);
+  transition: background-color 0.15s ease, transform 0.1s ease;
 }
 
 .landing-primary-btn:hover {
-  background: rgba(127, 19, 236, 0.9);
-  box-shadow: 0 0 30px rgba(127, 19, 236, 0.6);
+  background: var(--accent-hover);
 }
 
 .landing-primary-btn:active {
@@ -184,89 +166,60 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  position: relative;
-  z-index: 1;
+  gap: 8px;
 }
 
 .landing-btn-text {
-  font-size: 1.125rem;
+  font-size: 16px;
   font-weight: 700;
-  letter-spacing: 0.05em;
 }
 
 .landing-primary-btn .material-symbols-outlined {
-  font-size: 1.25rem;
+  font-size: 20px;
 }
 
+/* 장식 효과는 사용하지 않음 */
 .landing-shine {
-  position: absolute;
-  inset: 0;
-  transform: translateX(-100%);
-  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.2), transparent);
-  animation: shimmer 2s infinite;
+  display: none;
 }
 
-@keyframes shimmer {
-  100% {
-    transform: translateX(100%);
-  }
-}
-
+/* 보조 버튼 묶음 */
 .landing-secondary-buttons {
   display: flex;
-  width: 100%;
   align-items: center;
-  justify-content: center;
-  gap: 1.5rem;
+  height: 48px;
+  border-radius: var(--radius);
+  background: var(--surface);
+  border: 1px solid var(--line-strong);
+  overflow: hidden;
 }
 
 .landing-secondary-btn {
+  flex: 1;
+  height: 100%;
   display: flex;
   align-items: center;
-  gap: 0.375rem;
-  padding: 0.5rem 0.5rem;
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: #9ca3af;
-  transition: color 0.3s;
-  background: none;
-  border: none;
-  cursor: pointer;
+  justify-content: center;
+  gap: 6px;
+  background: transparent;
+  color: var(--ink);
+  font-size: 15px;
+  font-weight: 600;
+  transition: background-color 0.15s ease;
 }
 
 .landing-secondary-btn:hover {
-  color: white;
+  background: var(--paper-sunken);
 }
 
 .landing-secondary-btn .material-symbols-outlined {
-  font-size: 1.125rem;
-  transition: transform 0.3s;
-}
-
-.landing-secondary-btn:hover .material-symbols-outlined {
-  transform: scale(1.1);
+  font-size: 20px;
+  color: var(--ink-2);
 }
 
 .landing-divider {
-  height: 1rem;
   width: 1px;
-  background: #374151;
+  height: 20px;
+  flex-shrink: 0;
+  background: var(--line);
 }
-
-.material-symbols-outlined {
-  font-family: 'Material Symbols Outlined';
-  font-weight: normal;
-  font-style: normal;
-  font-size: 24px;
-  line-height: 1;
-  letter-spacing: normal;
-  text-transform: none;
-  display: inline-block;
-  white-space: nowrap;
-  word-wrap: normal;
-  direction: ltr;
-  -webkit-font-feature-settings: 'liga';
-  -webkit-font-smoothing: antialiased;
-}
-

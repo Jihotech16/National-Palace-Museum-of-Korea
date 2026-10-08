@@ -1,379 +1,297 @@
-/* Material Symbols Font */
-@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&display=swap');
+/* ==========================================================
+   활동지 · 문제 화면 공통 스타일 (한지 + 먹 테마)
+   QuestionPage는 전시관 1_Start.css의 container/header/content와
+   이 파일의 activity-* 클래스를 함께 사용합니다.
+   ========================================================== */
 
-/* Common Activity Container */
+/* 활동지 페이지 컨테이너 */
 .activity-container {
-  min-height: 100vh;
-  background: #f7f6f8;
+  position: relative;
   display: flex;
   flex-direction: column;
-  font-family: 'Public Sans', 'Noto Sans', sans-serif;
-  position: relative;
   width: 100%;
-  max-width: 480px;
+  max-width: var(--page-max);
   margin: 0 auto;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: var(--paper);
+  color: var(--ink);
 }
 
-.activity-container.dark {
-  background: #191022;
-  color: white;
-}
-
-/* Header */
+/* 헤더 (앱 바) */
 .activity-header {
   position: sticky;
   top: 0;
   z-index: 50;
+  height: calc(var(--bar-h) + env(safe-area-inset-top));
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 16px;
-  background: rgba(247, 246, 248, 0.95);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid #e5e7eb;
-}
-
-.activity-container.dark .activity-header {
-  background: rgba(25, 16, 34, 0.95);
-  border-bottom-color: rgba(77, 50, 103, 0.3);
+  gap: 8px;
+  padding: env(safe-area-inset-top) 8px 0;
+  background: rgba(246, 241, 231, 0.92);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
 }
 
 .activity-back-btn {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
+  border-radius: var(--radius-full);
   background: transparent;
-  border: none;
-  cursor: pointer;
-  transition: background-color 0.2s;
-  color: #191022;
-}
-
-.activity-container.dark .activity-back-btn {
-  color: white;
+  color: var(--ink);
+  transition: background-color 0.15s ease;
 }
 
 .activity-back-btn:hover {
-  background: rgba(0, 0, 0, 0.05);
-}
-
-.activity-container.dark .activity-back-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--paper-sunken);
 }
 
 .activity-back-btn .material-symbols-outlined {
-  font-size: 24px;
+  font-size: 22px;
 }
 
 .activity-title {
-  font-size: 18px;
-  font-weight: 700;
-  line-height: 1.2;
-  text-align: center;
   flex: 1;
-  color: #191022;
+  min-width: 0;
+  text-align: center;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--ink);
 }
 
-.activity-container.dark .activity-title {
-  color: white;
-}
-
-/* Main Content */
+/* 본문 */
 .activity-main {
   flex: 1;
   display: flex;
   flex-direction: column;
-  padding: 16px;
-  gap: 24px;
-  overflow-y: auto;
-  padding-bottom: 180px;
+  gap: 16px;
+  padding: 16px var(--gutter) 180px;
 }
 
-/* Problem Card */
-.activity-problem-card {
+/* ----------------------------------------------------------
+   문제 카드 (사진 + 제목 + 설명)
+   문제별 CSS(Question0X_*.css)가 나중에 동적으로 불러와져도
+   덮어쓰지 못하도록 카드 기준으로 선택자를 묶었습니다.
+   ---------------------------------------------------------- */
+article:is(.activity-problem-card, .activity-seal-problem-card, .activity-clothing-problem-card, .activity-nature-problem-card) {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 0;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
 }
 
-/* Image */
-.activity-image-wrapper {
+/* QuestionPage에서는 전시관 content 안에 카드가 놓이므로 바깥 여백을 줍니다 */
+main > article:is(.activity-problem-card, .activity-seal-problem-card, .activity-clothing-problem-card, .activity-nature-problem-card) {
+  margin: 16px var(--gutter) 0;
+}
+
+.activity-main > article.activity-problem-card {
+  margin: 0;
+}
+
+:is(.activity-problem-card, .activity-seal-problem-card, .activity-clothing-problem-card, .activity-nature-problem-card)
+  :is(.activity-image-wrapper, .activity-seal-image-wrapper, .activity-clothing-image-wrapper, .activity-nature-image-wrapper) {
   position: relative;
   width: 100%;
   aspect-ratio: 4 / 3;
-  border-radius: 1rem;
+  border-radius: 0;
   overflow: hidden;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  box-shadow: none;
+  background: var(--paper-sunken);
+  border-bottom: 1px solid var(--line);
 }
 
-.activity-image {
+:is(.activity-problem-card, .activity-seal-problem-card, .activity-clothing-problem-card, .activity-nature-problem-card)
+  :is(.activity-image, .activity-seal-image, .activity-clothing-image, .activity-nature-image) {
   position: absolute;
   inset: 0;
   background-size: cover;
+  background-repeat: no-repeat;
+  transition: none;
+}
+
+:is(.activity-problem-card, .activity-seal-problem-card, .activity-clothing-problem-card, .activity-nature-problem-card)
+  :is(.activity-image-wrapper, .activity-seal-image-wrapper, .activity-clothing-image-wrapper, .activity-nature-image-wrapper):hover
+  :is(.activity-image, .activity-seal-image, .activity-clothing-image, .activity-nature-image) {
+  transform: none;
+}
+
+/* 기본 사진 위치 (문제별 CSS나 imageStyle이 있으면 그 값을 따릅니다) */
+.activity-image {
   background-position: center;
-  transition: transform 0.7s;
 }
 
-.activity-image-wrapper:hover .activity-image {
-  transform: scale(1.05);
+/* 사진 위에 글자가 없으므로 어두운 오버레이는 쓰지 않습니다 */
+:is(.activity-problem-card, .activity-seal-problem-card, .activity-clothing-problem-card, .activity-nature-problem-card)
+  :is(.activity-image-overlay, .activity-seal-image-overlay, .activity-clothing-image-overlay, .activity-nature-image-overlay) {
+  display: none;
 }
 
-.activity-image-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgba(25, 16, 34, 0.8), transparent);
-  opacity: 0.6;
-}
-
-.activity-badge {
+/* "문제 N" 칩 */
+:is(.activity-problem-card, .activity-seal-problem-card, .activity-clothing-problem-card, .activity-nature-problem-card)
+  :is(.activity-badge, .activity-seal-badge, .activity-clothing-badge, .activity-nature-badge) {
   position: absolute;
   top: 12px;
   left: 12px;
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(12px);
-  padding: 4px 12px;
-  border-radius: 9999px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  height: 30px;
+  padding: 0 12px;
+  border-radius: var(--radius-full);
+  border: none;
+  background: var(--surface);
+  backdrop-filter: none;
+  box-shadow: var(--shadow-sm);
 }
 
-.activity-badge span {
-  color: white;
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.05em;
+:is(.activity-problem-card, .activity-seal-problem-card, .activity-clothing-problem-card, .activity-nature-problem-card)
+  :is(.activity-badge, .activity-seal-badge, .activity-clothing-badge, .activity-nature-badge) span {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0;
+  color: var(--ink);
 }
 
-/* Content */
-.activity-content {
+:is(.activity-problem-card, .activity-seal-problem-card, .activity-clothing-problem-card, .activity-nature-problem-card)
+  :is(.activity-content, .activity-seal-content, .activity-clothing-content, .activity-nature-content) {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  padding: 0 4px;
+  gap: 0;
+  padding: 20px;
 }
 
-.activity-problem-title {
-  font-size: 24px;
+:is(.activity-problem-card, .activity-seal-problem-card, .activity-clothing-problem-card, .activity-nature-problem-card)
+  :is(.activity-problem-title, .activity-seal-problem-title, .activity-clothing-problem-title, .activity-nature-problem-title) {
+  font-family: var(--font-serif);
+  font-size: 22px;
   font-weight: 700;
-  line-height: 1.2;
-  color: #191022;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  color: var(--ink);
 }
 
-.activity-container.dark .activity-problem-title {
-  color: white;
+:is(.activity-problem-card, .activity-seal-problem-card, .activity-clothing-problem-card, .activity-nature-problem-card)
+  :is(.activity-divider, .activity-seal-divider, .activity-clothing-divider, .activity-nature-divider) {
+  width: 32px;
+  height: 2px;
+  margin: 14px 0;
+  border-radius: 0;
+  background: var(--accent);
 }
 
-.activity-divider {
-  height: 4px;
-  width: 48px;
-  background: #7f13ec;
-  border-radius: 2px;
-  margin-bottom: 8px;
+/* 설명이 없는 카드(제목만)에서는 구분선 아래 여백을 없앱니다 */
+:is(.activity-problem-card, .activity-seal-problem-card, .activity-clothing-problem-card, .activity-nature-problem-card)
+  :is(.activity-divider, .activity-seal-divider, .activity-clothing-divider, .activity-nature-divider):last-child {
+  margin-bottom: 0;
 }
 
-.activity-description {
-  color: #6b7280;
-  font-size: 16px;
+:is(.activity-problem-card, .activity-seal-problem-card, .activity-clothing-problem-card, .activity-nature-problem-card)
+  :is(.activity-description, .activity-seal-description, .activity-clothing-description, .activity-nature-description) {
+  font-size: 15px;
   line-height: 1.6;
+  color: var(--ink-2);
 }
 
-.activity-container.dark .activity-description {
-  color: #ad92c9;
+/* ----------------------------------------------------------
+   입력 카드 (활동지)
+   ---------------------------------------------------------- */
+.activity-card {
+  padding: 20px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
 }
 
-/* Input Styles */
 .activity-input-group {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  margin-bottom: 16px;
+  gap: 10px;
 }
 
 .activity-label {
+  font-size: 14px;
   font-weight: 600;
-  font-size: 16px;
-  color: #191022;
-  line-height: 1.5;
+  line-height: 1.55;
+  color: var(--ink-2);
 }
 
-.activity-container.dark .activity-label {
-  color: white;
+.activity-label strong {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.activity-text-input,
+.activity-textarea {
+  width: 100%;
+  min-width: 0;
+  font-size: 16px;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 .activity-text-input {
-  width: 100%;
-  padding: 12px 16px;
-  border: 2px solid #e5e7eb;
-  border-radius: 0.5rem;
-  font-size: 16px;
-  transition: border-color 0.2s;
-  background: white;
-  color: #191022;
-  font-family: inherit;
-}
-
-.activity-container.dark .activity-text-input {
-  border-color: #4d3267;
-  background: #261933;
-  color: white;
-}
-
-.activity-text-input:focus {
-  outline: none;
-  border-color: #7f13ec;
-  box-shadow: 0 0 0 3px rgba(127, 19, 236, 0.1);
-}
-
-.activity-text-input::placeholder {
-  color: #9ca3af;
-}
-
-.activity-container.dark .activity-text-input::placeholder {
-  color: #6b7280;
-}
-
-.activity-inline-input {
-  display: inline-block;
-  width: 150px;
-  padding: 4px 8px;
-  border: 2px solid #7f13ec;
-  border-radius: 6px;
-  font-size: 16px;
-  margin: 0 4px;
-  text-align: center;
-  background: white;
-  color: #191022;
-}
-
-.activity-container.dark .activity-inline-input {
-  background: #261933;
-  color: white;
-  border-color: #7f13ec;
-}
-
-.activity-inline-input:focus {
-  outline: none;
-  border-color: #7f13ec;
-  box-shadow: 0 0 0 3px rgba(127, 19, 236, 0.1);
+  height: 54px;
+  padding: 0 16px;
 }
 
 .activity-textarea {
-  width: 100%;
-  padding: 12px 16px;
-  border: 2px solid #e5e7eb;
-  border-radius: 0.5rem;
-  font-size: 16px;
-  transition: border-color 0.2s;
-  background: white;
-  color: #191022;
-  font-family: inherit;
+  min-height: 112px;
+  padding: 14px 16px;
+  line-height: 1.6;
   resize: vertical;
-  min-height: 100px;
 }
 
-.activity-container.dark .activity-textarea {
-  border-color: #4d3267;
-  background: #261933;
-  color: white;
+.activity-text-input::placeholder,
+.activity-textarea::placeholder {
+  color: var(--ink-3);
 }
 
+.activity-text-input:focus,
 .activity-textarea:focus {
-  outline: none;
-  border-color: #7f13ec;
-  box-shadow: 0 0 0 3px rgba(127, 19, 236, 0.1);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
 }
 
-/* Card Styles */
-.activity-card {
-  border-radius: 0.75rem;
-  border: 1px solid #e5e7eb;
-  background: white;
-  padding: 16px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-.activity-container.dark .activity-card {
-  border-color: #4d3267;
-  background: #261933;
-}
-
-/* Options Grid */
-.activity-options-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-}
-
-.activity-option {
-  display: flex;
-  align-items: center;
-  padding: 12px 16px;
-  border: 2px solid #e5e7eb;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  transition: all 0.2s;
-  background: white;
-  color: #191022;
-}
-
-.activity-container.dark .activity-option {
-  border-color: #4d3267;
-  background: #261933;
-  color: white;
-}
-
-.activity-option:hover {
-  border-color: #7f13ec;
-}
-
-.activity-option.selected {
-  background: rgba(127, 19, 236, 0.1);
-  border-color: #7f13ec;
-}
-
-.activity-container.dark .activity-option.selected {
-  background: rgba(127, 19, 236, 0.2);
-}
-
-.activity-radio {
-  margin-right: 10px;
-  width: 16px;
-  height: 16px;
-  cursor: pointer;
-  accent-color: #7f13ec;
-}
-
-/* Error Message */
+/* 오류 토스트 (ErrorToast와 동일한 모양) */
 .activity-error {
   position: fixed;
-  top: 70px;
+  top: calc(var(--bar-h) + env(safe-area-inset-top) + 12px);
   left: 50%;
   transform: translateX(-50%);
-  background: #fee;
-  color: #c33;
-  padding: 14px 20px;
-  border-radius: 10px;
-  font-size: 14px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   z-index: 1000;
-  animation: slideDown 0.3s ease-out;
-  max-width: 90%;
+  width: max-content;
+  max-width: calc(min(100vw, var(--page-max)) - 2 * var(--gutter));
+  padding: 12px 18px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.5;
   text-align: center;
+  color: var(--ink-inverse);
+  background: var(--ink);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+  animation: activityToastIn 0.2s ease-out;
 }
 
-.activity-container.dark .activity-error {
-  background: rgba(204, 51, 51, 0.95);
-  color: #ffcccc;
-  backdrop-filter: blur(8px);
-}
-
-@keyframes slideDown {
+@keyframes activityToastIn {
   from {
     opacity: 0;
-    transform: translateX(-50%) translateY(-20px);
+    transform: translateX(-50%) translateY(-8px);
   }
   to {
     opacity: 1;
@@ -381,24 +299,19 @@
   }
 }
 
-/* Footer */
+/* ----------------------------------------------------------
+   하단 고정 영역 (정답 입력 + 제출)
+   ---------------------------------------------------------- */
 .activity-footer {
   position: fixed;
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 100%;
-  max-width: 480px;
   z-index: 40;
-  padding: 16px;
-  background: #f7f6f8;
-  border-top: 1px solid #e5e7eb;
-  margin: 0 auto;
-}
-
-.activity-container.dark .activity-footer {
-  background: #191022;
-  border-top-color: rgba(77, 50, 103, 0.3);
+  width: 100%;
+  max-width: var(--page-max);
+  padding: 24px var(--gutter) env(safe-area-inset-bottom);
+  background: linear-gradient(to bottom, rgba(246, 241, 231, 0), var(--paper) 24px);
 }
 
 .activity-form {
@@ -407,28 +320,24 @@
   gap: 12px;
 }
 
-/* Answer Input Field */
 .activity-input-wrapper {
   position: relative;
 }
 
 .activity-input-label {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border-width: 0;
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink-2);
 }
 
 .activity-input-icon-wrapper {
   position: absolute;
-  inset: 0;
   left: 0;
-  padding-left: 16px;
+  bottom: 0;
+  height: 54px;
+  padding-left: 14px;
   display: flex;
   align-items: center;
   pointer-events: none;
@@ -436,88 +345,96 @@
 }
 
 .activity-input-icon {
-  color: #9ca3af;
-  font-size: 24px;
-  transition: color 0.2s;
-}
-
-.activity-container.dark .activity-input-icon {
-  color: #ad92c9;
+  font-size: 22px;
+  color: var(--ink-3);
+  transition: color 0.15s ease;
 }
 
 .activity-input-wrapper:focus-within .activity-input-icon {
-  color: #7f13ec;
+  color: var(--accent);
 }
 
 .activity-answer-input {
   display: block;
   width: 100%;
-  height: 56px;
-  padding-left: 44px;
-  padding-right: 16px;
-  border-radius: 0.75rem;
-  background: white;
-  border: 1px solid #e5e7eb;
-  color: #191022;
+  height: 54px;
+  padding: 0 16px 0 46px;
   font-size: 16px;
-  transition: all 0.2s;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-}
-
-.activity-container.dark .activity-answer-input {
-  background: #261933;
-  border-color: #4d3267;
-  color: white;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 .activity-answer-input::placeholder {
-  color: #9ca3af;
-}
-
-.activity-container.dark .activity-answer-input::placeholder {
-  color: #ad92c9;
+  color: var(--ink-3);
 }
 
 .activity-answer-input:focus {
-  outline: none;
-  border-color: #7f13ec;
-  box-shadow: 0 0 0 1px #7f13ec;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
 }
 
+/* 여러 칸 입력 (QuestionPage multiple 모드): 자리 차지를 줄이기 위해 라벨은 숨기고 칸을 낮춥니다 */
+.activity-form .activity-nature-inputs-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.activity-nature-inputs-container .activity-input-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+.activity-nature-inputs-container .activity-input-icon-wrapper {
+  height: 48px;
+}
+
+.activity-nature-inputs-container .activity-answer-input {
+  height: 48px;
+}
+
+/* 제출 버튼 */
 .activity-submit-btn {
   width: 100%;
   height: 56px;
-  background: #7f13ec;
-  color: white;
-  font-size: 16px;
-  font-weight: 700;
-  border-radius: 0.75rem;
-  box-shadow: 0 10px 15px rgba(127, 19, 236, 0.25);
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  border: none;
-  cursor: pointer;
-  transition: all 0.2s;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink-inverse);
+  background: var(--accent);
+  border-radius: var(--radius);
+  transition: background-color 0.15s ease, transform 0.1s ease;
 }
 
-.activity-submit-btn:hover {
-  background: rgba(127, 19, 236, 0.9);
+.activity-submit-btn:hover:not(:disabled) {
+  background: var(--accent-hover);
 }
 
-.activity-submit-btn:active {
+.activity-submit-btn:active:not(:disabled) {
   transform: scale(0.98);
 }
 
 .activity-submit-btn:disabled {
-  opacity: 0.6;
+  opacity: 0.5;
   cursor: not-allowed;
 }
 
-.activity-submit-btn.saved {
-  background: #10b981;
-  box-shadow: 0 10px 15px rgba(16, 185, 129, 0.25);
+.activity-submit-btn.saved,
+.activity-submit-btn.saved:disabled {
+  opacity: 1;
+  background: var(--jade);
 }
 
 .activity-submit-btn .material-symbols-outlined {
@@ -528,153 +445,59 @@
   height: 16px;
 }
 
-/* Drawing Canvas */
+/* ----------------------------------------------------------
+   그림 그리기 (ActivityDraw)
+   ---------------------------------------------------------- */
 .activity-drawing-area {
-  margin: 24px 0;
-  border: 2px dashed #e5e7eb;
-  border-radius: 0.75rem;
-  padding: 20px;
-  background: #fafafa;
-}
-
-.activity-container.dark .activity-drawing-area {
-  border-color: #4d3267;
-  background: #261933;
+  padding: 12px;
+  background: var(--paper-sunken);
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--radius-lg);
 }
 
 .activity-drawing-canvas {
+  display: block;
   width: 100%;
-  height: 400px;
-  border: 2px solid #e5e7eb;
-  border-radius: 0.75rem;
-  background: white;
+  height: 360px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
   touch-action: none;
   cursor: crosshair;
 }
 
-.activity-container.dark .activity-drawing-canvas {
-  border-color: #4d3267;
-  background: #261933;
-}
-
 .activity-canvas-controls {
   display: flex;
-  gap: 12px;
-  margin-top: 16px;
+  gap: 10px;
 }
 
 .activity-clear-btn {
   flex: 1;
-  background: #f5f5f5;
-  color: #333;
-  padding: 14px;
-  border-radius: 0.5rem;
-  font-size: 16px;
+  height: 56px;
+  font-size: 15px;
   font-weight: 600;
-  transition: background 0.3s;
-  border: none;
-  cursor: pointer;
-}
-
-.activity-container.dark .activity-clear-btn {
-  background: #261933;
-  color: white;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  transition: background-color 0.15s ease, transform 0.1s ease;
 }
 
 .activity-clear-btn:hover {
-  background: #e0e0e0;
+  background: var(--paper-sunken);
 }
 
-.activity-container.dark .activity-clear-btn:hover {
-  background: #4d3267;
+.activity-clear-btn:active {
+  transform: scale(0.98);
 }
 
 .activity-canvas-controls .activity-submit-btn {
   flex: 1;
-  position: static;
   width: auto;
 }
 
-/* Cover Page Styles */
-.cover-page {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-  padding: 0;
-  position: relative;
-}
-
-.cover-image {
-  width: 100vw;
-  height: 100vh;
-  object-fit: fill;
-  object-position: center;
-  display: block;
-}
-
-.cover-start-button {
-  position: absolute;
-  bottom: 40px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 90%;
-  max-width: 300px;
-  min-height: 50px;
-  background: linear-gradient(135deg, #7f13ec 0%, #9d4edd 100%);
-  color: white;
-  padding: 14px;
-  border-radius: 10px;
-  font-size: 18px;
-  font-weight: 600;
-  border: none;
-  cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
-  box-shadow: 0 4px 12px rgba(127, 19, 236, 0.3);
-  z-index: 10;
-}
-
-.cover-start-button:hover {
-  transform: translateX(-50%) translateY(-2px);
-  box-shadow: 0 6px 16px rgba(127, 19, 236, 0.4);
-}
-
-.cover-start-button:active {
-  transform: translateX(-50%) translateY(0);
-}
-
-/* Responsive */
 @media (max-width: 480px) {
-  .activity-main {
-    padding: 16px;
-    padding-bottom: 180px;
-  }
-
-  .activity-problem-title {
-    font-size: 22px;
-  }
-
-  .activity-description {
-    font-size: 14px;
-  }
-
-  .activity-options-grid {
-    grid-template-columns: 1fr;
-  }
-
   .activity-drawing-canvas {
     height: 300px;
-  }
-
-  .cover-start-button {
-    bottom: 30px;
-    width: calc(100% - 32px);
-    max-width: none;
-  }
-
-  .cover-image {
-    object-fit: cover;
   }
 }

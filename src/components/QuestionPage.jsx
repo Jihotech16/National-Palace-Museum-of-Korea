@@ -354,7 +354,7 @@ function QuestionPage({ user, questionData }) {
       </header>
 
       <main className={contentClass} style={{ paddingBottom }}>
-        <article className={getCardClass()} style={{ padding: '0 1rem', marginTop: '1rem' }}>
+        <article className={getCardClass()}>
           <div className={getImageWrapperClass()}>
             <div 
               className={getImageClass()}
@@ -388,7 +388,7 @@ function QuestionPage({ user, questionData }) {
         left: '50%', 
         transform: 'translateX(-50%)',
         width: '100%',
-        maxWidth: '480px',
+        maxWidth: 'var(--page-max)',
         zIndex: 40 
       }}>
         {inputType === 'multiple' ? (

@@ -37,13 +37,9 @@ function Start() {
               backgroundPosition: 'center'
             }}
           >
-            <div className="seoul-empire-image-overlay"></div>
             <div className="seoul-empire-location-badge">
               <span className="material-symbols-outlined">location_on</span>
               <span>Zone 2</span>
-            </div>
-            <div className="seoul-empire-search-icon">
-              <span className="material-symbols-outlined">search</span>
             </div>
           </div>
         </div>

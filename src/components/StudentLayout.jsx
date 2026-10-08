@@ -51,29 +51,20 @@ function StudentLayout({ title, children, showBackButton = true, backPath = null
             <span className="material-symbols-outlined">arrow_back_ios_new</span>
           </button>
         ) : (
-          <div style={{ width: '48px' }}></div>
+          <div className="student-layout-header-spacer"></div>
         )}
         <h2 className="student-layout-title">{title || '전시관 탐험'}</h2>
         {showMessageButton ? (
           <button 
             className="student-layout-message-button" 
-            style={{ position: 'relative' }}
             onClick={() => navigate('/student/messages')}
           >
             <span className="material-symbols-outlined">mail</span>
-            <span style={{
-              position: 'absolute',
-              top: '8px',
-              right: '8px',
-              width: '10px',
-              height: '10px',
-              backgroundColor: '#ef4444',
-              borderRadius: '50%',
-              border: '2px solid white'
-            }}></span>
+            {/* 안 읽은 메시지 표시 점 */}
+            <span className="student-layout-message-dot"></span>
           </button>
         ) : (
-          <div style={{ width: '48px' }}></div>
+          <div className="student-layout-header-spacer"></div>
         )}
       </div>
 

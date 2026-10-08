@@ -41,17 +41,10 @@ function Start() {
               backgroundPosition: 'center'
             }}
           >
-            <div className="ritual-image-overlay"></div>
-            
             {/* 위치 배지 */}
             <div className="ritual-location-badge">
               <span className="material-symbols-outlined">location_on</span>
               <span>현위치: 지하 1층</span>
-            </div>
-
-            {/* 검색 아이콘 */}
-            <div className="ritual-search-icon">
-              <span className="material-symbols-outlined">search</span>
             </div>
           </div>
         </div>

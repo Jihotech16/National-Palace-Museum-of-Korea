@@ -1,30 +1,43 @@
-/* Error Toast 공통 컴포넌트 */
+/* Error Toast 공통 컴포넌트 (먹색 토스트) */
 .error-toast {
   position: fixed;
-  top: 70px;
+  top: calc(var(--bar-h) + env(safe-area-inset-top) + 12px);
   left: 50%;
   transform: translateX(-50%);
-  background: rgba(204, 51, 51, 0.95);
-  color: #ffcccc;
-  padding: 14px 20px;
-  border-radius: 10px;
-  font-size: 14px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  backdrop-filter: blur(8px);
   z-index: 1000;
-  animation: errorToastSlideDown 0.3s ease-out;
-  max-width: 90%;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: max-content;
+  max-width: calc(min(100vw, var(--page-max)) - 2 * var(--gutter));
+  padding: 12px 18px 12px 14px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--ink-inverse);
+  background: var(--ink);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+  animation: errorToastIn 0.2s ease-out;
 }
 
-@keyframes errorToastSlideDown {
+.error-toast-icon {
+  flex-shrink: 0;
+  font-size: 20px;
+  color: var(--accent-soft);
+}
+
+.error-toast-message {
+  min-width: 0;
+}
+
+@keyframes errorToastIn {
   from {
     opacity: 0;
-    transform: translateX(-50%) translateY(-20px);
+    transform: translateX(-50%) translateY(-8px);
   }
   to {
     opacity: 1;
     transform: translateX(-50%) translateY(0);
   }
 }
-

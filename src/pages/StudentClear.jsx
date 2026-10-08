@@ -226,7 +226,7 @@ function StudentClear({ user }) {
     const museumName = activeTab === 'palace' ? '고궁' : '서울'
     // html2canvas 라이브러리를 사용하여 이미지로 변환
     html2canvas(certificateRef.current, {
-      backgroundColor: '#fffdf5',
+      backgroundColor: '#FFFDF8', // --surface 값 (html2canvas는 배경색을 직접 지정)
       scale: 2,
       useCORS: true
     }).then(canvas => {
@@ -291,6 +291,41 @@ function StudentClear({ user }) {
     return '담임 일동'
   }
 
+  // 탭 변경 핸들러
+  const handleTabChange = (museum) => {
+    const isCompleted = isMuseumCompleted(museum)
+    
+    // 탭 변경
+    setActiveTab(museum)
+    
+    // 탭 선택 화면 숨기기
+    setShowTabSelection(false)
+    
+    // 완료된 박물관인 경우에만 애니메이션 시퀀스 시작
+    if (isCompleted) {
+      // 축하 메시지 먼저 표시
+      setShowCelebration(true)
+      setShowCertificate(false)
+      
+      // 2초 후 축하 메시지 숨기고 수료증 표시
+      setTimeout(() => {
+        setShowCelebration(false)
+        setShowCertificate(true)
+      }, 2000)
+    } else {
+      // 완료되지 않은 경우 축하 메시지와 수료증 숨김
+      setShowCelebration(false)
+      setShowCertificate(false)
+    }
+  }
+
+  // 탭 선택 화면으로 돌아가기
+  const handleBackToTabSelection = () => {
+    setShowTabSelection(true)
+    setShowCelebration(false)
+    setShowCertificate(false)
+  }
+
   if (loading) {
     return (
       <StudentLayout title="탐험 수료증" activeNav="certificate" museumType={activeTab}>
@@ -312,7 +347,6 @@ function StudentClear({ user }) {
         <div key={museum}>
           <div className="student-clear-locked">
             <div className="student-clear-locked-icon">
-              <div className="student-clear-locked-icon-glow"></div>
               <span className="material-symbols-outlined">lock</span>
             </div>
             <h1 className="student-clear-locked-title">수료증이 잠겨있습니다</h1>
@@ -335,15 +369,6 @@ function StudentClear({ user }) {
             </div>
             
             <div className="student-clear-certificate-content student-clear-certificate-blurred">
-              <div className="student-clear-certificate-bg-pattern"></div>
-              <div className="student-clear-certificate-seal-bg">
-                <div 
-                  className="student-clear-certificate-seal-image"
-                  style={{
-                    backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuC_AxzfzRa4MEJBINdVI6Fexf7R2tVBZiqYxGK0pM9rq8oy4gg1CSYTA-SMyphTpuKxaaqKASqOK8TFCeLyYnv2mDMibZ5p8Qn3gehplqa2aCofFnhARWgV__y0YtouJjWDGJqZxjA5VtkkgAjxqkF4skavFTcbXxom8SK07DMna2fBpm_egy_0fSnQmujizls5p-1UHjrRm4BI5e99qstX3NFQM6VcSo4nfUMqpbOsMZfGnujM1CaXwS-9V_Tkb-fIy-9GhhsY2E9v")'
-                  }}
-                ></div>
-              </div>
 
             <div className="student-clear-certificate-header">
               <p className="student-clear-certificate-label student-clear-certificate-label-locked">CERTIFICATE</p>
@@ -461,40 +486,6 @@ function StudentClear({ user }) {
     )
   }
 
-  // 탭 변경 핸들러
-  const handleTabChange = (museum) => {
-    const isCompleted = isMuseumCompleted(museum)
-    
-    // 탭 변경
-    setActiveTab(museum)
-    
-    // 탭 선택 화면 숨기기
-    setShowTabSelection(false)
-    
-    // 완료된 박물관인 경우에만 애니메이션 시퀀스 시작
-    if (isCompleted) {
-      // 축하 메시지 먼저 표시
-      setShowCelebration(true)
-      setShowCertificate(false)
-      
-      // 2초 후 축하 메시지 숨기고 수료증 표시
-      setTimeout(() => {
-        setShowCelebration(false)
-        setShowCertificate(true)
-      }, 2000)
-    } else {
-      // 완료되지 않은 경우 축하 메시지와 수료증 숨김
-      setShowCelebration(false)
-      setShowCertificate(false)
-    }
-  }
-
-  // 탭 선택 화면으로 돌아가기
-  const handleBackToTabSelection = () => {
-    setShowTabSelection(true)
-    setShowCelebration(false)
-    setShowCertificate(false)
-  }
 
   // 완료되었을 때 렌더링
   const renderCertificate = (museum) => {
@@ -511,7 +502,6 @@ function StudentClear({ user }) {
             {showCelebration && (
               <div className="student-clear-celebration">
                 <div className="student-clear-celebration-icon">
-                  <div className="student-clear-icon-glow"></div>
                   <span className="material-symbols-outlined">emoji_events</span>
                 </div>
                 <h1 className="student-clear-celebration-title">축하합니다!</h1>
@@ -529,15 +519,6 @@ function StudentClear({ user }) {
           <div className="student-clear-certificate-corner student-clear-corner-br"></div>
           
           <div className="student-clear-certificate-content">
-            <div className="student-clear-certificate-bg-pattern"></div>
-            <div className="student-clear-certificate-seal-bg">
-              <div 
-                className="student-clear-certificate-seal-image"
-                style={{
-                  backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuC_AxzfzRa4MEJBINdVI6Fexf7R2tVBZiqYxGK0pM9rq8oy4gg1CSYTA-SMyphTpuKxaaqKASqOK8TFCeLyYnv2mDMibZ5p8Qn3gehplqa2aCofFnhARWgV__y0YtouJjWDGJqZxjA5VtkkgAjxqkF4skavFTcbXxom8SK07DMna2fBpm_egy_0fSnQmujizls5p-1UHjrRm4BI5e99qstX3NFQM6VcSo4nfUMqpbOsMZfGnujM1CaXwS-9V_Tkb-fIy-9GhhsY2E9v")'
-                }}
-              ></div>
-            </div>
 
               <div className="student-clear-certificate-header">
                 <p className="student-clear-certificate-label">CERTIFICATE</p>
@@ -596,7 +577,6 @@ function StudentClear({ user }) {
         ) : (
           <div className="student-clear-locked">
             <div className="student-clear-locked-icon">
-              <div className="student-clear-locked-icon-glow"></div>
               <span className="material-symbols-outlined">lock</span>
             </div>
             <h1 className="student-clear-locked-title">수료증이 잠겨있습니다</h1>

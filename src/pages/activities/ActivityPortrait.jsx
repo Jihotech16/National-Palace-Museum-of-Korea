@@ -53,13 +53,13 @@ function ActivityPortrait({ user }) {
   }
 
   return (
-    <div className="activity-container dark">
+    <div className="activity-container">
       <header className="activity-header">
         <button className="activity-back-btn" onClick={handleBack}>
           <span className="material-symbols-outlined">arrow_back</span>
         </button>
         <h1 className="activity-title">어진 비교</h1>
-        <div style={{ width: '40px' }}></div>
+        <div style={{ width: '44px' }}></div>
       </header>
 
       <main className="activity-main">

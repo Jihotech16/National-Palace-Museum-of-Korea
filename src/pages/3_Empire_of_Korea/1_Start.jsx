@@ -41,17 +41,10 @@ function Start() {
               backgroundPosition: 'center'
             }}
           >
-            <div className="empire-image-overlay"></div>
-            
             {/* 위치 배지 */}
             <div className="empire-location-badge">
               <span className="material-symbols-outlined">location_on</span>
               <span>현위치: 1층</span>
-            </div>
-
-            {/* 검색 아이콘 */}
-            <div className="empire-search-icon">
-              <span className="material-symbols-outlined">search</span>
             </div>
           </div>
         </div>

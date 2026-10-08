@@ -1,28 +1,34 @@
+/* ==========================================================
+   교사 문제 및 정답 관리 (TeacherQuestionManagement) — 한지 + 먹 테마
+   헤더·하단 탭·사이드 메뉴 등 공통 틀은 TeacherPage.css에서 관리합니다.
+   ========================================================== */
 .teacher-question-content {
   display: flex;
   flex-direction: column;
-  padding: 1rem;
-  gap: 2rem;
-  padding-bottom: 8rem;
+  gap: 28px;
 }
 
 .teacher-question-section-title {
-  font-size: 1.25rem;
+  display: flex;
+  align-items: center;
+  min-height: 36px;
+  margin: 0 0 12px;
+  font-size: 18px;
   font-weight: 700;
-  color: white;
-  margin: 0 0 1rem 0;
+  line-height: 1.35;
+  color: var(--ink);
 }
 
+/* 박물관 / 전시관 선택 */
 .teacher-question-halls {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
 }
 
 .teacher-question-halls-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 0.75rem;
+  gap: 12px;
 }
 
 .teacher-question-halls-grid-single {
@@ -32,236 +38,249 @@
 .teacher-question-hall-btn {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 1rem;
-  background-color: #261933;
-  border: 1px solid #4d3267;
-  border-radius: 0.75rem;
-  cursor: pointer;
-  transition: all 0.2s;
+  gap: 12px;
+  min-height: 72px;
+  padding: 14px 16px;
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-sm);
   text-align: left;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background-color 0.15s ease, transform 0.1s ease;
 }
 
 .teacher-question-hall-btn:hover {
-  border-color: #7f13ec;
-  background-color: rgba(127, 19, 236, 0.05);
+  border-color: var(--line-strong);
 }
 
-.teacher-question-hall-btn-active {
-  border-color: #7f13ec;
-  background-color: rgba(127, 19, 236, 0.1);
+.teacher-question-hall-btn:active {
+  transform: scale(0.98);
+}
+
+.teacher-question-hall-btn-active,
+.teacher-question-hall-btn-active:hover {
+  border-color: var(--accent);
+  background: var(--accent-soft);
 }
 
 .teacher-question-hall-icon {
-  width: 2.5rem;
-  height: 2.5rem;
-  border-radius: 0.5rem;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
-}
-
-.teacher-question-hall-icon-orange {
-  background-color: rgba(249, 115, 22, 0.1);
-  color: #f97316;
-}
-
-.teacher-question-hall-icon-blue {
-  background-color: rgba(59, 130, 246, 0.1);
-  color: #3b82f6;
-}
-
-.teacher-question-hall-icon-emerald {
-  background-color: rgba(16, 185, 129, 0.1);
-  color: #10b981;
+  border-radius: var(--radius);
+  background: var(--accent-soft);
+  color: var(--accent);
 }
 
 .teacher-question-hall-icon .material-symbols-outlined {
-  font-size: 1.5rem;
+  font-size: 22px;
+}
+
+/* 전시관 색 구분: 주홍 / 청록 / 황금 */
+.teacher-question-hall-icon-orange {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.teacher-question-hall-icon-blue {
+  background: var(--jade-soft);
+  color: var(--jade);
+}
+
+.teacher-question-hall-icon-emerald {
+  background: var(--gold-soft);
+  color: var(--gold);
+}
+
+/* 선택된 전시관 카드는 바탕이 주홍빛이므로 아이콘을 카드색으로 */
+.teacher-question-hall-btn-active .teacher-question-hall-icon {
+  background: var(--surface);
 }
 
 .teacher-question-hall-info {
   flex: 1;
+  min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 2px;
 }
 
 .teacher-question-hall-name {
-  font-size: 1rem;
+  font-size: 15px;
   font-weight: 700;
-  color: white;
-  margin: 0;
+  line-height: 1.4;
+  color: var(--ink);
 }
 
 .teacher-question-hall-count {
-  font-size: 0.75rem;
-  color: #ad92c9;
-  margin: 0;
+  font-size: 13px;
+  color: var(--ink-3);
 }
 
+/* 문제 목록 */
 .teacher-question-list {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
 }
 
 .teacher-question-items {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 10px;
 }
 
 .teacher-question-item {
-  background-color: #261933;
-  border: 1px solid #4d3267;
-  border-radius: 0.75rem;
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  border: 1px solid var(--line);
   overflow: hidden;
-  transition: border-color 0.2s;
+  transition: border-color 0.15s ease;
 }
 
 .teacher-question-item:hover {
-  border-color: #7f13ec;
+  border-color: var(--line-strong);
 }
 
 .teacher-question-item-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1rem;
+  gap: 12px;
+  min-height: 60px;
+  padding: 12px 16px;
   cursor: pointer;
   user-select: none;
 }
 
 .teacher-question-item-info {
+  flex: 1;
+  min-width: 0;
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  flex: 1;
+  gap: 12px;
 }
 
 .teacher-question-item-number {
+  flex-shrink: 0;
+  min-width: 32px;
+  height: 32px;
+  padding: 0 6px;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 2rem;
-  height: 2rem;
-  background-color: #7f13ec;
-  color: white;
-  border-radius: 0.375rem;
-  font-size: 0.875rem;
+  border-radius: var(--radius-full);
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 13px;
   font-weight: 700;
-  flex-shrink: 0;
 }
 
 .teacher-question-item-title {
-  font-size: 1rem;
+  font-size: 15px;
   font-weight: 700;
-  color: white;
-  margin: 0;
+  line-height: 1.45;
+  color: var(--ink);
 }
 
 .teacher-question-item-arrow {
-  color: #ad92c9;
-  transition: transform 0.2s;
   flex-shrink: 0;
+  font-size: 22px;
+  color: var(--ink-3);
+  transition: transform 0.15s ease;
 }
 
 .teacher-question-item-arrow-expanded {
   transform: rotate(180deg);
 }
 
+/* 펼친 내용 */
 .teacher-question-item-content {
-  padding: 0 1rem 1rem;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  border-top: 1px solid #4d3267;
-  padding-top: 1rem;
-  margin-top: 0.5rem;
+  gap: 14px;
+  padding: 16px;
+  border-top: 1px solid var(--line);
 }
 
 .teacher-question-item-description {
-  color: #cbd5e1;
-  font-size: 0.875rem;
+  font-size: 14px;
   line-height: 1.6;
-}
-
-.teacher-question-item-description p {
-  margin: 0;
+  color: var(--ink-2);
 }
 
 .teacher-question-item-image {
   width: 100%;
-  border-radius: 0.5rem;
+  border-radius: var(--radius);
   overflow: hidden;
-  background-color: rgba(17, 24, 39, 0.5);
+  background: var(--paper-sunken);
+  border: 1px solid var(--line);
 }
 
 .teacher-question-item-image img {
+  display: block;
   width: 100%;
   height: auto;
-  display: block;
   object-fit: cover;
 }
 
+/* 정답 상자 */
 .teacher-question-item-answers {
-  background-color: rgba(127, 19, 236, 0.05);
-  border: 1px solid rgba(127, 19, 236, 0.2);
-  border-radius: 0.5rem;
-  padding: 1rem;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 6px;
+  padding: 14px 16px;
+  border-radius: var(--radius);
+  background: var(--jade-soft);
 }
 
 .teacher-question-answers-title {
-  font-size: 0.875rem;
+  font-size: 13px;
   font-weight: 700;
-  color: #7f13ec;
-  margin: 0;
+  color: var(--jade);
 }
 
 .teacher-question-answer-item {
   display: flex;
-  gap: 0.5rem;
-  font-size: 0.875rem;
+  gap: 8px;
+  font-size: 15px;
 }
 
 .teacher-question-answer-value {
-  color: white;
-  font-weight: 700;
   flex: 1;
+  font-weight: 700;
+  line-height: 1.5;
+  color: var(--ink);
 }
 
+/* 설명 상자 */
 .teacher-question-item-explanation {
-  background-color: rgba(17, 24, 39, 0.5);
-  border-radius: 0.5rem;
-  padding: 1rem;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 6px;
+  padding: 14px 16px;
+  border-radius: var(--radius);
+  background: var(--paper-sunken);
 }
 
 .teacher-question-explanation-title {
-  font-size: 0.875rem;
+  font-size: 13px;
   font-weight: 700;
-  color: #ad92c9;
-  margin: 0;
+  color: var(--ink-3);
 }
 
 .teacher-question-item-explanation p {
-  color: #cbd5e1;
-  font-size: 0.875rem;
+  font-size: 14px;
   line-height: 1.6;
-  margin: 0;
+  color: var(--ink-2);
 }
 
-/* 반응형 디자인 */
-@media (max-width: 640px) {
+/* 좁은 화면에서는 박물관 선택 카드를 한 줄에 하나씩 */
+@media (max-width: 400px) {
   .teacher-question-halls-grid {
     grid-template-columns: 1fr;
   }
 }
-

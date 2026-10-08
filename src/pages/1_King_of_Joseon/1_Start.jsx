@@ -41,17 +41,10 @@ function Start() {
               backgroundPosition: 'left top'
             }}
           >
-            <div className="joseon-royal-court-image-overlay"></div>
-            
             {/* 위치 배지 */}
             <div className="joseon-royal-court-location-badge">
               <span className="material-symbols-outlined">location_on</span>
               <span>현위치: 2층</span>
-            </div>
-
-            {/* 검색 아이콘 */}
-            <div className="joseon-royal-court-search-icon">
-              <span className="material-symbols-outlined">search</span>
             </div>
           </div>
         </div>

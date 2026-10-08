@@ -6,8 +6,8 @@ import './Login.css'
 
 function Login() {
   useEffect(() => {
-    // Login 페이지는 dark 모드 사용
-    document.documentElement.classList.add('dark')
+    // 라이트(한지) 테마 사용
+    document.documentElement.classList.remove('dark')
     return () => {
       // 필요시 언마운트 시 제거
     }
@@ -132,7 +132,7 @@ function Login() {
   }
 
   return (
-    <div className="login-page-new dark">
+    <div className="login-page-new">
       {/* Top App Bar */}
       <div className="login-app-bar">
         <button 
@@ -150,11 +150,6 @@ function Login() {
         {/* Headline Section */}
         <div className="login-headline">
           <div className="login-headline-icon">
-            <img 
-              alt="Abstract colorful gradient shapes" 
-              className="login-headline-icon-bg"
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuCIy-Lo3ObhMAZQKAC33irvclvEXTXrzuItiYjvaoRSCOEHzBGogh9OekN1h50G-Bu0YjhO78dIxmr0-QSjpKAVDLro09d-GW2qHvQms7RiiYM6KN6x6msgCDWCGDTkr36pcxBAOTwcgjCxhxqdfrlVqgmukTdx2xKCnKbCnHTwSnjmdfJh6fo_0p-3D_qcIzHP6f2MYUhLMKVS_z2LD55qkGfwS5Uzio4VPMysncSlnqySSBclMVTOwqd8dICkCyehDMa5PkmFSfgc"
-            />
             <span className="material-symbols-outlined login-headline-icon-symbol">explore</span>
           </div>
           <h3 className="login-headline-title">

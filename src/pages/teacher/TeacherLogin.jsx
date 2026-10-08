@@ -140,7 +140,6 @@ function TeacherLogin() {
         <main className="teacher-login-main">
           <div className="teacher-login-welcome">
             <div className="teacher-login-icon-wrapper">
-              <div className="teacher-login-icon-glow"></div>
               <div className="teacher-login-icon">
                 <span className="material-symbols-outlined">supervisor_account</span>
               </div>

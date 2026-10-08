@@ -75,7 +75,7 @@ function App() {
       <div className="loading-container">
         <div className="loading-spinner"></div>
         <p>로딩 중...</p>
-        {error && <p style={{ color: '#ffcccc', marginTop: '10px' }}>{error}</p>}
+        {error && <p className="loading-error">{error}</p>}
       </div>
     )
   }
@@ -83,19 +83,8 @@ function App() {
   if (error && !user) {
     return (
       <div className="loading-container">
-        <p style={{ color: '#ffcccc', marginBottom: '20px' }}>{error}</p>
-        <button 
-          onClick={() => window.location.reload()} 
-          style={{
-            padding: '10px 20px',
-            background: 'white',
-            color: '#8B4513',
-            border: 'none',
-            borderRadius: '8px',
-            cursor: 'pointer',
-            fontSize: '16px'
-          }}
-        >
+        <p className="loading-error">{error}</p>
+        <button className="loading-retry-btn" onClick={() => window.location.reload()}>
           새로고침
         </button>
       </div>

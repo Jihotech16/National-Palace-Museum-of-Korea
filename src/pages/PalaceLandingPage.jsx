@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom'
+import palaceMuseumImage from '../image/NationalPalaceMuseum/국립고궁박물관.jpg'
 import './PalaceLandingPage.css'
 
 function PalaceLandingPage() {
@@ -23,7 +24,7 @@ function PalaceLandingPage() {
         <div 
           className="landing-bg-image"
           style={{
-            backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuDyQEDp7Z-I0HGOQo-LaIWaM-oOTTSWhziXAS1LUQm8mCQFN_HBbvdT0RXRJWQbBPhgketGnhhdRpyhJWVuYaKoRHGoLpcqNvx5h0KEehV-i9tabacJjWiVrrL5Gf_r0QKwbuJEsANAt8RjN1Yu2hSeTv25uwsufTy3v2YO4aQw1RA23UH-cI1RJm2zR-rluu-djLnH2R2TdlcR5BFNEJcwMxaQ0QKpEf_LUADinr3YXfGnAsL74-D7H4p9z2YvZDAyHXTlKPR7cjoo")'
+            backgroundImage: `url(${palaceMuseumImage})`
           }}
         />
         {/* Gradient Overlay */}

@@ -5,6 +5,7 @@ import { doc, getDoc } from 'firebase/firestore'
 import { db } from '../firebase/config'
 import { getSchoolInfo } from '../firebase/firestore'
 import seoulMuseumImage from '../image/SeoulHistoryMuseum/서울역사박물관.jpeg'
+import palaceMuseumImage from '../image/NationalPalaceMuseum/국립고궁박물관.jpg'
 import './ChoiceMuseum.css'
 
 function ChoiceMuseum({ user }) {
@@ -16,8 +17,8 @@ function ChoiceMuseum({ user }) {
   const headerRef = useRef(null)
 
   useEffect(() => {
-    // dark 모드 사용
-    document.documentElement.classList.add('dark')
+    // 라이트(한지) 테마 사용
+    document.documentElement.classList.remove('dark')
     if (user) {
       loadStudentInfo()
     }
@@ -337,7 +338,7 @@ function ChoiceMuseum({ user }) {
               <div 
                 className="choice-museum-card-image"
                 style={{
-                  backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuCPRiDyjF0nFvKAf4Z4TbYWKLr989KaLWrjZ5RCJfSYgsc3oLUVeGj-7vCAA7KgR8p0H3WN-6eh-IRjeJARUiPRJbFKnCVWMvQhCwCtVaQFMQo8xeEL9k2pIKzhHW8r3gok9GXSS9mjKwqnbCfyiLRnGNbsfLKkHBcXXrqufZtDixNWSLYPoM8Nz_s1f-ZhKhOq2SEBWb7Cm1ZnNsl0pN4HxNzAZpKvZKfMPNvl4ExwF8fyVK2PGw9_iUws1OkRwNEbqfTQxn5pJzNT")'
+                  backgroundImage: `url(${palaceMuseumImage})`
                 }}
               >
                 <div className="choice-museum-card-overlay"></div>

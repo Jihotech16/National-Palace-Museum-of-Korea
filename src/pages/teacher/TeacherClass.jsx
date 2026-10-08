@@ -246,8 +246,6 @@ function TeacherClass() {
           ) : (
             <div className="teacher-class-content">
             <section className="teacher-class-summary">
-              <div className="teacher-class-summary-bg-1"></div>
-              <div className="teacher-class-summary-bg-2"></div>
               <div className="teacher-class-summary-content">
                 <div className="teacher-class-summary-header">
                   <div>
@@ -282,19 +280,12 @@ function TeacherClass() {
             <section className="teacher-class-halls">
               <div className="teacher-class-halls-header">
                 {selectedMuseum ? (
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <div className="teacher-class-halls-heading">
                     <button
+                      className="teacher-class-halls-back-btn"
                       onClick={() => setSelectedMuseum(null)}
-                      style={{
-                        background: 'none',
-                        border: 'none',
-                        cursor: 'pointer',
-                        padding: '4px',
-                        display: 'flex',
-                        alignItems: 'center'
-                      }}
                     >
-                      <span className="material-symbols-outlined" style={{ fontSize: '24px' }}>arrow_back</span>
+                      <span className="material-symbols-outlined">arrow_back</span>
                     </button>
                     <h3 className="teacher-class-halls-title">{selectedMuseum === 'palace' ? '국립고궁박물관' : '서울역사박물관'} - 전시관별 완료 현황</h3>
                   </div>
@@ -363,8 +354,7 @@ function TeacherClass() {
                     return (
                       <>
                         <div 
-                          className="teacher-class-hall-card" 
-                          style={{ cursor: 'pointer' }}
+                          className="teacher-class-hall-card teacher-class-hall-card-clickable"
                           onClick={() => setSelectedMuseum('palace')}
                         >
                           <div className="teacher-class-hall-header">
@@ -391,8 +381,7 @@ function TeacherClass() {
                           </div>
                         </div>
                         <div 
-                          className="teacher-class-hall-card" 
-                          style={{ cursor: 'pointer' }}
+                          className="teacher-class-hall-card teacher-class-hall-card-clickable"
                           onClick={() => setSelectedMuseum('seoul')}
                         >
                           <div className="teacher-class-hall-header">

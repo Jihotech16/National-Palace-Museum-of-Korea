@@ -1,194 +1,221 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
+/* ==========================================================
+   관리자 페이지 (한지 + 먹 테마)
+   학교 목록 / 학교 상세 / 추가·비밀번호·활동 기간 모달
+   ========================================================== */
 
 .admin-page {
   position: relative;
-  width: 100vw;
+  width: 100%;
   min-height: 100vh;
-  background-color: #1a0b2e;
-  font-family: 'Noto Sans KR', sans-serif;
-  -webkit-font-smoothing: antialiased;
-  color: #ffffff;
+  min-height: 100dvh;
   display: flex;
   justify-content: center;
+  background: var(--paper);
+  color: var(--ink);
 }
 
+/* 메인 뷰와 상세 뷰가 겹쳐 슬라이드되는 틀 */
 .admin-container {
+  position: relative;
   width: 100%;
   max-width: 480px;
   min-height: 100vh;
-  position: relative;
-  background-color: #1a0b2e;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  min-height: 100dvh;
   overflow: hidden;
+  background: var(--paper);
 }
 
+/* 로딩 */
 .admin-loading {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 16px;
   min-height: 100vh;
-  gap: 1rem;
+  min-height: 100dvh;
+  font-size: 15px;
+  color: var(--ink-3);
+  background: var(--paper);
 }
 
 .admin-loading-spinner {
-  width: 3rem;
-  height: 3rem;
-  border: 3px solid rgba(251, 191, 36, 0.3);
-  border-top-color: #fbbf24;
+  width: 36px;
+  height: 36px;
+  border: 3px solid var(--line);
+  border-top-color: var(--accent);
   border-radius: 50%;
-  animation: spin 1s linear infinite;
+  animation: admin-spin 0.9s linear infinite;
 }
 
-@keyframes spin {
+@keyframes admin-spin {
   to { transform: rotate(360deg); }
+}
+
+/* ----------------------------------------------------------
+   메인 뷰 (학교 목록)
+   ---------------------------------------------------------- */
+.admin-main-view {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  background: var(--paper);
+  transition: transform 0.3s ease;
+}
+
+.admin-main-view-slide {
+  transform: translateX(-20%);
 }
 
 /* 헤더 */
 .admin-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1.25rem 1.5rem;
   position: sticky;
   top: 0;
   z-index: 20;
-  background-color: rgba(26, 11, 46, 0.95);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  flex-shrink: 0;
+  min-height: calc(var(--bar-h) + env(safe-area-inset-top));
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: calc(env(safe-area-inset-top) + 10px) 8px 10px var(--gutter);
+  background: rgba(246, 241, 231, 0.92);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
 }
 
 .admin-header-subtitle {
-  font-size: 0.75rem;
-  font-weight: 500;
-  color: #fbbf24;
-  margin-bottom: 0.125rem;
+  margin-bottom: 2px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent);
 }
 
 .admin-header-title {
-  font-size: 1.25rem;
+  font-size: 20px;
   font-weight: 700;
-  color: #ffffff;
-  letter-spacing: -0.025em;
+  line-height: 1.3;
+  color: var(--ink);
 }
 
 .admin-header-exit-btn {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 2.5rem;
-  height: 2.5rem;
-  border-radius: 9999px;
-  background-color: rgba(255, 255, 255, 0.05);
-  border: none;
-  cursor: pointer;
-  transition: background-color 0.2s;
+  border-radius: var(--radius-full);
+  background: transparent;
+  color: var(--ink-2);
+  transition: background-color 0.15s ease;
 }
 
 .admin-header-exit-btn:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-}
-
-.admin-header-exit-btn:active {
-  transform: scale(0.95);
+  background: var(--paper-sunken);
 }
 
 .admin-header-exit-btn .material-symbols-outlined {
-  font-size: 1.5rem;
-  color: #d1d5db;
+  font-size: 22px;
 }
 
 /* 검색 */
 .admin-search-container {
-  padding: 0.5rem 1.5rem;
-  margin-top: 0.5rem;
+  flex-shrink: 0;
+  padding: 16px var(--gutter) 0;
 }
 
 .admin-search-wrapper {
   position: relative;
+  display: flex;
+  align-items: center;
 }
 
 .admin-search-icon {
   position: absolute;
-  left: 1rem;
-  top: 50%;
-  transform: translateY(-50%);
+  left: 14px;
+  display: flex;
   pointer-events: none;
 }
 
 .admin-search-icon .material-symbols-outlined {
-  font-size: 1.25rem;
-  color: #9ca3af;
-  transition: color 0.2s;
+  font-size: 20px;
+  color: var(--ink-3);
+  transition: color 0.15s ease;
 }
 
 .admin-search-wrapper:focus-within .admin-search-icon .material-symbols-outlined {
-  color: #fbbf24;
+  color: var(--accent);
 }
 
 .admin-search-input {
   width: 100%;
-  padding: 0.875rem 1rem 0.875rem 2.75rem;
-  border-radius: 1rem;
-  border: none;
-  background-color: #2f1c4e;
-  color: #ffffff;
-  font-size: 0.875rem;
-  transition: all 0.2s;
-}
-
-.admin-search-input:focus {
-  outline: none;
-  box-shadow: 0 0 0 2px rgba(251, 191, 36, 0.7);
+  height: 48px;
+  padding: 0 16px 0 44px;
+  font-size: 15px;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 .admin-search-input::placeholder {
-  color: #9ca3af;
+  color: var(--ink-3);
+}
+
+.admin-search-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
 }
 
 /* 학교 목록 헤더 */
 .admin-schools-header {
+  flex-shrink: 0;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: space-between;
-  padding: 1rem 1.5rem;
+  padding: 24px var(--gutter) 12px;
 }
 
 .admin-schools-title {
-  font-size: 1rem;
+  font-size: 18px;
   font-weight: 700;
-  color: #e5e7eb;
+  color: var(--ink);
 }
 
 .admin-schools-count {
-  font-size: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  height: 26px;
+  padding: 0 10px;
+  font-size: 13px;
   font-weight: 600;
-  color: #fbbf24;
-  background-color: rgba(251, 191, 36, 0.1);
-  padding: 0.25rem 0.625rem;
-  border-radius: 0.375rem;
-  border: 1px solid rgba(251, 191, 36, 0.2);
+  color: var(--ink-2);
+  background: var(--paper-sunken);
+  border-radius: var(--radius-full);
 }
 
 /* 학교 목록 */
 .admin-schools-list {
   flex: 1;
   overflow-y: auto;
-  padding: 0 1.5rem 7rem;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 10px;
+  padding: 0 var(--gutter) 112px;
 }
 
 .admin-error-message {
-  padding: 1rem;
-  background-color: rgba(239, 68, 68, 0.1);
-  border: 1px solid rgba(239, 68, 68, 0.3);
-  border-radius: 0.75rem;
-  color: #fca5a5;
-  font-size: 0.875rem;
-  margin-bottom: 1rem;
+  padding: 12px 14px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--danger);
+  background: var(--danger-soft);
+  border-radius: var(--radius-sm);
 }
 
 .admin-empty-state {
@@ -196,381 +223,377 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 3rem 1rem;
-  color: #6b7280;
-  gap: 1rem;
+  gap: 12px;
+  padding: 48px 16px;
+  font-size: 15px;
+  color: var(--ink-3);
 }
 
 .admin-empty-state .material-symbols-outlined {
-  font-size: 3rem;
-  color: #4b5563;
+  font-size: 44px;
+  color: var(--line-strong);
 }
 
+/* 학교 카드 (목록 행) */
 .admin-school-card {
   position: relative;
-  background-color: #2f1c4e;
-  border-radius: 1rem;
-  padding: 1.25rem;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  transition: all 0.2s;
-  cursor: pointer;
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  align-items: flex-start;
-  gap: 1rem;
+  gap: 12px;
+  padding: 14px 8px 14px 16px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  transition: border-color 0.15s ease, background-color 0.15s ease, transform 0.1s ease;
 }
 
 .admin-school-card:hover {
-  border-color: rgba(251, 191, 36, 0.4);
+  border-color: var(--line-strong);
 }
 
 .admin-school-card:active {
   transform: scale(0.98);
+  background: var(--paper-sunken);
 }
 
 .admin-school-card-content {
-  display: flex;
-  align-items: flex-start;
-  gap: 1rem;
   flex: 1;
   min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 14px;
 }
 
 .admin-school-icon {
-  width: 3rem;
-  height: 3rem;
-  border-radius: 0.75rem;
-  background-color: rgba(99, 102, 241, 0.1);
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
-  color: #818cf8;
-  border: 1px solid rgba(99, 102, 241, 0.1);
+  border-radius: var(--radius);
+  background: var(--accent-soft);
+  color: var(--accent);
 }
 
 .admin-school-icon .material-symbols-outlined {
-  font-size: 1.5rem;
+  font-size: 22px;
 }
 
-.admin-school-icon .material-symbols-outlined.filled {
-  font-variation-settings: 'FILL' 1;
+.admin-school-icon .material-symbols-outlined.filled,
+.admin-detail-icon-large .material-symbols-outlined.filled {
+  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
 }
 
 .admin-school-info {
+  min-width: 0;
   display: flex;
   flex-direction: column;
-  min-width: 0;
-  padding-top: 0.125rem;
+  gap: 4px;
 }
 
 .admin-school-name {
-  font-size: 1rem;
-  font-weight: 700;
-  color: #ffffff;
-  margin: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  transition: color 0.2s;
-}
-
-.admin-school-card:hover .admin-school-name {
-  color: #fbbf24;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--ink);
 }
 
 .admin-school-code-wrapper {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  margin-top: 0.375rem;
+  gap: 6px;
 }
 
 .admin-school-code-label {
   display: inline-flex;
   align-items: center;
-  padding: 0.125rem 0.375rem;
-  border-radius: 0.25rem;
-  font-size: 0.6875rem;
-  font-weight: 500;
-  background-color: rgba(255, 255, 255, 0.1);
-  color: #9ca3af;
-  font-family: monospace;
+  height: 20px;
+  padding: 0 6px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--ink-3);
+  background: var(--paper-sunken);
+  border-radius: 4px;
 }
 
 .admin-school-code {
-  font-size: 0.75rem;
-  color: #9ca3af;
-  font-family: monospace;
-  letter-spacing: 0.05em;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+  letter-spacing: 0.03em;
+  color: var(--ink-2);
 }
 
 .admin-school-chevron {
-  width: 2rem;
-  height: 2rem;
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 9999px;
+  border-radius: var(--radius-full);
   background: transparent;
-  border: none;
-  color: #9ca3af;
-  cursor: pointer;
-  transition: all 0.2s;
+  color: var(--ink-3);
+  transition: background-color 0.15s ease;
 }
 
 .admin-school-chevron:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+  background: var(--paper-sunken);
 }
 
-/* 추가 버튼 */
+.admin-school-chevron .material-symbols-outlined {
+  font-size: 22px;
+}
+
+/* 새 학교 추가 버튼 (플로팅) */
 .admin-add-button {
   position: absolute;
-  bottom: 2rem;
-  right: 1.5rem;
-  width: 3.5rem;
-  height: 3.5rem;
-  background-color: #fbbf24;
-  border-radius: 9999px;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+  right: var(--gutter);
+  bottom: max(24px, calc(env(safe-area-inset-bottom) + 16px));
+  z-index: 10;
+  width: 56px;
+  height: 56px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #451a03;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  cursor: pointer;
-  transition: all 0.2s;
-  z-index: 10;
+  border-radius: var(--radius-full);
+  background: var(--accent);
+  color: var(--ink-inverse);
+  box-shadow: var(--shadow);
+  transition: background-color 0.15s ease, transform 0.1s ease;
 }
 
 .admin-add-button:hover {
-  background-color: rgba(251, 191, 36, 0.9);
+  background: var(--accent-hover);
 }
 
 .admin-add-button:active {
-  transform: scale(0.95);
+  transform: scale(0.96);
 }
 
 .admin-add-button .material-symbols-outlined {
-  font-size: 2rem;
+  font-size: 28px;
 }
 
-/* 메인 뷰 슬라이드 */
-.admin-main-view {
-  position: absolute;
-  inset: 0;
-  z-index: 10;
-  background-color: #1a0b2e;
-  transition: transform 0.3s;
-  display: flex;
-  flex-direction: column;
-}
-
-.admin-main-view-slide {
-  transform: translateX(-20%);
-}
-
-/* 상세 뷰 */
+/* ----------------------------------------------------------
+   상세 뷰
+   ---------------------------------------------------------- */
 .admin-detail-view {
   position: absolute;
   inset: 0;
   z-index: 30;
-  background-color: #1a0b2e;
-  transform: translateX(100%);
-  transition: transform 0.3s;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  background: var(--paper);
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
 }
 
 .admin-detail-view-visible {
   transform: translateX(0);
+  border-left: 1px solid var(--line);
 }
 
 .admin-detail-header {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 1rem;
   position: sticky;
   top: 0;
   z-index: 20;
-  background-color: rgba(26, 11, 46, 0.95);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  flex-shrink: 0;
+  height: calc(var(--bar-h) + env(safe-area-inset-top));
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: env(safe-area-inset-top) 8px 0;
+  background: rgba(246, 241, 231, 0.92);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
 }
 
 .admin-detail-back-btn {
-  width: 2.5rem;
-  height: 2.5rem;
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 9999px;
+  border-radius: var(--radius-full);
   background: transparent;
-  border: none;
-  color: #ffffff;
-  cursor: pointer;
-  transition: all 0.2s;
-  margin-left: -0.25rem;
+  color: var(--ink);
+  transition: background-color 0.15s ease;
 }
 
 .admin-detail-back-btn:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+  background: var(--paper-sunken);
+}
+
+.admin-detail-back-btn .material-symbols-outlined {
+  font-size: 22px;
 }
 
 .admin-detail-header-title {
   flex: 1;
   min-width: 0;
+  text-align: center;
 }
 
 .admin-detail-header-title h1 {
-  font-size: 1.125rem;
-  font-weight: 700;
-  color: #ffffff;
-  margin: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--ink);
 }
 
 .admin-detail-edit-btn {
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: #fbbf24;
-  padding: 0.375rem 0.75rem;
-  border-radius: 0.5rem;
+  flex-shrink: 0;
+  min-width: 44px;
+  height: 44px;
+  padding: 0 12px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--accent);
   background: transparent;
-  border: none;
-  cursor: pointer;
-  transition: all 0.2s;
+  border-radius: var(--radius-full);
+  transition: background-color 0.15s ease;
 }
 
 .admin-detail-edit-btn:hover {
-  background-color: rgba(251, 191, 36, 0.1);
+  background: var(--paper-sunken);
 }
 
 .admin-detail-content {
   flex: 1;
   overflow-y: auto;
-  padding-bottom: 2.5rem;
+  padding-bottom: max(40px, env(safe-area-inset-bottom));
 }
 
+/* 학교 대표 정보 */
 .admin-detail-hero {
-  background-color: rgba(47, 28, 78, 0.5);
-  padding: 2rem 1.5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 32px var(--gutter) 24px;
+  text-align: center;
 }
 
 .admin-detail-icon-large {
-  width: 6rem;
-  height: 6rem;
-  border-radius: 1rem;
-  background-color: rgba(99, 102, 241, 0.1);
+  width: 72px;
+  height: 72px;
+  margin-bottom: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #818cf8;
-  margin-bottom: 1.25rem;
-  border: 4px solid #2f1c4e;
+  border-radius: var(--radius-lg);
+  background: var(--accent-soft);
+  color: var(--accent);
 }
 
 .admin-detail-icon-large .material-symbols-outlined {
-  font-size: 3rem;
-}
-
-.admin-detail-icon-large .material-symbols-outlined.filled {
-  font-variation-settings: 'FILL' 1;
+  font-size: 36px;
 }
 
 .admin-detail-school-name {
-  font-size: 1.5rem;
+  font-family: var(--font-serif);
+  font-size: 24px;
   font-weight: 700;
-  text-align: center;
-  color: #ffffff;
-  margin-bottom: 0.375rem;
+  line-height: 1.3;
+  color: var(--ink);
 }
 
 .admin-detail-code-badge {
-  padding: 0.25rem 0.75rem;
-  border-radius: 9999px;
-  background-color: rgba(255, 255, 255, 0.1);
-  font-size: 0.75rem;
-  font-family: monospace;
-  font-weight: 500;
-  color: #d1d5db;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  margin-top: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  height: 28px;
+  margin-top: 10px;
+  padding: 0 12px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-2);
+  background: var(--paper-sunken);
+  border-radius: var(--radius-full);
 }
 
+/* 통계 */
 .admin-detail-stats {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 1px;
-  background-color: rgba(255, 255, 255, 0.05);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  margin: 0 var(--gutter);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
 }
 
 .admin-detail-stat {
-  background-color: #2f1c4e;
-  padding: 1.5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 4px;
+  padding: 18px 12px;
   text-align: center;
 }
 
+.admin-detail-stat + .admin-detail-stat {
+  border-left: 1px solid var(--line);
+}
+
 .admin-detail-stat-number {
-  font-size: 1.875rem;
+  font-family: var(--font-serif);
+  font-size: 28px;
   font-weight: 700;
-  color: #ffffff;
-  margin-bottom: 0.25rem;
+  line-height: 1.2;
+  color: var(--ink);
 }
 
 .admin-detail-stat-label {
-  font-size: 0.75rem;
-  color: #9ca3af;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  font-size: 13px;
+  color: var(--ink-3);
 }
 
+/* 섹션 */
 .admin-detail-sections {
-  padding: 1.5rem;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 28px;
+  padding: 28px var(--gutter) 0;
 }
 
 .admin-detail-section {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 12px;
 }
 
 .admin-detail-section-title {
-  font-size: 0.875rem;
-  font-weight: 700;
-  color: #ffffff;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 8px;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--ink);
 }
 
 .admin-detail-section-title .material-symbols-outlined {
-  font-size: 1.125rem;
-  color: #fbbf24;
+  font-size: 20px;
+  color: var(--ink-3);
 }
 
+/* 기본 정보 카드 (행 목록) */
 .admin-detail-info-card {
-  background-color: #2f1c4e;
-  border-radius: 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
   overflow: hidden;
 }
 
@@ -578,500 +601,472 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  transition: background-color 0.2s;
+  gap: 12px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--line);
 }
 
 .admin-detail-info-row:last-child {
   border-bottom: none;
 }
 
-.admin-detail-info-row:hover {
-  background-color: rgba(255, 255, 255, 0.05);
-}
-
 .admin-detail-info-label {
-  font-size: 0.875rem;
-  color: #9ca3af;
+  font-size: 14px;
+  color: var(--ink-3);
 }
 
 .admin-detail-info-value {
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: #ffffff;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink);
 }
 
+/* 보안 설정 / 활동 기간 카드 */
 .admin-detail-security-card {
-  background-color: #2f1c4e;
-  border-radius: 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  padding: 1.25rem;
+  padding: 16px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
 }
 
 .admin-detail-security-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 1rem;
+  gap: 12px;
+  margin-bottom: 12px;
 }
 
 .admin-detail-security-label {
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: #ffffff;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink);
 }
 
 .admin-detail-security-change-btn {
-  font-size: 0.75rem;
-  color: #fbbf24;
-  font-weight: 700;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  transition: all 0.2s;
+  flex-shrink: 0;
+  height: 36px;
+  padding: 0 14px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-full);
+  transition: background-color 0.15s ease, transform 0.1s ease;
 }
 
 .admin-detail-security-change-btn:hover {
-  text-decoration: underline;
+  background: var(--paper-sunken);
+}
+
+.admin-detail-security-change-btn:active {
+  transform: scale(0.98);
 }
 
 .admin-detail-password-display {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: rgba(0, 0, 0, 0.2);
-  padding: 1rem;
-  border-radius: 0.75rem;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  height: 48px;
+  padding: 0 16px;
+  background: var(--paper-sunken);
+  border-radius: var(--radius);
 }
 
 .admin-detail-password-dots {
-  font-size: 1.125rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 18px;
   letter-spacing: 0.3em;
-  color: #e5e7eb;
-  font-family: monospace;
+  color: var(--ink-2);
 }
 
 .admin-detail-password-display .material-symbols-outlined {
-  font-size: 0.875rem;
-  color: #9ca3af;
+  font-size: 18px;
+  color: var(--ink-3);
 }
 
 .admin-detail-password-info {
-  font-size: 0.75rem;
-  color: #9ca3af;
-  margin-top: 0.75rem;
   display: flex;
   align-items: flex-start;
-  gap: 0.375rem;
+  gap: 6px;
+  margin-top: 12px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--ink-3);
 }
 
 .admin-detail-password-info .material-symbols-outlined {
-  font-size: 0.875rem;
-  margin-top: 0.125rem;
+  flex-shrink: 0;
+  margin-top: 2px;
+  font-size: 16px;
 }
 
+/* 활동 기간 표시 */
 .admin-detail-period-display {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-  background-color: rgba(0, 0, 0, 0.2);
-  padding: 1rem;
-  border-radius: 0.75rem;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.admin-detail-period-dates {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
-}
-
-.admin-detail-period-date {
-  display: flex;
-  flex-direction: column;
-  gap: 0.375rem;
-  flex: 1;
-}
-
-.admin-detail-period-label {
-  font-size: 0.75rem;
-  color: #9ca3af;
-  font-weight: 500;
-}
-
-.admin-detail-period-value {
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: #ffffff;
-}
-
-.admin-detail-period-separator {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.5rem 0;
-  color: #9ca3af;
-}
-
-.admin-detail-period-separator .material-symbols-outlined {
-  font-size: 1rem;
 }
 
 .admin-detail-period-empty {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  padding: 1.5rem;
-  color: #6b7280;
-  font-size: 0.875rem;
+  gap: 8px;
+  padding: 20px 16px;
+  font-size: 14px;
+  color: var(--ink-3);
+  background: var(--paper-sunken);
+  border-radius: var(--radius);
 }
 
 .admin-detail-period-empty .material-symbols-outlined {
-  font-size: 1.25rem;
+  font-size: 20px;
 }
 
 .admin-detail-period-list {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
 }
 
 .admin-detail-period-item {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-  padding: 1rem;
-  background-color: rgba(0, 0, 0, 0.1);
-  border-radius: 0.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  gap: 10px;
+  padding: 14px;
+}
+
+.admin-detail-period-item + .admin-detail-period-item {
+  border-top: 1px solid var(--line);
 }
 
 .admin-detail-period-museum-header {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 8px;
+  font-size: 15px;
   font-weight: 600;
-  color: #ffffff;
-  font-size: 0.875rem;
+  color: var(--ink);
 }
 
 .admin-detail-period-museum-header .material-symbols-outlined {
-  font-size: 1.125rem;
-  color: #fbbf24;
+  font-size: 20px;
+  color: var(--accent);
 }
 
 .admin-detail-period-museum-name {
   font-weight: 600;
 }
 
-.admin-detail-period-not-set {
-  color: #6b7280;
-  font-size: 0.875rem;
-  padding: 0.5rem 0;
+.admin-detail-period-dates {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
 }
 
-.admin-modal-museum-select {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0.75rem;
+.admin-detail-period-date {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
-.admin-modal-museum-option {
+.admin-detail-period-label {
+  font-size: 13px;
+  color: var(--ink-3);
+}
+
+.admin-detail-period-value {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--ink);
+}
+
+.admin-detail-period-separator {
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  padding: 1rem;
-  border-radius: 0.75rem;
-  background-color: rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: #9ca3af;
-  font-size: 0.875rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s;
+  color: var(--ink-3);
 }
 
-.admin-modal-museum-option:hover {
-  background-color: rgba(255, 255, 255, 0.05);
-  border-color: rgba(251, 191, 36, 0.3);
-}
-
-.admin-modal-museum-option-active {
-  background-color: rgba(251, 191, 36, 0.1);
-  border-color: #fbbf24;
-  color: #fbbf24;
-}
-
-.admin-modal-museum-option .material-symbols-outlined {
-  font-size: 1.25rem;
-}
-
-.admin-detail-period-list {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.admin-detail-period-item {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  padding: 1rem;
-  background-color: rgba(0, 0, 0, 0.1);
-  border-radius: 0.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.admin-detail-period-museum-header {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-weight: 600;
-  color: #ffffff;
-  font-size: 0.875rem;
-}
-
-.admin-detail-period-museum-header .material-symbols-outlined {
-  font-size: 1.125rem;
-  color: #fbbf24;
-}
-
-.admin-detail-period-museum-name {
-  font-weight: 600;
+.admin-detail-period-separator .material-symbols-outlined {
+  font-size: 18px;
 }
 
 .admin-detail-period-not-set {
-  color: #6b7280;
-  font-size: 0.875rem;
-  padding: 0.5rem 0;
-}
-
-.admin-modal-museum-select {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0.75rem;
-}
-
-.admin-modal-museum-option {
-  display: flex;
+  display: inline-flex;
+  align-self: flex-start;
   align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 1rem;
-  border-radius: 0.75rem;
-  background-color: rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: #9ca3af;
-  font-size: 0.875rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s;
+  height: 26px;
+  padding: 0 10px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-3);
+  background: var(--paper-sunken);
+  border-radius: var(--radius-full);
 }
 
-.admin-modal-museum-option:hover {
-  background-color: rgba(255, 255, 255, 0.05);
-  border-color: rgba(251, 191, 36, 0.3);
-}
-
-.admin-modal-museum-option-active {
-  background-color: rgba(251, 191, 36, 0.1);
-  border-color: #fbbf24;
-  color: #fbbf24;
-}
-
-.admin-modal-museum-option .material-symbols-outlined {
-  font-size: 1.25rem;
-}
-
+/* 위험 작업 */
 .admin-detail-actions {
-  padding-top: 1rem;
-  padding-bottom: 1.5rem;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 12px;
+  padding: 4px 0 24px;
 }
 
 .admin-detail-delete-btn {
   width: 100%;
-  padding: 1rem;
-  border-radius: 0.75rem;
-  background-color: rgba(239, 68, 68, 0.1);
-  color: #fca5a5;
-  font-weight: 700;
-  font-size: 0.875rem;
-  border: none;
-  cursor: pointer;
-  transition: all 0.2s;
+  height: 48px;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  gap: 6px;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--danger);
+  background: var(--surface);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  transition: background-color 0.15s ease, transform 0.1s ease;
 }
 
 .admin-detail-delete-btn:hover {
-  background-color: rgba(239, 68, 68, 0.2);
+  background: var(--danger-soft);
+}
+
+.admin-detail-delete-btn:active {
+  transform: scale(0.98);
 }
 
 .admin-detail-delete-btn .material-symbols-outlined {
-  font-size: 1.125rem;
+  font-size: 20px;
 }
 
-/* 모달 */
+/* ----------------------------------------------------------
+   모달
+   ---------------------------------------------------------- */
 .admin-modal-overlay {
   position: fixed;
   inset: 0;
   z-index: 50;
-  background-color: rgba(0, 0, 0, 0.6);
   display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  pointer-events: auto;
+  align-items: center;
+  justify-content: center;
+  padding: max(16px, env(safe-area-inset-top)) 16px max(16px, env(safe-area-inset-bottom));
+  background: rgba(31, 27, 22, 0.45);
 }
 
 .admin-modal {
-  background-color: #2f1c4e;
-  border-radius: 2rem 2rem 0 0;
-  padding: 2rem;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-  transform: translateY(0);
-  transition: transform 0.3s ease-out;
-  pointer-events: auto;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
   width: 100%;
-  max-width: 480px;
-  margin: 0 auto;
+  max-width: 400px;
   max-height: 90vh;
+  max-height: 90dvh;
   overflow-y: auto;
+  padding: 24px;
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
 }
 
+/* 가운데 대화상자 형태라 손잡이는 쓰지 않습니다 */
 .admin-modal-handle {
-  width: 3rem;
-  height: 0.375rem;
-  background-color: #d1d5db;
-  border-radius: 9999px;
-  margin: 0 auto 2rem;
+  display: none;
 }
 
 .admin-modal-title {
-  font-size: 1.25rem;
-  font-weight: 700;
-  margin-bottom: 2rem;
-  color: #ffffff;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 8px;
+  margin-bottom: 20px;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--ink);
 }
 
 .admin-modal-title .material-symbols-outlined {
-  color: #fbbf24;
+  font-size: 22px;
+  color: var(--accent);
 }
 
 .admin-modal-form {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 16px;
 }
 
 .admin-modal-field {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 6px;
 }
 
 .admin-modal-label {
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: #9ca3af;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink-2);
 }
 
 .admin-modal-input {
   width: 100%;
-  padding: 1rem;
-  border-radius: 0.75rem;
-  background-color: rgba(0, 0, 0, 0.2);
-  border: none;
-  color: #ffffff;
-  font-size: 1rem;
-  transition: all 0.2s;
-}
-
-.admin-modal-input:focus {
-  outline: none;
-  box-shadow: 0 0 0 2px rgba(251, 191, 36, 0.7);
+  height: 48px;
+  padding: 0 14px;
+  font-size: 16px;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  -webkit-appearance: none;
+  appearance: none;
 }
 
 .admin-modal-input::placeholder {
-  color: #9ca3af;
+  color: var(--ink-3);
+}
+
+.admin-modal-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+/* 날짜·시간 입력: iOS에서 높이와 정렬이 틀어지지 않도록 */
+.admin-modal-input[type="date"],
+.admin-modal-input[type="time"] {
+  line-height: 46px;
+}
+
+.admin-modal-input::-webkit-date-and-time-value {
+  text-align: left;
+}
+
+.admin-modal-input::-webkit-calendar-picker-indicator {
+  opacity: 0.55;
+  cursor: pointer;
 }
 
 .admin-modal-code-wrapper {
   display: flex;
-  gap: 0.75rem;
+  gap: 8px;
 }
 
 .admin-modal-code-input {
   flex: 1;
-  font-family: monospace;
+  min-width: 0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
 .admin-modal-code-generate-btn {
-  padding: 0 1.25rem;
-  border-radius: 0.75rem;
-  background-color: rgba(255, 255, 255, 0.05);
-  border: none;
-  color: #d1d5db;
-  cursor: pointer;
-  transition: all 0.2s;
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink-2);
+  background: var(--surface);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  transition: background-color 0.15s ease, transform 0.1s ease;
 }
 
 .admin-modal-code-generate-btn:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+  background: var(--paper-sunken);
 }
 
-.admin-modal-actions {
-  padding-top: 1.5rem;
+.admin-modal-code-generate-btn:active {
+  transform: scale(0.96);
+}
+
+.admin-modal-code-generate-btn .material-symbols-outlined {
+  font-size: 20px;
+}
+
+/* 박물관 선택 (세그먼트) */
+.admin-modal-museum-select {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+.admin-modal-museum-option {
+  min-height: 48px;
   display: flex;
-  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 10px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--ink-2);
+  background: var(--surface);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.admin-modal-museum-option:hover {
+  background: var(--paper-sunken);
+}
+
+.admin-modal-museum-option-active,
+.admin-modal-museum-option-active:hover {
+  color: var(--accent);
+  background: var(--accent-soft);
+  border-color: var(--accent);
+}
+
+.admin-modal-museum-option .material-symbols-outlined {
+  flex-shrink: 0;
+  font-size: 20px;
+}
+
+/* 버튼 줄 */
+.admin-modal-actions {
+  display: flex;
+  gap: 10px;
+  padding-top: 8px;
+}
+
+.admin-modal-cancel-btn,
+.admin-modal-submit-btn {
+  flex: 1;
+  height: 48px;
+  font-size: 16px;
+  font-weight: 700;
+  border-radius: var(--radius);
+  transition: background-color 0.15s ease, transform 0.1s ease;
 }
 
 .admin-modal-cancel-btn {
-  flex: 1;
-  padding: 1rem;
-  border-radius: 0.75rem;
-  font-weight: 700;
-  color: #9ca3af;
-  background-color: rgba(255, 255, 255, 0.05);
-  border: none;
-  cursor: pointer;
-  transition: all 0.2s;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line-strong);
 }
 
 .admin-modal-cancel-btn:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+  background: var(--paper-sunken);
 }
 
 .admin-modal-submit-btn {
-  flex: 1;
-  padding: 1rem;
-  border-radius: 0.75rem;
-  font-weight: 700;
-  color: #451a03;
-  background-color: #fbbf24;
-  border: none;
-  cursor: pointer;
-  transition: all 0.2s;
-  box-shadow: 0 10px 15px -3px rgba(251, 191, 36, 0.2);
+  color: var(--ink-inverse);
+  background: var(--accent);
 }
 
 .admin-modal-submit-btn:hover {
-  background-color: rgba(251, 191, 36, 0.9);
+  background: var(--accent-hover);
+}
+
+.admin-modal-cancel-btn:active,
+.admin-modal-submit-btn:active {
+  transform: scale(0.98);
 }
 
 /* 스크롤바 */
@@ -1090,13 +1085,6 @@
 .admin-schools-list::-webkit-scrollbar-thumb,
 .admin-detail-content::-webkit-scrollbar-thumb,
 .admin-modal::-webkit-scrollbar-thumb {
-  background-color: rgba(251, 191, 36, 0.3);
-  border-radius: 20px;
+  background-color: var(--line-strong);
+  border-radius: var(--radius-full);
 }
-
-.admin-schools-list::-webkit-scrollbar-thumb:hover,
-.admin-detail-content::-webkit-scrollbar-thumb:hover,
-.admin-modal::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(251, 191, 36, 0.5);
-}
-
