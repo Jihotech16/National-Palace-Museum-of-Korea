@@ -86,7 +86,7 @@ export default function TeacherSidebar({ visible, onClose, onSelect, teacher }) 
 }
 
 const styles = StyleSheet.create({
-  overlay: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0,0,0,0.5)' },
+  overlay: { ...StyleSheet.absoluteFill, backgroundColor: 'rgba(0,0,0,0.5)' },
   panel: {
     position: 'absolute',
     top: 0,

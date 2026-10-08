@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
   tr: { top: 0, right: 0, borderTopWidth: 4, borderRightWidth: 4, borderTopRightRadius: 8 },
   bl: { bottom: 0, left: 0, borderBottomWidth: 4, borderLeftWidth: 4, borderBottomLeftRadius: 8 },
   br: { bottom: 0, right: 0, borderBottomWidth: 4, borderRightWidth: 4, borderBottomRightRadius: 8 },
-  sealBg: { ...StyleSheet.absoluteFillObject, alignItems: 'center', justifyContent: 'center', opacity: 0.05 },
+  sealBg: { ...StyleSheet.absoluteFill, alignItems: 'center', justifyContent: 'center', opacity: 0.05 },
   sealImage: { width: 192, height: 192 },
   header: { marginBottom: 24, alignItems: 'center' },
   label: { fontSize: 10, fontWeight: '700', letterSpacing: 4, marginBottom: 4 },
@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
   },
   stampText: { fontSize: 10, fontWeight: '700', color: '#b91c1c', fontFamily: serif },
   overlay: {
-    ...StyleSheet.absoluteFillObject,
+    ...StyleSheet.absoluteFill,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'rgba(255,255,255,0.1)',

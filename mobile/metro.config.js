@@ -10,6 +10,13 @@ const appOrigin = path.join(projectRoot, 'src', 'index.js')
 const config = getDefaultConfig(projectRoot)
 config.watchFolders = [...(config.watchFolders || []), sharedRoot]
 
+// 개발 서버: 한글 이름 사진은 iOS가 주소를 한 번 더 인코딩해서(%2F -> %252F) ../src 사진을 못 찾음. 되돌려 줌
+const rewriteRequestUrl = config.server.rewriteRequestUrl
+config.server.rewriteRequestUrl = (url) => {
+  if (url.includes('unstable_path=') && url.includes('%25')) url = url.replace(/%25([0-9A-Fa-f]{2})/g, '%$1')
+  return rewriteRequestUrl ? rewriteRequestUrl(url) : url
+}
+
 // 웹 전용 파일 대신 앱용 파일로 바꿔 끼우는 목록
 const swaps = {
   [path.join(sharedRoot, 'firebase', 'config.js')]: path.join(projectRoot, 'src', 'lib', 'firebase.js'),

@@ -391,7 +391,7 @@ const styles = StyleSheet.create({
   actions: { width: '100%', flexDirection: 'row', gap: 12, marginTop: 32 },
   btn: { flex: 1, paddingVertical: 14, borderRadius: 12, alignItems: 'center', justifyContent: 'center' },
   btnText: { fontSize: 14, fontWeight: '700' },
-  celebrationWrap: { ...StyleSheet.absoluteFillObject, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 24 },
+  celebrationWrap: { ...StyleSheet.absoluteFill, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 24 },
   celebration: { alignItems: 'center' },
   celebrationIcon: { marginBottom: 12, alignItems: 'center', justifyContent: 'center' },
   celebrationTitle: { fontSize: 24, fontWeight: '700', color: '#f3e8ff', marginBottom: 4 },

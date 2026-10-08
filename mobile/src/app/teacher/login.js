@@ -206,6 +206,8 @@ export default function TeacherLoginScreen() {
                 placeholder="비밀번호를 입력하세요"
                 placeholderTextColor={t.gray}
                 secureTextEntry={!showPassword}
+                // 비밀번호를 보이게 해도 한글 자판으로 바뀌지 않게
+                keyboardType={Platform.OS === 'ios' ? 'ascii-capable' : 'default'}
                 autoCapitalize="none"
                 autoCorrect={false}
                 textContentType="password"
