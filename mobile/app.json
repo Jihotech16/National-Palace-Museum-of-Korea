@@ -1,0 +1,44 @@
+{
+  "expo": {
+    "name": "박물관 탐험",
+    "slug": "museum-explore",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "dark",
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "kr.co.palacemuseum.activity",
+      "buildNumber": "1",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
+    },
+    "android": {
+      "package": "kr.co.palacemuseum.activity",
+      "adaptiveIcon": {
+        "backgroundColor": "#221d10",
+        "foregroundImage": "./assets/icon.png"
+      }
+    },
+    "web": {
+      "favicon": "./assets/icon.png"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-font",
+      "expo-image",
+      [
+        "expo-media-library",
+        {
+          "photosPermission": "수료증 이미지를 사진 앱에 저장하려면 사진 접근 권한이 필요해요.",
+          "savePhotosPermission": "수료증 이미지를 사진 앱에 저장하려면 사진 접근 권한이 필요해요.",
+          "isAccessMediaLocationEnabled": false
+        }
+      ],
+      "expo-sharing"
+    ],
+    "scheme": "museumexplore",
+    "backgroundColor": "#221d10"
+  }
+}
