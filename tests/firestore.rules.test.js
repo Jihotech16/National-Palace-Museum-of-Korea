@@ -13,6 +13,7 @@ import {
   getDocs,
   setDoc,
   updateDoc,
+  deleteDoc,
   collection,
   query,
   where,
@@ -210,4 +211,36 @@ test('학생은 수업 코드를 만들거나 목록을 볼 수 없고, 코드�
 test('교사는 자기 반 수업 코드 목록을 조회할 수 있다', async () => {
   const q = query(collection(teacher(), 'sessions'), where('classId', '==', CLASS_ID), where('active', '==', true))
   await assertSucceeds(getDocs(q))
+})
+
+// ---------- 활동 종료 (우리 반 기록 삭제) ----------
+
+test('교사는 자기 반 학생 기록만 삭제할 수 있다', async () => {
+  await joinBatch(anon('dev1'), 'dev1')
+  await setDoc(doc(anon('dev1'), 'users', `${CLASS_ID}-5`, 'activities', 'seal'), { completed: true })
+  const studentPath = ['users', `${CLASS_ID}-5`]
+
+  // 다른 반 교사는 못 지움
+  const other = teacher(OTHER_CLASS_ID)
+  await assertFails(deleteDoc(doc(other, ...studentPath, 'activities', 'seal')))
+  await assertFails(deleteDoc(doc(other, ...studentPath)))
+  await assertFails(deleteDoc(doc(other, 'members', 'dev1')))
+
+  // 학생은 남의 기록을 못 지움
+  await joinBatch(anon('dev9'), 'dev9', { number: 9 })
+  await assertFails(deleteDoc(doc(anon('dev9'), ...studentPath)))
+
+  // 우리 반 교사: 활동 → 학생 문서 → 기기 연결 → 명단 → 수업 코드 순서로 삭제
+  const t = teacher()
+  const members = await assertSucceeds(getDocs(query(collection(t, 'members'), where('classId', '==', CLASS_ID))))
+  if (members.size !== 2) throw new Error(`members 조회 결과가 이상함: ${members.size}`)
+  await assertSucceeds(deleteDoc(doc(t, ...studentPath, 'activities', 'seal')))
+  await assertSucceeds(deleteDoc(doc(t, ...studentPath)))
+  await assertSucceeds(deleteDoc(doc(t, 'members', 'dev1')))
+  await assertSucceeds(deleteDoc(doc(t, 'classes', CLASS_ID, 'students', `${CLASS_ID}-5`)))
+  await assertSucceeds(deleteDoc(doc(t, 'sessions', CODE)))
+})
+
+test('교사는 다른 반 기기 연결 목록을 볼 수 없다', async () => {
+  await assertFails(getDocs(query(collection(teacher(), 'members'), where('classId', '==', OTHER_CLASS_ID))))
 })

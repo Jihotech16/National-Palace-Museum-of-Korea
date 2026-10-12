@@ -492,21 +492,13 @@ export const deleteSchool = async (schoolCode) => {
   }
 }
 
-// 학교의 모든 데이터 삭제 (활동 종료용)
-export const deleteAllSchoolData = async (schoolCode, password) => {
+// 교사 활동 종료: 우리 반 학생 기록과 수업 코드만 삭제 (다른 반·학교 정보·교사 계정은 유지)
+export const deleteClassData = async (schoolCode, grade, classNum, password) => {
   try {
     if (!db) {
       return { success: false, error: 'Firestore가 초기화되지 않았습니다.' }
     }
-    
-    // 1. 학교 정보 확인 및 비밀번호 검증
-    const schoolRef = doc(db, 'schools', schoolCode)
-    const schoolDoc = await getDoc(schoolRef)
-    
-    if (!schoolDoc.exists()) {
-      return { success: false, error: '학교 정보를 찾을 수 없습니다.' }
-    }
-    
+
     const verifyResult = await verifySchoolPassword(schoolCode, password)
     if (!verifyResult.success) {
       return { success: false, error: verifyResult.error }
@@ -514,79 +506,34 @@ export const deleteAllSchoolData = async (schoolCode, password) => {
     if (!verifyResult.match) {
       return { success: false, error: '비밀번호가 일치하지 않습니다.' }
     }
-    
-    // 2. 해당 학교의 모든 users 문서 삭제
-    const usersRef = collection(db, 'users')
-    const usersQuery = query(usersRef, where('schoolCode', '==', schoolCode))
-    const usersSnapshot = await getDocs(usersQuery)
-    
-    const deletePromises = []
-    
-    // 각 user의 activities 서브컬렉션 삭제
+
+    const classId = `${schoolCode}-${grade}-${classNum}`
+    const byClass = (name) => query(collection(db, name), where('classId', '==', classId))
+
+    // 1. 학생 기록: activities를 먼저 지운 뒤 학생 문서 삭제 (규칙이 학생 문서의 classId를 확인하므로 순서 중요)
+    const usersSnapshot = await getDocs(byClass('users'))
     for (const userDoc of usersSnapshot.docs) {
-      const activitiesRef = collection(db, 'users', userDoc.id, 'activities')
-      const activitiesSnapshot = await getDocs(activitiesRef)
-      activitiesSnapshot.forEach((activityDoc) => {
-        deletePromises.push(deleteDoc(activityDoc.ref))
-      })
-      
-      // user 문서 삭제
-      deletePromises.push(deleteDoc(userDoc.ref))
+      const activitiesSnapshot = await getDocs(collection(db, 'users', userDoc.id, 'activities'))
+      await Promise.all(activitiesSnapshot.docs.map((d) => deleteDoc(d.ref)))
+      await deleteDoc(userDoc.ref)
     }
-    
-    // 3. 해당 학교의 모든 classes 문서 및 서브컬렉션 삭제
-    const classesRef = collection(db, 'classes')
-    const classesQuery = query(classesRef, where('schoolCode', '==', schoolCode))
-    const classesSnapshot = await getDocs(classesQuery)
-    
-    for (const classDoc of classesSnapshot.docs) {
-      // students 서브컬렉션 삭제
-      const studentsRef = collection(db, 'classes', classDoc.id, 'students')
-      const studentsSnapshot = await getDocs(studentsRef)
-      studentsSnapshot.forEach((studentDoc) => {
-        deletePromises.push(deleteDoc(studentDoc.ref))
-      })
-      
-      // class 문서 삭제
-      deletePromises.push(deleteDoc(classDoc.ref))
-    }
-    
-    // 4. 해당 학교의 모든 teachers 문서 삭제
-    const teachersRef = collection(db, 'teachers')
-    const teachersQuery = query(teachersRef, where('schoolCode', '==', schoolCode))
-    const teachersSnapshot = await getDocs(teachersQuery)
-    teachersSnapshot.forEach((teacherDoc) => {
-      deletePromises.push(deleteDoc(teacherDoc.ref))
-    })
-    
-    // 5. 해당 학교의 모든 messages 문서 삭제 (senderId나 receiverId가 해당 학교 학생인 경우)
-    // messages 컬렉션이 있다면 삭제 (구조에 따라 조정 필요)
-    try {
-      const messagesRef = collection(db, 'messages')
-      const messagesSnapshot = await getDocs(messagesRef)
-      messagesSnapshot.forEach((messageDoc) => {
-        const messageData = messageDoc.data()
-        // senderId나 receiverId가 해당 학교 학생인지 확인
-        if (messageData.senderId && messageData.senderId.startsWith(schoolCode)) {
-          deletePromises.push(deleteDoc(messageDoc.ref))
-        } else if (messageData.receiverId && messageData.receiverId.startsWith(schoolCode)) {
-          deletePromises.push(deleteDoc(messageDoc.ref))
-        }
-      })
-    } catch (error) {
-      // messages 컬렉션이 없을 수 있으므로 에러 무시
-      console.log('messages 컬렉션 삭제 중 오류 (무시됨):', error)
-    }
-    
-    // 6. schools 문서 삭제
-    deletePromises.push(deleteDoc(schoolRef))
-    
-    // 모든 삭제 작업 실행
-    await Promise.all(deletePromises)
-    
-    return { success: true }
+
+    // 2. 기기 연결, 반 명단, 수업 코드
+    const [membersSnapshot, studentsSnapshot, sessionsSnapshot] = await Promise.all([
+      getDocs(byClass('members')),
+      getDocs(collection(db, 'classes', classId, 'students')),
+      getDocs(byClass('sessions'))
+    ])
+    await Promise.all([
+      ...membersSnapshot.docs.map((d) => deleteDoc(d.ref)),
+      ...studentsSnapshot.docs.map((d) => deleteDoc(d.ref)),
+      ...sessionsSnapshot.docs.map((d) => deleteDoc(d.ref))
+    ])
+    await deleteDoc(doc(db, 'classes', classId))
+
+    return { success: true, deletedStudents: usersSnapshot.size }
   } catch (error) {
-    console.error('학교 데이터 삭제 오류:', error)
+    console.error('반 기록 삭제 오류:', error)
     return { success: false, error: error.message }
   }
 }

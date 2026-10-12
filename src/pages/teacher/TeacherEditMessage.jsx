@@ -112,8 +112,8 @@ function TeacherEditMessage() {
   }
 
   const handleEndActivity = () => {
-    // 활동 종료 (추후 구현)
-    console.log('활동 종료')
+    // 대시보드로 이동해 활동 종료 확인창을 바로 열기
+    navigate('/teacher', { state: { openEndActivity: true } })
   }
 
   const handleLogout = async () => {

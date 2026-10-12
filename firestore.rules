@@ -106,12 +106,18 @@ service cloud.firestore {
       allow get: if isTeacher();
       allow list: if isTeacher();
       
+      // 교사는 활동 종료 시 자기 반 학생 기록만 삭제 가능
+      allow delete: if isTeacher() && resource.data.classId == getTeacherIdFromEmail();
+      
       // activities 서브컬렉션: 문제 답안과 진도
       match /activities/{activityId} {
         allow read, write: if isStudent() && myStudentId() == studentId;
         
         allow get: if isTeacher();
         allow list: if isTeacher();
+        
+        allow delete: if isTeacher() &&
+          get(/databases/$(database)/documents/users/$(studentId)).data.classId == getTeacherIdFromEmail();
       }
     }
     
@@ -126,6 +132,9 @@ service cloud.firestore {
         request.auth.uid in getAfter(/databases/$(database)/documents/users/$(request.resource.data.studentId)).data.members;
       
       allow delete: if isAnonymous() && request.auth.uid == uid;
+      
+      // 교사는 활동 종료 시 자기 반 기기 연결만 조회·삭제 가능
+      allow list, delete: if isTeacher() && resource.data.classId == getTeacherIdFromEmail();
     }
     
     // sessions 컬렉션: 교사가 만든 수업 코드

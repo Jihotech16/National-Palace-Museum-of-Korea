@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { logout, onAuthChange } from '../../firebase/auth'
-import { getTeacherStudents, getStudentsProgress, getAllActivityStatus } from '../../firebase/firestore'
+import { getTeacherStudents, getStudentsProgress, getAllActivityStatus, deleteClassData } from '../../firebase/firestore'
 import { EXHIBITION_HALL_ACTIVITIES } from '../../utils/activityOrder'
 import { formatTeacherGroupLabel } from '../../utils/teacherGroupLabel'
 import './TeacherDetail.css'
@@ -200,7 +200,13 @@ function TeacherDetail() {
     setEndActivityError('')
     
     try {
-      const result = await deleteAllSchoolData(endActivityForm.schoolCode, endActivityForm.password)
+      // 우리 반 기록만 삭제 (다른 반·학교 정보는 유지)
+      const result = await deleteClassData(
+        endActivityForm.schoolCode,
+        teacherData?.grade,
+        teacherData?.classNum,
+        endActivityForm.password
+      )
       
       if (result.success) {
         // 성공 시 로그아웃 및 로그인 페이지로 이동
@@ -210,7 +216,7 @@ function TeacherDetail() {
         setShowEndActivityModal(false)
         setShowConfirmModal(false)
         navigate('/teacher-login')
-        alert('활동이 종료되었습니다. 모든 데이터가 삭제되었습니다.')
+        alert('활동이 종료되었습니다. 우리 반 학생 기록과 수업 코드가 삭제되었습니다.')
       } else {
         setEndActivityError(result.error || '활동 종료에 실패했습니다.')
         setShowConfirmModal(false)
@@ -820,7 +826,7 @@ function TeacherDetail() {
             
             <div className="teacher-modal-body">
               <p className="teacher-modal-message">
-                학교의 모든 데이터가 삭제됩니다. 다른 반 데이터도 전부 삭제됩니다.
+                우리 반 학생 기록과 수업 코드가 모두 삭제됩니다. 다른 반과 학교 정보는 그대로 남습니다.
               </p>
               <p className="teacher-modal-question">
                 활동을 종료하시겠습니까?
