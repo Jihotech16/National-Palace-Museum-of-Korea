@@ -7,9 +7,10 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:app": "vite build --mode app",
     "preview": "vite preview",
     "deploy": "npm run build && firebase deploy --only hosting",
-    "cap:sync": "npm run build && npx cap sync",
+    "cap:sync": "npm run build:app && npx cap sync",
     "cap:open:android": "npx cap open android",
     "cap:open:ios": "npx cap open ios",
     "test:rules": "firebase emulators:exec --only firestore --project demo-palace-rules \"node --test tests/firestore.rules.test.js\""

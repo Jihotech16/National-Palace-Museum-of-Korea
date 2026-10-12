@@ -25,6 +25,11 @@ function TeacherLogin() {
     
     // 관리자 로그인 체크 (학교 코드: Admin, 비밀번호: 관리자 계정 비밀번호)
     if (schoolCode === 'Admin') {
+      // 앱에는 관리자 페이지가 없음 (웹에서만 관리)
+      if (import.meta.env.VITE_APP_BUILD === 'true') {
+        setError('관리자 페이지는 웹에서만 이용할 수 있습니다.')
+        return
+      }
       setLoading(true)
       try {
         const result = await signInAsAdmin(password)

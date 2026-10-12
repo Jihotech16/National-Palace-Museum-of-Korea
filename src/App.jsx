@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, lazy, Suspense } from 'react'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import { onAuthChange, logout } from './firebase/auth'
 import MainPage from './pages/MainPage'
@@ -35,12 +35,15 @@ import ExhibitionHallList from './pages/ExhibitionHallList'
 import StudentClear from './pages/StudentClear'
 import StudentMessage from './pages/StudentMessage'
 import StudentMessageDetail from './pages/StudentMessageDetail'
-import Adminpage from './pages/Adminpage'
 import { getFirstIncompleteActivity, ACTIVITY_PATHS } from './utils/activityOrder'
 import QuestionPage from './components/QuestionPage'
 import { QUESTION_DATA } from './data/questions'
 import { getAllActivityStatus } from './firebase/firestore'
 import './App.css'
+
+// 앱(Capacitor) 빌드에서는 관리자 페이지를 번들에서 아예 제외 (웹에서만 관리)
+const IS_APP_BUILD = import.meta.env.VITE_APP_BUILD === 'true'
+const Adminpage = IS_APP_BUILD ? null : lazy(() => import('./pages/Adminpage'))
 
 function App() {
   const [user, setUser] = useState(null)
@@ -135,10 +138,12 @@ function App() {
           path="/teacher/questions" 
           element={<TeacherQuestionManagement />}
         />
-        <Route 
-          path="/admin" 
-          element={<Adminpage />} 
-        />
+        {Adminpage && (
+          <Route 
+            path="/admin" 
+            element={<Suspense fallback={null}><Adminpage /></Suspense>} 
+          />
+        )}
         <Route 
           path="/" 
           element={<MainPage />} 
