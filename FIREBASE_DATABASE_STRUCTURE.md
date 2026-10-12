@@ -11,6 +11,8 @@
 - 학생은 **익명 로그인** 후 교사가 만든 **수업 코드 + 번호**로 입장합니다. 이름·학교명·이메일은 받지 않습니다.
 - `sessions/{code}`: 수업 코드 (`classId`, `active`, `expiresAt` — 7일)
 - `users/{classId}-{번호}`: 학생 기록. 저장 가능한 필드는 보안 규칙으로 고정 (`studentId, classId, schoolCode, grade, classNum, number, sessionCode, members, lastLogin, expiresAt`)
+- `users/{id}.progress`: `{ activityId: true }` 진행 요약. 답안 저장 시 같은 배치로 갱신해 학생·교사 화면이 activities를 전부 읽지 않게 함 (읽기 비용 절감)
+- 교사 화면은 `users`를 `classId`로 한 번 조회해 학생 수만큼만 읽음. `classes/{classId}/students` 명단은 더 이상 만들지 않음
 - `members/{익명 uid}`: 기기 → 학생 문서 연결 (본인만 읽기)
 - `users/{id}/activities/{activityId}`: 답안·진도. 그리기 활동 그림은 서버에 올리지 않고 기기에만 저장
 - 모든 학생 문서에 `expiresAt`(30일)을 넣고 `firestore.indexes.json`의 TTL 정책으로 자동 삭제합니다.

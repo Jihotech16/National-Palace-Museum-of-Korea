@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { onAuthChange, logout } from '../../firebase/auth'
-import { getTeacherInfo, getStudentsProgress, getActiveStudentsCount, deleteClassData } from '../../firebase/firestore'
+import { getTeacherInfo, getStudentsProgress, deleteClassData } from '../../firebase/firestore'
 import { formatTeacherGroupLabel } from '../../utils/teacherGroupLabel'
 import ClassCodeCard from './ClassCodeCard'
 import './TeacherPage.css'
@@ -30,15 +30,6 @@ function TeacherPage() {
 
   useEffect(() => {
     loadTeacherData()
-    
-    // 주기적으로 데이터 갱신 (30초마다)
-    const interval = setInterval(() => {
-      if (teacherData) {
-        loadStudentData(teacherData.schoolCode, teacherData.grade, teacherData.classNum)
-      }
-    }, 30000)
-
-    return () => clearInterval(interval)
   }, [])
 
   const loadTeacherData = async () => {

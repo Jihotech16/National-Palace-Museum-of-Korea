@@ -68,13 +68,6 @@ const joinBatch = (db, uid, { code = CODE, classId = CLASS_ID, number = 5, stude
     schoolCode: 'S1',
     expiresAt: days(30)
   })
-  batch.set(doc(db, 'classes', classId, 'students', id), {
-    studentId: id,
-    number,
-    isActive: true,
-    joinedAt: serverTimestamp(),
-    expiresAt: days(30)
-  }, { merge: true })
   return batch.commit()
 }
 
@@ -182,7 +175,42 @@ test('교사는 학생 기록과 활동을 읽을 수 있다', async () => {
   const t = teacher()
   await assertSucceeds(getDoc(doc(t, 'users', `${CLASS_ID}-5`)))
   await assertSucceeds(getDocs(collection(t, 'users', `${CLASS_ID}-5`, 'activities')))
-  await assertSucceeds(getDocs(collection(t, 'classes', CLASS_ID, 'students')))
+  await assertSucceeds(getDocs(query(collection(t, 'users'), where('classId', '==', CLASS_ID))))
+})
+
+test('교사는 다른 반 학생 기록을 읽을 수 없다', async () => {
+  await joinBatch(anon('dev1'), 'dev1')
+  await setDoc(doc(anon('dev1'), 'users', `${CLASS_ID}-5`, 'activities', 'seal'), { completed: true })
+  const other = teacher(OTHER_CLASS_ID)
+  await assertFails(getDoc(doc(other, 'users', `${CLASS_ID}-5`)))
+  await assertFails(getDocs(query(collection(other, 'users'), where('classId', '==', CLASS_ID))))
+  await assertFails(getDocs(collection(other, 'users')))
+  await assertFails(getDocs(collection(other, 'users', `${CLASS_ID}-5`, 'activities')))
+  await assertFails(getDocs(collection(teacher(), 'users')))
+})
+
+// ---------- 진행 요약 (읽기 비용 절감) ----------
+
+test('답안 저장과 진행 요약 갱신을 한 번에 할 수 있다', async () => {
+  await joinBatch(anon('dev1'), 'dev1')
+  const db = anon('dev1')
+  const me = `${CLASS_ID}-5`
+  const batch = writeBatch(db)
+  batch.set(doc(db, 'users', me, 'activities', 'seal'), { completed: true, studentAnswer: '답' })
+  batch.update(doc(db, 'users', me), { 'progress.seal': true, lastActivityAt: serverTimestamp(), expiresAt: days(30) })
+  await assertSucceeds(batch.commit())
+  await assertSucceeds(updateDoc(doc(db, 'users', me), { 'progress.ceiling': true, lastActivityAt: serverTimestamp() }))
+})
+
+test('진행 요약은 한 번에 한 문제만, 자기 것만 바꿀 수 있다', async () => {
+  await joinBatch(anon('dev1'), 'dev1')
+  await joinBatch(anon('dev9'), 'dev9', { number: 9 })
+  const db = anon('dev1')
+  const me = `${CLASS_ID}-5`
+  await assertFails(updateDoc(doc(db, 'users', me), { 'progress.seal': true, 'progress.ceiling': true }))
+  await assertFails(updateDoc(doc(db, 'users', `${CLASS_ID}-9`), { 'progress.seal': true }))
+  await assertFails(updateDoc(doc(db, 'users', me), { 'progress.seal': true, number: 7 }))
+  await assertFails(updateDoc(doc(db, 'users', me), { progress: 'all' }))
 })
 
 // ---------- 수업 코드 ----------

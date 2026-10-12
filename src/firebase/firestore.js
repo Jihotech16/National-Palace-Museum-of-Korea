@@ -33,12 +33,32 @@ const daysFromNow = (days) => Timestamp.fromMillis(Date.now() + days * 24 * 60 *
 
 // 로그인한 기기(익명 uid)를 학생 문서 ID로 바꿉니다.
 // 교사 화면처럼 이미 studentId를 넘기는 경우에는 그대로 돌려줍니다.
+// 기기 → 학생 연결은 세션 중에 바뀌지 않으므로 메모리에 캐시해 읽기를 줄입니다.
+const studentIdCache = new Map()
+
 export const resolveStudentId = async (userId) => {
   if (!userId) return null
   if (!auth?.currentUser || auth.currentUser.uid !== userId) return userId
+  if (studentIdCache.has(userId)) return studentIdCache.get(userId)
   const memberDoc = await getDoc(doc(db, 'members', userId))
-  return memberDoc.exists() ? memberDoc.data().studentId : null
+  const studentId = memberDoc.exists() ? memberDoc.data().studentId : null
+  if (studentId) studentIdCache.set(userId, studentId)
+  return studentId
 }
+
+// 학생 문서의 progress 요약({ activityId: true })을 진행 상태로 사용합니다.
+// progress가 없는 예전 문서만 activities를 직접 읽습니다.
+const readActivitiesStatus = async (studentId) => {
+  const snapshot = await getDocs(collection(db, 'users', studentId, 'activities'))
+  const status = {}
+  snapshot.forEach((d) => {
+    status[d.id] = d.data().completed || false
+  })
+  return status
+}
+
+const getStudentStatus = async (student) =>
+  student.progress ? { ...student.progress } : readActivitiesStatus(student.studentId)
 
 // 사용자 활동지 데이터 저장 (구조 문서 기반)
 export const saveActivityData = async (userId, activityId, data, questionData = null, userEmail = null) => {
@@ -121,7 +141,15 @@ export const saveActivityData = async (userId, activityId, data, questionData = 
     saveData.submittedAt = serverTimestamp()
     saveData.completedAt = serverTimestamp()
     
-    await setDoc(activityRef, saveData, { merge: true })
+    // 답안과 학생 진행 요약을 한 번에 저장 (교사 화면은 학생 문서만 읽으면 됨)
+    const batch = writeBatch(db)
+    batch.set(activityRef, saveData, { merge: true })
+    batch.update(doc(db, 'users', studentId), {
+      [`progress.${activityId}`]: true,
+      lastActivityAt: serverTimestamp(),
+      expiresAt: daysFromNow(RETENTION_DAYS)
+    })
+    await batch.commit()
     
     return { success: true }
   } catch (error) {
@@ -181,14 +209,9 @@ export const getAllActivityStatus = async (userId, userEmail = null) => {
       return { success: false, error: '수업 정보를 찾을 수 없습니다.', status: {} }
     }
     
-    const activitiesRef = collection(db, 'users', studentId, 'activities')
-    const querySnapshot = await getDocs(activitiesRef)
-    
-    const status = {}
-    querySnapshot.forEach((doc) => {
-      const data = doc.data()
-      status[doc.id] = data.completed || false
-    })
+    const userDoc = await getDoc(doc(db, 'users', studentId))
+    const progress = userDoc.exists() ? userDoc.data().progress : null
+    const status = progress ? { ...progress } : await readActivitiesStatus(studentId)
     
     return { success: true, status }
   } catch (error) {
@@ -543,105 +566,43 @@ export const deleteClassData = async (schoolCode, grade, classNum, password) => 
 // ========== 교사 대시보드 관련 함수 ==========
 
 
-// 교사의 반 학생 목록 가져오기
-// 문서 구조에 따라 classes 컬렉션을 우선 사용하고, 없으면 users 컬렉션에서 조회
+// 교사의 반 학생 목록 가져오기: users에서 우리 반만 한 번에 조회 (학생 수만큼만 읽음)
+// 같은 화면에서 여러 함수가 동시에 부르면 결과를 공유합니다.
+const CLASS_STUDENTS_CACHE_MS = 5000
+let classStudentsCache = null
+
 export const getTeacherStudents = async (schoolCode, grade, classNum) => {
   try {
     if (!db) {
       return { success: false, error: 'Firestore가 초기화되지 않았습니다.', students: [] }
     }
-    
-    // 인증 상태 확인
-    const { auth } = await import('./config')
-    if (!auth || !auth.currentUser) {
-      console.error('인증되지 않은 사용자입니다. Firebase Authentication에 로그인되어 있지 않습니다.')
+    if (!auth?.currentUser) {
       return { success: false, error: '인증되지 않은 사용자입니다. 다시 로그인해주세요.', students: [] }
     }
-    
-    console.log('현재 인증된 사용자:', {
-      email: auth.currentUser.email,
-      uid: auth.currentUser.uid
-    })
-    
+
     const classId = `${schoolCode}-${grade}-${classNum}`
-    console.log('조회할 classId:', classId)
-    
-    // 방법 1: classes 컬렉션에서 조회 (문서 구조 권장 방식)
-    try {
-      const studentsRef = collection(db, 'classes', classId, 'students')
-      console.log('classes 컬렉션 조회 시도:', `classes/${classId}/students`)
-      const studentsSnapshot = await getDocs(studentsRef)
-      
-      if (studentsSnapshot.size > 0) {
-        const students = []
-        
-        // 각 학생의 상세 정보를 users 컬렉션에서 가져오기
-        for (const studentDoc of studentsSnapshot.docs) {
-          const studentData = studentDoc.data()
-          const studentId = studentData.studentId
-          
-          // users 컬렉션에서 상세 정보 조회
-          const userRef = doc(db, 'users', studentId)
-          const userDoc = await getDoc(userRef)
-          
-          if (userDoc.exists()) {
-            students.push({
-              studentId,
-              number: studentData.number || 0,
-              isActive: studentData.isActive !== false,
-              ...userDoc.data()
-            })
-          } else {
-            // users에 없어도 classes에 있으면 기본 정보만 포함
-            students.push({
-              studentId,
-              number: studentData.number || 0,
-              isActive: studentData.isActive !== false,
-              ...studentData
-            })
-          }
-        }
-        
-        // 번호 순으로 정렬
-        students.sort((a, b) => a.number - b.number)
-        
-        return { success: true, students }
-      }
-    } catch (classesError) {
-      console.warn('classes 컬렉션 조회 실패, users 컬렉션에서 조회합니다:', classesError)
+    const now = Date.now()
+    if (classStudentsCache?.classId === classId && now - classStudentsCache.at < CLASS_STUDENTS_CACHE_MS) {
+      return await classStudentsCache.promise
     }
-    
-    // 방법 2: classes 컬렉션이 없거나 비어있으면 users 컬렉션에서 직접 조회 (하위 호환성)
-    const usersRef = collection(db, 'users')
-    const usersSnapshot = await getDocs(usersRef)
-    
-    const students = []
-    usersSnapshot.forEach((userDoc) => {
-      const userId = userDoc.id
-      const parsed = parseStudentId(userId)
-      
-      if (parsed && 
-          parsed.schoolCode === String(schoolCode) && 
-          parsed.grade === grade && 
-          parsed.classNum === classNum) {
-        students.push({
-          studentId: userId,
-          number: parsed.number,
-          isActive: true,
-          ...userDoc.data()
-        })
-      }
+
+    const promise = getDocs(query(collection(db, 'users'), where('classId', '==', classId))).then((snapshot) => {
+      const students = snapshot.docs
+        .map((d) => ({ studentId: d.id, isActive: true, ...d.data() }))
+        .sort((a, b) => (a.number || 0) - (b.number || 0))
+      return { success: true, students }
     })
-    
-    // 번호 순으로 정렬
-    students.sort((a, b) => a.number - b.number)
-    
-    return { success: true, students }
+    classStudentsCache = { classId, at: now, promise }
+    promise.catch(() => { classStudentsCache = null })
+    return await promise
   } catch (error) {
     console.error('학생 목록 조회 오류:', error)
     return { success: false, error: error.message, students: [] }
   }
 }
+
+// 학생 한 명의 진행 상태 ({ activityId: true }), 교사 화면용
+export const getStudentProgressStatus = getStudentStatus
 
 // 학생들의 활동 진행률 계산
 export const getStudentsProgress = async (schoolCode, grade, classNum) => {
@@ -663,21 +624,17 @@ export const getStudentsProgress = async (schoolCode, grade, classNum) => {
     const progressData = {}
     
     // 모든 학생의 활동 상태를 병렬로 가져오기 (성능 최적화)
-    const statusPromises = students.map(async (student) => {
-      const activitiesResult = await getAllActivityStatus(student.studentId)
-      if (activitiesResult.success) {
-        const completedCount = Object.values(activitiesResult.status).filter(Boolean).length
-        const progress = totalActivities > 0 ? Math.round((completedCount / totalActivities) * 100) : 0
-        progressData[student.studentId] = {
-          completed: completedCount,
-          total: totalActivities,
-          progress
-        }
+    // 학생 문서의 progress 요약으로 계산 (예전 문서만 추가로 읽음)
+    await Promise.all(students.map(async (student) => {
+      const status = await getStudentStatus(student)
+      const completedCount = Object.values(status).filter(Boolean).length
+      const progress = totalActivities > 0 ? Math.round((completedCount / totalActivities) * 100) : 0
+      progressData[student.studentId] = {
+        completed: completedCount,
+        total: totalActivities,
+        progress
       }
-    })
-    
-    // 모든 학생의 상태를 병렬로 로드
-    await Promise.all(statusPromises)
+    }))
     
     // 평균 진행률 계산
     const progressValues = Object.values(progressData).map(p => p.progress)
@@ -724,15 +681,10 @@ export const getHallProgress = async (schoolCode, grade, classNum) => {
       '4_Seoul_Growth': { name: '4관: 성장하는 서울', color: 'orange', icon: 'trending_up', museum: 'seoul' }
     }
     
-    // 모든 학생의 활동 상태를 한 번에 병렬로 가져오기 (성능 최적화)
+    // 학생 문서의 progress 요약 사용 (예전 문서만 추가로 읽음)
     const studentStatusMap = {}
     const statusPromises = students.map(async (student) => {
-      const activitiesResult = await getAllActivityStatus(student.studentId)
-      if (activitiesResult.success) {
-        studentStatusMap[student.studentId] = activitiesResult.status || {}
-      } else {
-        studentStatusMap[student.studentId] = {}
-      }
+      studentStatusMap[student.studentId] = await getStudentStatus(student)
     })
     
     // 모든 학생의 상태를 병렬로 로드
@@ -812,30 +764,11 @@ export const getActiveStudentsCount = async (schoolCode, grade, classNum) => {
     const activeThreshold = 5 * 60 * 1000 // 5분 이내 활동한 학생을 접속 중으로 간주
     let activeCount = 0
     
-    // Firebase Auth에서 현재 접속 중인 사용자 확인
-    // 모든 students를 확인하되, activities가 최근에 업데이트된 경우 접속 중으로 간주
+    // 학생 문서의 마지막 활동 시각으로 판단 (추가 읽기 없음)
     for (const student of studentsResult.students) {
-      try {
-        // 학생의 activities 컬렉션에서 최근 활동 확인
-        const activitiesRef = collection(db, 'users', student.studentId, 'activities')
-        const activitiesSnapshot = await getDocs(activitiesRef)
-        
-        let isActive = false
-        activitiesSnapshot.forEach((activityDoc) => {
-          const activityData = activityDoc.data()
-          const updatedAt = activityData.updatedAt?.toMillis?.() || 0
-          
-          if (now - updatedAt < activeThreshold) {
-            isActive = true
-          }
-        })
-        
-        if (isActive) {
-          activeCount++
-        }
-      } catch (err) {
-        // 활동 데이터가 없어도 계속 진행
-        console.warn(`학생 ${student.studentId}의 활동 데이터 확인 실패:`, err)
+      const lastActivity = student.lastActivityAt?.toMillis?.() || student.lastLogin?.toMillis?.() || 0
+      if (now - lastActivity < activeThreshold) {
+        activeCount++
       }
     }
     
@@ -844,24 +777,6 @@ export const getActiveStudentsCount = async (schoolCode, grade, classNum) => {
     console.error('접속 학생 수 조회 오류:', error)
     return { success: false, error: error.message, count: 0, total: 0 }
   }
-}
-
-// ========== 학생 로그인 관련 함수 ==========
-
-// 학번에서 학교 코드, 학년, 반, 번호 추출
-export const parseStudentId = (studentId) => {
-  // 학번 형식: {schoolCode}{grade}{classNum}{number}
-  // 예: 132015 = 학교1, 3학년, 20반, 15번
-  const idStr = String(studentId)
-  if (idStr.length < 6) return null
-  
-  // 학교 코드는 첫 1자리, 학년은 2번째, 반은 3-4번째, 번호는 5-6번째
-  const schoolCode = idStr.substring(0, 1)
-  const grade = parseInt(idStr.substring(1, 2))
-  const classNum = parseInt(idStr.substring(2, 4))
-  const number = parseInt(idStr.substring(4, 6))
-  
-  return { schoolCode, grade, classNum, number }
 }
 
 // ========== 수업 코드 (교사가 만들고 학생이 입력) ==========
@@ -976,6 +891,7 @@ export const joinClassSession = async (uid, sessionCode, number) => {
     const expiresAt = daysFromNow(RETENTION_DAYS)
 
     // 학생 문서와 기기 연결 문서를 한 번에 씁니다 (보안 규칙이 두 문서를 함께 검사)
+    // 교사 화면은 users를 classId로 조회하므로 별도 반 명단은 만들지 않습니다.
     const batch = writeBatch(db)
     batch.set(doc(db, 'users', studentId), {
       studentId,
@@ -995,14 +911,8 @@ export const joinClassSession = async (uid, sessionCode, number) => {
       schoolCode,
       expiresAt
     })
-    batch.set(doc(db, 'classes', classId, 'students', studentId), {
-      studentId,
-      number: numberNum,
-      isActive: true,
-      joinedAt: serverTimestamp(),
-      expiresAt
-    }, { merge: true })
     await batch.commit()
+    studentIdCache.set(uid, studentId)
 
     return { success: true, studentId }
   } catch (error) {

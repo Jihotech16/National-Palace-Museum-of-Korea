@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { logout, onAuthChange } from '../../firebase/auth'
-import { getTeacherStudents, getStudentsProgress, getAllActivityStatus, deleteClassData } from '../../firebase/firestore'
+import { getTeacherStudents, getStudentsProgress, getStudentProgressStatus, deleteClassData } from '../../firebase/firestore'
 import { EXHIBITION_HALL_ACTIVITIES } from '../../utils/activityOrder'
 import { formatTeacherGroupLabel } from '../../utils/teacherGroupLabel'
 import './TeacherDetail.css'
@@ -93,8 +93,8 @@ function TeacherDetail() {
       // 각 학생의 활동 상태를 가져와서 박물관별 진행률 계산
       const studentsWithProgress = await Promise.all(
         studentsResult.students.map(async (student) => {
-          const activitiesResult = await getAllActivityStatus(student.studentId)
-          const status = activitiesResult.success ? activitiesResult.status || {} : {}
+          // 학생 목록에 들어 있는 progress 요약 사용 (추가 읽기 없음)
+          const status = await getStudentProgressStatus(student)
 
           // 전체 진행률 계산
           const allActivities = Object.values(EXHIBITION_HALL_ACTIVITIES).flat()
