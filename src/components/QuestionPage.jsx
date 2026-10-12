@@ -83,13 +83,6 @@ function QuestionPage({ user, questionData }) {
     return '조선국왕'
   }
 
-  // 커스텀 CSS import
-  useEffect(() => {
-    if (customCss) {
-      import(`../pages/1_King_of_Joseon/${customCss}`)
-    }
-  }, [customCss])
-
   useEffect(() => {
     loadData()
   }, [])
