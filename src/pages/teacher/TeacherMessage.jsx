@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { logout } from '../../firebase/auth'
+import { getClassMessagesForTeacher } from '../../firebase/firestore'
 import { formatTeacherGroupLabel } from '../../utils/teacherGroupLabel'
 import './TeacherMessage.css'
 import './TeacherPage.css'
@@ -10,52 +11,8 @@ function TeacherMessage() {
   const [activeTab, setActiveTab] = useState('messages')
   const [teacherData, setTeacherData] = useState(null)
   const [showSidebar, setShowSidebar] = useState(false)
-  const [messages, setMessages] = useState([
-    {
-      id: '1',
-      senderName: '담임 선생님',
-      senderType: 'teacher',
-      title: '근정전 미션 힌트 도착! 🕵️',
-      content: '근정전의 월대에는 사방신이 조각되어 있습니다. 남쪽을 지키는 동물은 무엇일까요? 힌트를 확인하고 정답을 입력하세요.',
-      time: '14:05',
-      date: '오늘',
-      unread: true,
-      avatar: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDdMahZwk3CKqk_U4LTnQjEW9g0Ny_C3zbIMZrpZRtM7EMABGf6afEQ8hz3VkX7fgE8Qs66kgjFLw9bpl0PQzmFnSPU92YWkkspsGPFbrdFKAXct2oHc_ZSX8uhc24-3Yepj525DdT3HSI8A7k9nUiN01COPM24tbkv4XuOE90smcjTh2LS1LU7RXQfDb5HwB-d6b4uCS8-a1BHj0k1dTYW_m3wb3vncRdnczH7UTKMd5IbEdpdZmvkmfQLDQXXwISCRv_rhdrFzeJX'
-    },
-    {
-      id: '2',
-      senderName: '담임 선생님',
-      senderType: 'teacher',
-      title: '📢 모임 장소 변경 안내',
-      content: '현재 근정전 앞이 매우 혼잡합니다. 3조 학생들은 1층 로비가 아닌 경회루 앞 벤치로 14:30까지 모여주세요.',
-      time: '13:30',
-      date: '오늘',
-      unread: false,
-      avatar: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDSsAS4NS_-0_uAO-qADVvhJNjvN5goq1zPVdNjDHolS25A7CR6-aREWy2lxGiAmydzTRpYNUMcfwKbGg86mwVCxQs8imneHp_7PvS8SflYe8nvOmcAMRrDwV5fKCaYe4ufFP3UL7Nrv4ous3m2J9bbVgRWWq608vLfHve54bpASmc1cqL8vhzpiR50riHo5j5LklrH1ExAGd2-Bt3JWAkS8qN2zHBd3TCbRS5Hrv-UUXjXZjQ9VD1GdrIwClDajnw8egX_ufHjrW4C'
-    },
-    {
-      id: '3',
-      senderName: '담임 선생님',
-      senderType: 'teacher',
-      title: '박물관 관람 에티켓 🤫',
-      content: '박물관 내에서는 뛰지 않고 조용히 관람해주세요. 사진 촬영 시 플래시는 꺼주시기 바랍니다. 즐거운 관람 되세요!',
-      time: '09:00',
-      date: '오늘',
-      unread: false,
-      avatar: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCc_e2Y6VXcKfAlB_G96NC5N_y_9APaO8iA6H5AwxLNIMOTp4WivcsvKy7TOFCOHdAchsjGfQcaVCgK_L7hxMvemUSQsCf-4gIOp_UTyBrY1wpH8to5CojlqnucGku_hWXbpWTLtIbcjKQXY7l3XMz8MsYtD860FXM8ly1hA2nk6c1DrSg1pku7gRIaJBybNzhs1lpPCrs5BeotU3Y_k_3OKowNajSPOfCanQPO0gYokvejx0NsNVqZwymD6uzjnAAXwMHSHs0R7yYj'
-    },
-    {
-      id: '4',
-      senderName: '시스템 알림',
-      senderType: 'system',
-      title: '앱 업데이트 안내',
-      content: '원활한 미션 수행을 위해 최신 버전으로 업데이트 해주세요.',
-      time: '18:00',
-      date: '어제',
-      unread: false,
-      avatar: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBo92I3DGyOBFmvMQGRc8eNC6M15bIPzGjpJ9B_qzc4_QI-IM8C7iOW6jC4pveM-qhHfhzTBmSHTd1-OynulEKfxG0BfQUdc6CODet4f8iiumR-93Vnf7vgInPKSlkNoHMPBhJccY_ceRfFHAvoT2R2wM7CN7o5AwAGuqVeTG0ORvSDa96FOiOl87MOSIXCWOAZc7JDlA-c8ZedQCey_2at12kZGO5zQXLIPScueAoPAYpQsyiSG1P3Wt6Ocq5q5wHpMi5jbQQ4PIS3'
-    }
-  ])
+  const [messages, setMessages] = useState([])
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     loadTeacherData()
@@ -67,6 +24,9 @@ function TeacherMessage() {
       if (savedTeacherData) {
         const data = JSON.parse(savedTeacherData)
         setTeacherData(data)
+        const result = await getClassMessagesForTeacher(data.schoolCode, data.grade, data.classNum)
+        setMessages(result.messages || [])
+        setLoading(false)
       } else {
         navigate('/teacher-login')
       }
@@ -145,7 +105,7 @@ function TeacherMessage() {
           >
             <span className="material-symbols-outlined">menu</span>
           </button>
-          <h1 className="teacher-header-title">수신 메시지함</h1>
+          <h1 className="teacher-header-title">보낸 공지</h1>
           <button 
             className="teacher-header-btn teacher-header-btn-notification"
             onClick={() => navigate('/teacher/messages')}
@@ -157,7 +117,14 @@ function TeacherMessage() {
 
         <main className="teacher-main">
           <div className="teacher-message-main">
-          {Object.entries(groupedMessages).map(([date, dateMessages]) => (
+          {loading ? (
+            <div className="teacher-loading"><p>불러오는 중...</p></div>
+          ) : messages.length === 0 ? (
+            <div className="teacher-message-empty">
+              <p>아직 보낸 공지가 없어요.</p>
+              <p>오른쪽 아래 버튼으로 반 전체에 공지를 보낼 수 있어요.</p>
+            </div>
+          ) : Object.entries(groupedMessages).map(([date, dateMessages]) => (
             <div key={date}>
               <div className="teacher-message-date-divider">
                 <span className="teacher-message-date-badge">{date}</span>
@@ -165,34 +132,18 @@ function TeacherMessage() {
               {dateMessages.map((message) => (
                 <article
                   key={message.id}
-                  className={`teacher-message-item ${message.unread ? 'teacher-message-item-unread' : ''} ${date === '어제' ? 'teacher-message-item-old' : ''}`}
+                  className="teacher-message-item"
                   onClick={() => handleMessageClick(message)}
                 >
-                  {message.unread && (
-                    <div className="teacher-message-unread-indicator"></div>
-                  )}
                   <div className="teacher-message-avatar">
-                    <div 
-                      className="teacher-message-avatar-image"
-                      style={{ backgroundImage: `url(${message.avatar})` }}
-                    ></div>
-                    {message.senderType === 'teacher' && (
-                      <div className="teacher-message-avatar-badge teacher-message-avatar-badge-teacher">
-                        <span className="material-symbols-outlined">school</span>
-                      </div>
-                    )}
-                    {message.senderType === 'system' && (
-                      <div className="teacher-message-avatar-badge teacher-message-avatar-badge-system">
-                        <span className="material-symbols-outlined">settings</span>
-                      </div>
-                    )}
+                    <div className="teacher-message-avatar-image teacher-message-avatar-icon">
+                      <span className="material-symbols-outlined">campaign</span>
+                    </div>
                   </div>
                   <div className="teacher-message-content">
                     <div className="teacher-message-header-row">
-                      <h3 className="teacher-message-sender">{message.senderName}</h3>
-                      <time className={`teacher-message-time ${message.unread ? 'teacher-message-time-unread' : ''}`}>
-                        {message.time}
-                      </time>
+                      <h3 className="teacher-message-sender">반 전체 · 읽음 {message.readCount}명</h3>
+                      <time className="teacher-message-time">{message.time}</time>
                     </div>
                     <p className="teacher-message-title-text">{message.title}</p>
                     <p className="teacher-message-content-text">{message.content}</p>

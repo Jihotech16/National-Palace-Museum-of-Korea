@@ -210,3 +210,25 @@
 .teacher-message-compose-btn .material-symbols-outlined {
   font-size: 24px;
 }
+
+/* 공지 아이콘 아바타 */
+.teacher-message-avatar-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--accent-soft);
+  border-color: transparent;
+  color: var(--accent);
+}
+
+.teacher-message-avatar-icon .material-symbols-outlined {
+  font-size: 22px;
+}
+
+.teacher-message-empty {
+  padding: 48px 8px;
+  text-align: center;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--ink-3);
+}

@@ -1,8 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { getClassMessagesForStudent, markMessageAsRead, resolveStudentId } from '../firebase/firestore'
-import { doc, getDoc } from 'firebase/firestore'
-import { db } from '../firebase/config'
+import { getClassMessagesForStudent } from '../firebase/firestore'
 import StudentLayout from '../components/StudentLayout'
 import './StudentMessage.css'
 
@@ -22,7 +20,6 @@ function StudentMessage({ user }) {
   const loadMessages = async () => {
     try {
       setLoading(true)
-      // user 객체에서 email을 가져오거나, user 자체가 email 문자열일 수 있음
       const result = await getClassMessagesForStudent()
       if (result.success) {
         setMessages(result.messages || [])
@@ -38,38 +35,9 @@ function StudentMessage({ user }) {
     }
   }
 
-  const handleMessageClick = async (message) => {
-    // 메시지 읽음 처리
-    if (message.unread && user?.uid) {
-      try {
-        // 이 기기가 연결된 학생 문서에서 classId 가져오기
-        const studentId = await resolveStudentId(user.uid)
-        const userDoc = studentId ? await getDoc(doc(db, 'users', studentId)) : null
-        
-        if (userDoc?.exists()) {
-          const { classId } = userDoc.data()
-          
-          // 읽음 처리
-          await markMessageAsRead(message.id, classId, studentId)
-          
-          // 로컬 상태 업데이트
-          setMessages(prevMessages => 
-            prevMessages.map(msg => 
-              msg.id === message.id ? { ...msg, unread: false } : msg
-            )
-          )
-        }
-      } catch (error) {
-        console.error('메시지 읽음 처리 오류:', error)
-      }
-    }
-    
+  // 읽음 표시는 상세 화면을 열 때 처리
+  const handleMessageClick = (message) => {
     navigate(`/student/messages/${message.id}`)
-  }
-
-
-  const handleComposeMessage = () => {
-    navigate('/student/messages/compose')
   }
 
   // 날짜별로 메시지 그룹화
@@ -95,7 +63,7 @@ function StudentMessage({ user }) {
             </div>
           ) : messages.length === 0 ? (
             <div style={{ padding: '2rem', textAlign: 'center' }}>
-              <p>받은 메시지가 없습니다.</p>
+              <p>선생님이 보낸 공지가 아직 없어요.</p>
             </div>
           ) : (
             Object.entries(groupedMessages).map(([date, dateMessages]) => (
@@ -113,20 +81,9 @@ function StudentMessage({ user }) {
                     <div className="student-message-unread-indicator"></div>
                   )}
                   <div className="student-message-avatar">
-                    <div 
-                      className="student-message-avatar-image"
-                      style={{ backgroundImage: `url(${message.avatar})` }}
-                    ></div>
-                    {message.senderType === 'teacher' && (
-                      <div className="student-message-avatar-badge student-message-avatar-badge-teacher">
-                        <span className="material-symbols-outlined">school</span>
-                      </div>
-                    )}
-                    {message.senderType === 'system' && (
-                      <div className="student-message-avatar-badge student-message-avatar-badge-system">
-                        <span className="material-symbols-outlined">settings</span>
-                      </div>
-                    )}
+                    <div className="student-message-avatar-image student-message-avatar-icon">
+                      <span className="material-symbols-outlined">campaign</span>
+                    </div>
                   </div>
                   <div className="student-message-content">
                     <div className="student-message-header-row">
@@ -145,14 +102,6 @@ function StudentMessage({ user }) {
           )}
         </main>
 
-        {/* 메시지 작성 버튼 */}
-        <button 
-          className="student-message-compose-btn"
-          onClick={handleComposeMessage}
-          type="button"
-        >
-          <span className="material-symbols-outlined">edit</span>
-        </button>
       </StudentLayout>
   )
 }

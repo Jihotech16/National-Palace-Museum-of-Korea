@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { logout } from '../../firebase/auth'
-import { getTeacherStudents } from '../../firebase/firestore'
+import { getTeacherStudents, sendClassMessage, RETENTION_DAYS } from '../../firebase/firestore'
 import { formatTeacherGroupLabel } from '../../utils/teacherGroupLabel'
 import './TeacherEditMessage.css'
 import './TeacherPage.css'
@@ -13,8 +13,9 @@ function TeacherEditMessage() {
   const [students, setStudents] = useState([])
   const [loading, setLoading] = useState(true)
   const [showSidebar, setShowSidebar] = useState(false)
+  const [sending, setSending] = useState(false)
+  const [sendError, setSendError] = useState('')
   const [formData, setFormData] = useState({
-    recipient: 'class_all',
     title: '',
     content: ''
   })
@@ -71,10 +72,6 @@ function TeacherEditMessage() {
     setShowSidebar(false)
   }
 
-  const handleRecipientChange = (e) => {
-    setFormData({ ...formData, recipient: e.target.value })
-  }
-
   const handleTitleChange = (e) => {
     setFormData({ ...formData, title: e.target.value })
   }
@@ -88,10 +85,22 @@ function TeacherEditMessage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    // 메시지 전송 로직 (추후 구현)
-    console.log('메시지 전송:', formData)
-    // 전송 후 메시지 목록으로 이동
-    navigate('/teacher/messages')
+    if (!teacherData || sending) return
+    setSending(true)
+    setSendError('')
+    const result = await sendClassMessage(
+      teacherData.schoolCode,
+      teacherData.grade,
+      teacherData.classNum,
+      formData.title,
+      formData.content
+    )
+    if (result.success) {
+      navigate('/teacher/messages')
+    } else {
+      setSendError('공지를 보내지 못했습니다. 잠시 후 다시 시도해주세요.')
+      setSending(false)
+    }
   }
 
   const handleHome = () => {
@@ -127,19 +136,11 @@ function TeacherEditMessage() {
     }
   }
 
-  // 받는 사람 옵션 생성
-  const recipientOptions = [
-    { 
-      value: 'class_all', 
-      label: teacherData ? `${formatTeacherGroupLabel(teacherData)} 전체 (${students.length}명)` : '전체',
-      type: 'class'
-    },
-    ...students.map(student => ({
-      value: student.studentId,
-      label: `${student.number}번 ${student.name || student.studentId}`,
-      type: 'student'
-    }))
-  ]
+  // 받는 사람: 반 전체 공지만 지원
+  const recipientLabel = teacherData
+    ? `${formatTeacherGroupLabel(teacherData)} 전체 (${students.length}명)`
+    : '반 전체'
+
 
   return (
     <div className="teacher-page">
@@ -152,7 +153,7 @@ function TeacherEditMessage() {
           >
             <span className="material-symbols-outlined">arrow_back_ios_new</span>
           </button>
-          <h1 className="teacher-header-title">메시지 보내기</h1>
+          <h1 className="teacher-header-title">공지 보내기</h1>
           <button 
             className="teacher-header-btn teacher-header-btn-notification"
             onClick={() => navigate('/teacher/messages')}
@@ -298,29 +299,13 @@ function TeacherEditMessage() {
           <form className="teacher-edit-message-form" onSubmit={handleSubmit}>
             {/* 받는 사람 선택 */}
             <div className="teacher-edit-message-card">
-              <label className="teacher-edit-message-label" htmlFor="recipient">
-                받는 사람
-              </label>
-              <div className="teacher-edit-message-select-wrapper">
-                <select
-                  id="recipient"
-                  className="teacher-edit-message-select"
-                  value={formData.recipient}
-                  onChange={handleRecipientChange}
-                >
-                  {recipientOptions.map((option) => (
-                    <option key={option.value} value={option.value}>
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
-                <span className="teacher-edit-message-select-arrow material-symbols-outlined">
-                  arrow_drop_down
-                </span>
+              <span className="teacher-edit-message-label">받는 사람</span>
+              <div className="teacher-edit-message-select teacher-edit-message-recipient">
+                {recipientLabel}
               </div>
               <p className="teacher-edit-message-hint">
                 <span className="material-symbols-outlined">info</span>
-                선택한 대상에게 푸시 알림이 함께 전송됩니다.
+                학생 공지함에 표시되고, {RETENTION_DAYS}일 뒤 자동으로 지워져요.
               </p>
             </div>
 
@@ -352,27 +337,6 @@ function TeacherEditMessage() {
                 />
                 
                 <div className="teacher-edit-message-toolbar">
-                  <button 
-                    type="button"
-                    className="teacher-edit-message-tool-btn"
-                    onClick={() => console.log('이미지 추가')}
-                  >
-                    <span className="material-symbols-outlined">image</span>
-                  </button>
-                  <button 
-                    type="button"
-                    className="teacher-edit-message-tool-btn"
-                    onClick={() => console.log('링크 추가')}
-                  >
-                    <span className="material-symbols-outlined">add_link</span>
-                  </button>
-                  <button 
-                    type="button"
-                    className="teacher-edit-message-tool-btn"
-                    onClick={() => console.log('이모지 추가')}
-                  >
-                    <span className="material-symbols-outlined">sentiment_satisfied</span>
-                  </button>
                   <div className="teacher-edit-message-tool-spacer"></div>
                   <span className="teacher-edit-message-char-count">
                     {charCount}/{maxCharCount}
@@ -381,14 +345,16 @@ function TeacherEditMessage() {
               </div>
             </div>
 
+            {sendError && <p className="teacher-edit-message-error">{sendError}</p>}
+
             {/* 전송 버튼 */}
             <div className="teacher-edit-message-submit-section">
               <button 
                 type="submit"
                 className="teacher-edit-message-submit-btn"
-                disabled={!formData.title.trim() || !formData.content.trim()}
+                disabled={sending || !formData.title.trim() || !formData.content.trim()}
               >
-                <span>메시지 전송하기</span>
+                <span>{sending ? '보내는 중...' : '공지 보내기'}</span>
                 <span className="material-symbols-outlined">send</span>
               </button>
             </div>

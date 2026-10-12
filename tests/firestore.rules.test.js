@@ -17,6 +17,7 @@ import {
   collection,
   query,
   where,
+  orderBy,
   writeBatch,
   arrayUnion,
   serverTimestamp,
@@ -243,4 +244,45 @@ test('교사는 자기 반 학생 기록만 삭제할 수 있다', async () => {
 
 test('교사는 다른 반 기기 연결 목록을 볼 수 없다', async () => {
   await assertFails(getDocs(query(collection(teacher(), 'members'), where('classId', '==', OTHER_CLASS_ID))))
+})
+
+// ---------- 반 공지 ----------
+
+const announcement = (classId = CLASS_ID, extra = {}) => ({
+  classId,
+  senderName: '담임 선생님',
+  title: '집합 안내',
+  content: '2시까지 로비로 모여주세요.',
+  readBy: {},
+  createdAt: serverTimestamp(),
+  expiresAt: days(30),
+  ...extra
+})
+
+test('교사는 자기 반에만 공지를 보내고 지울 수 있다', async () => {
+  const t = teacher()
+  await assertSucceeds(setDoc(doc(t, 'classMessages', CLASS_ID, 'messages', 'n1'), announcement()))
+  await assertFails(setDoc(doc(t, 'classMessages', OTHER_CLASS_ID, 'messages', 'n2'), announcement(OTHER_CLASS_ID)))
+  await assertFails(setDoc(doc(t, 'classMessages', CLASS_ID, 'messages', 'n3'), announcement(CLASS_ID, { studentName: '홍길동' })))
+  await assertSucceeds(getDocs(query(collection(t, 'classMessages', CLASS_ID, 'messages'), orderBy('createdAt', 'desc'))))
+  await assertFails(deleteDoc(doc(teacher(OTHER_CLASS_ID), 'classMessages', CLASS_ID, 'messages', 'n1')))
+  await assertSucceeds(deleteDoc(doc(t, 'classMessages', CLASS_ID, 'messages', 'n1')))
+})
+
+test('학생은 자기 반 공지만 읽고, 자기 읽음 표시만 할 수 있다', async () => {
+  await setDoc(doc(teacher(), 'classMessages', CLASS_ID, 'messages', 'n1'), announcement())
+  await setDoc(doc(teacher(OTHER_CLASS_ID), 'classMessages', OTHER_CLASS_ID, 'messages', 'n2'), announcement(OTHER_CLASS_ID))
+  await joinBatch(anon('dev1'), 'dev1')
+  const db = anon('dev1')
+  const me = `${CLASS_ID}-5`
+
+  await assertSucceeds(getDocs(query(collection(db, 'classMessages', CLASS_ID, 'messages'), orderBy('createdAt', 'desc'))))
+  await assertFails(getDocs(collection(db, 'classMessages', OTHER_CLASS_ID, 'messages')))
+  await assertFails(setDoc(doc(db, 'classMessages', CLASS_ID, 'messages', 'fake'), announcement()))
+
+  const ref = doc(db, 'classMessages', CLASS_ID, 'messages', 'n1')
+  await assertSucceeds(updateDoc(ref, { [`readBy.${me}`]: true }))
+  await assertFails(updateDoc(ref, { [`readBy.${CLASS_ID}-9`]: true }))
+  await assertFails(updateDoc(ref, { content: '바꿈' }))
+  await assertFails(deleteDoc(ref))
 })

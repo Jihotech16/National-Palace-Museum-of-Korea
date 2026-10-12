@@ -83,6 +83,19 @@
   border: 1px solid var(--line);
 }
 
+.student-message-avatar-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--accent-soft);
+  border-color: transparent;
+  color: var(--accent);
+}
+
+.student-message-avatar-icon .material-symbols-outlined {
+  font-size: 22px;
+}
+
 .student-message-avatar-badge {
   position: absolute;
   right: -3px;
@@ -171,32 +184,6 @@
   overflow: hidden;
 }
 
-/* 메시지 작성 버튼 */
-.student-message-compose-btn {
-  position: fixed;
-  z-index: 40;
-  right: max(var(--gutter), calc((100vw - var(--page-max)) / 2 + var(--gutter)));
-  bottom: calc(88px + env(safe-area-inset-bottom));
-  width: 56px;
-  height: 56px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: var(--radius-full);
-  background: var(--accent);
-  color: var(--ink-inverse);
-  box-shadow: var(--shadow);
-  transition: background-color 0.15s ease, transform 0.1s ease;
-}
 
-.student-message-compose-btn:hover {
-  background: var(--accent-hover);
-}
 
-.student-message-compose-btn:active {
-  transform: scale(0.96);
-}
 
-.student-message-compose-btn .material-symbols-outlined {
-  font-size: 24px;
-}

@@ -51,6 +51,15 @@
   border: 1px solid var(--line);
 }
 
+.student-message-detail-avatar-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--accent-soft);
+  border-color: transparent;
+  color: var(--accent);
+}
+
 .student-message-detail-avatar-badge {
   position: absolute;
   right: -3px;

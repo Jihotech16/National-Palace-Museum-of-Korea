@@ -227,3 +227,21 @@
 .teacher-edit-message-submit-btn .material-symbols-outlined {
   font-size: 20px;
 }
+
+/* 받는 사람: 반 전체 고정 */
+.teacher-edit-message-recipient {
+  display: flex;
+  align-items: center;
+  background: var(--paper-sunken);
+  border-color: var(--line);
+  color: var(--ink);
+  cursor: default;
+}
+
+.teacher-edit-message-error {
+  padding: 12px 14px;
+  font-size: 14px;
+  color: var(--danger);
+  background: var(--danger-soft);
+  border-radius: var(--radius-sm);
+}

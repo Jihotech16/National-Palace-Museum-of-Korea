@@ -492,7 +492,7 @@ export const deleteSchool = async (schoolCode) => {
   }
 }
 
-// 교사 활동 종료: 우리 반 학생 기록과 수업 코드만 삭제 (다른 반·학교 정보·교사 계정은 유지)
+// 교사 활동 종료: 우리 반 학생 기록·수업 코드·공지만 삭제 (다른 반·학교 정보·교사 계정은 유지)
 export const deleteClassData = async (schoolCode, grade, classNum, password) => {
   try {
     if (!db) {
@@ -518,13 +518,15 @@ export const deleteClassData = async (schoolCode, grade, classNum, password) => 
       await deleteDoc(userDoc.ref)
     }
 
-    // 2. 기기 연결, 반 명단, 수업 코드
-    const [membersSnapshot, studentsSnapshot, sessionsSnapshot] = await Promise.all([
+    // 2. 기기 연결, 반 명단, 수업 코드, 공지
+    const [membersSnapshot, studentsSnapshot, sessionsSnapshot, messagesSnapshot] = await Promise.all([
       getDocs(byClass('members')),
       getDocs(collection(db, 'classes', classId, 'students')),
-      getDocs(byClass('sessions'))
+      getDocs(byClass('sessions')),
+      getDocs(classMessagesRef(classId))
     ])
     await Promise.all([
+      ...messagesSnapshot.docs.map((d) => deleteDoc(d.ref)),
       ...membersSnapshot.docs.map((d) => deleteDoc(d.ref)),
       ...studentsSnapshot.docs.map((d) => deleteDoc(d.ref)),
       ...sessionsSnapshot.docs.map((d) => deleteDoc(d.ref))
@@ -1009,125 +1011,143 @@ export const joinClassSession = async (uid, sessionCode, number) => {
   }
 }
 
-// ========== 메시지 관련 함수 ==========
+// ========== 메시지 (반 전체 공지) ==========
+// 교사가 반 전체에 공지를 보내고 학생은 읽기만 합니다.
+// 경로: classMessages/{classId}/messages/{messageId}, 30일 뒤 TTL로 자동 삭제
 
-// 학생의 반 메시지 조회
-export const getClassMessagesForStudent = async () => {
-  try {
-    if (!db) {
-      return { success: false, error: 'Firestore가 초기화되지 않았습니다.', messages: [] }
-    }
+const classMessagesRef = (classId) => collection(db, 'classMessages', classId, 'messages')
 
-    const studentId = await resolveStudentId(auth?.currentUser?.uid)
-    if (!studentId) {
-      return { success: false, error: '수업 정보를 찾을 수 없습니다. 다시 입장해주세요.', messages: [] }
-    }
+const formatMessage = (id, data, studentId = null) => {
+  const createdAt = data.createdAt?.toDate?.() || new Date()
+  const now = new Date()
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime()
+  const messageDay = new Date(createdAt.getFullYear(), createdAt.getMonth(), createdAt.getDate()).getTime()
 
-    // 학생 정보 조회 (classId 계산을 위해)
-    const userRef = doc(db, 'users', studentId)
-    const userDoc = await getDoc(userRef)
-    
-    if (!userDoc.exists()) {
-      return { success: false, error: '학생 정보를 찾을 수 없습니다.', messages: [] }
-    }
+  let dateLabel = `${createdAt.getMonth() + 1}월 ${createdAt.getDate()}일`
+  if (messageDay === today) dateLabel = '오늘'
+  else if (messageDay === today - 86400000) dateLabel = '어제'
 
-    const userData = userDoc.data()
-    const { schoolCode, grade, classNum } = userData
-    
-    if (!schoolCode || grade === undefined || classNum === undefined) {
-      return { success: false, error: '학생 정보가 불완전합니다.', messages: [] }
-    }
-
-    const classId = `${schoolCode}-${grade}-${classNum}`
-    
-    // 반 전체 메시지 조회
-    // messages/class/{classId}/messages 구조이므로
-    // 먼저 messages/class/{classId} 문서를 참조한 후 messages 서브컬렉션에 접근
-    const classDocRef = doc(db, 'messages', 'class', classId)
-    const messagesRef = collection(classDocRef, 'messages')
-    const messagesQuery = query(messagesRef, orderBy('createdAt', 'desc'))
-    const messagesSnapshot = await getDocs(messagesQuery)
-    
-    const messages = []
-    messagesSnapshot.forEach((doc) => {
-      const data = doc.data()
-      const readBy = data.readBy || {}
-      const isRead = readBy[studentId] === true
-      
-      // 날짜 포맷팅
-      const createdAt = data.createdAt?.toDate() || new Date()
-      const now = new Date()
-      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
-      const messageDate = new Date(createdAt.getFullYear(), createdAt.getMonth(), createdAt.getDate())
-      
-      let dateLabel = ''
-      if (messageDate.getTime() === today.getTime()) {
-        dateLabel = '오늘'
-      } else if (messageDate.getTime() === today.getTime() - 86400000) {
-        dateLabel = '어제'
-      } else {
-        dateLabel = `${createdAt.getMonth() + 1}월 ${createdAt.getDate()}일`
-      }
-      
-      const timeLabel = `${String(createdAt.getHours()).padStart(2, '0')}:${String(createdAt.getMinutes()).padStart(2, '0')}`
-      
-      messages.push({
-        id: doc.id,
-        messageId: data.messageId || doc.id,
-        senderName: data.senderName || '담임 선생님',
-        senderType: data.senderType || 'teacher',
-        title: data.title || data.content?.substring(0, 30) || '메시지',
-        content: data.content || '',
-        time: timeLabel,
-        date: dateLabel,
-        unread: !isRead,
-        createdAt: createdAt,
-        type: data.type || 'normal',
-        avatar: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDdMahZwk3CKqk_U4LTnQjEW9g0Ny_C3zbIMZrpZRtM7EMABGf6afEQ8hz3VkX7fgE8Qs66kgjFLw9bpl0PQzmFnSPU92YWkkspsGPFbrdFKAXct2oHc_ZSX8uhc24-3Yepj525DdT3HSI8A7k9nUiN01COPM24tbkv4XuOE90smcjTh2LS1LU7RXQfDb5HwB-d6b4uCS8-a1BHj0k1dTYW_m3wb3vncRdnczH7UTKMd5IbEdpdZmvkmfQLDQXXwISCRv_rhdrFzeJX'
-      })
-    })
-    
-    return { success: true, messages }
-  } catch (error) {
-    console.error('반 메시지 조회 오류:', error)
-    return { success: false, error: error.message, messages: [] }
+  const readBy = data.readBy || {}
+  return {
+    id,
+    senderName: data.senderName || '담임 선생님',
+    senderType: 'teacher',
+    title: data.title || '공지',
+    content: data.content || '',
+    time: `${String(createdAt.getHours()).padStart(2, '0')}:${String(createdAt.getMinutes()).padStart(2, '0')}`,
+    date: dateLabel,
+    fullDate: createdAt.toLocaleDateString('ko-KR', { month: 'long', day: 'numeric', weekday: 'short' }),
+    createdAt,
+    readCount: Object.keys(readBy).length,
+    unread: studentId ? readBy[studentId] !== true : false
   }
 }
 
-// 메시지 읽음 처리
-export const markMessageAsRead = async (messageId, classId, studentId) => {
+// 학생이 속한 반 찾기 (현재 기기 기준)
+const getStudentClass = async () => {
+  const studentId = await resolveStudentId(auth?.currentUser?.uid)
+  if (!studentId) return null
+  const userDoc = await getDoc(doc(db, 'users', studentId))
+  if (!userDoc.exists()) return null
+  return { studentId, classId: userDoc.data().classId }
+}
+
+// 교사: 반 전체 공지 보내기
+export const sendClassMessage = async (schoolCode, grade, classNum, title, content) => {
   try {
-    if (!db) {
-      return { success: false, error: 'Firestore가 초기화되지 않았습니다.' }
-    }
-
-    const messageRef = doc(db, 'messages', 'class', classId, 'messages', messageId)
-    const messageDoc = await getDoc(messageRef)
-    
-    if (!messageDoc.exists()) {
-      return { success: false, error: '메시지를 찾을 수 없습니다.' }
-    }
-
-    const messageData = messageDoc.data()
-    const readBy = messageData.readBy || {}
-    
-    // 이미 읽음 처리되어 있으면 스킵
-    if (readBy[studentId] === true) {
-      return { success: true }
-    }
-
-    // 읽음 처리
-    readBy[studentId] = true
-    
-    await updateDoc(messageRef, {
-      readBy,
-      updatedAt: serverTimestamp()
+    const classId = `${schoolCode}-${grade}-${classNum}`
+    const ref = doc(classMessagesRef(classId))
+    await setDoc(ref, {
+      classId,
+      senderName: '담임 선생님',
+      title: String(title).trim(),
+      content: String(content).trim(),
+      readBy: {},
+      createdAt: serverTimestamp(),
+      expiresAt: daysFromNow(RETENTION_DAYS)
     })
-    
-    return { success: true }
+    return { success: true, id: ref.id }
   } catch (error) {
-    console.error('메시지 읽음 처리 오류:', error)
+    console.error('공지 전송 오류:', error)
     return { success: false, error: error.message }
   }
 }
 
+// 교사: 보낸 공지 목록
+export const getClassMessagesForTeacher = async (schoolCode, grade, classNum) => {
+  try {
+    const classId = `${schoolCode}-${grade}-${classNum}`
+    const snapshot = await getDocs(query(classMessagesRef(classId), orderBy('createdAt', 'desc')))
+    return { success: true, messages: snapshot.docs.map((d) => formatMessage(d.id, d.data())) }
+  } catch (error) {
+    console.error('공지 목록 조회 오류:', error)
+    return { success: false, error: error.message, messages: [] }
+  }
+}
+
+// 교사: 공지 하나 조회
+export const getClassMessageForTeacher = async (schoolCode, grade, classNum, messageId) => {
+  try {
+    const classId = `${schoolCode}-${grade}-${classNum}`
+    const snap = await getDoc(doc(classMessagesRef(classId), messageId))
+    return { success: true, message: snap.exists() ? formatMessage(snap.id, snap.data()) : null }
+  } catch (error) {
+    console.error('공지 조회 오류:', error)
+    return { success: false, error: error.message, message: null }
+  }
+}
+
+// 교사: 공지 삭제
+export const deleteClassMessage = async (schoolCode, grade, classNum, messageId) => {
+  try {
+    const classId = `${schoolCode}-${grade}-${classNum}`
+    await deleteDoc(doc(classMessagesRef(classId), messageId))
+    return { success: true }
+  } catch (error) {
+    console.error('공지 삭제 오류:', error)
+    return { success: false, error: error.message }
+  }
+}
+
+// 학생: 우리 반 공지 목록
+export const getClassMessagesForStudent = async () => {
+  try {
+    const student = await getStudentClass()
+    if (!student) {
+      return { success: false, error: '수업 정보를 찾을 수 없습니다. 다시 입장해주세요.', messages: [] }
+    }
+    const snapshot = await getDocs(query(classMessagesRef(student.classId), orderBy('createdAt', 'desc')))
+    return {
+      success: true,
+      messages: snapshot.docs.map((d) => formatMessage(d.id, d.data(), student.studentId))
+    }
+  } catch (error) {
+    console.error('반 공지 조회 오류:', error)
+    return { success: false, error: error.message, messages: [] }
+  }
+}
+
+// 학생: 공지 하나 조회 + 읽음 표시
+export const openClassMessageForStudent = async (messageId) => {
+  try {
+    const student = await getStudentClass()
+    if (!student) {
+      return { success: false, error: '수업 정보를 찾을 수 없습니다.', message: null }
+    }
+    const ref = doc(classMessagesRef(student.classId), messageId)
+    const snap = await getDoc(ref)
+    if (!snap.exists()) {
+      return { success: true, message: null }
+    }
+    if (snap.data().readBy?.[student.studentId] !== true) {
+      // 읽음 표시는 실패해도 메시지는 보여줌
+      updateDoc(ref, { [`readBy.${student.studentId}`]: true }).catch((error) => {
+        console.error('읽음 처리 오류:', error)
+      })
+    }
+    return { success: true, message: formatMessage(snap.id, snap.data()) }
+  } catch (error) {
+    console.error('공지 조회 오류:', error)
+    return { success: false, error: error.message, message: null }
+  }
+}
