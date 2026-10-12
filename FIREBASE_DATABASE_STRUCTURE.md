@@ -14,6 +14,7 @@
 - `users/{id}.progress`: `{ activityId: true }` 진행 요약. 답안 저장 시 같은 배치로 갱신해 학생·교사 화면이 activities를 전부 읽지 않게 함 (읽기 비용 절감)
 - 교사 화면은 `users`를 `classId`로 한 번 조회해 학생 수만큼만 읽음. `classes/{classId}/students` 명단은 더 이상 만들지 않음
 - `members/{익명 uid}`: 기기 → 학생 문서 연결 (본인만 읽기)
+- `usageStats/{YYYY-MM}_{schoolCode}`: 학교별·월별 이용 현황 (`sessionsCreated`, `classes.{classId}.students/completed`). 숫자만 담고 자동 삭제 대상이 아님. 교사가 수업 코드를 만들거나 진도 화면을 열 때 기록, 관리자만 조회
 - `users/{id}/activities/{activityId}`: 답안·진도. 그리기 활동 그림은 서버에 올리지 않고 기기에만 저장
 - 모든 학생 문서에 `expiresAt`(30일)을 넣고 `firestore.indexes.json`의 TTL 정책으로 자동 삭제합니다.
 

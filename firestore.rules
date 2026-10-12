@@ -219,6 +219,24 @@ service cloud.firestore {
         request.resource.data.readBy[myStudentId()] == true;
     }
     
+    // usageStats 컬렉션: 학교별·월별 이용 현황 (숫자만, 개인정보 없음)
+    match /usageStats/{statId} {
+      allow read: if isAdmin();
+      
+      // 교사는 자기 학교 문서에 자기 반 숫자만 기록, 수업 코드 수는 한 번에 1씩만 증가
+      allow create, update: if isTeacher() &&
+        request.resource.data.schoolCode == get(teacherPath()).data.schoolCode &&
+        request.resource.data.month is string &&
+        request.resource.data.month.matches('^[0-9]{4}-[0-9]{2}$') &&
+        statId == request.resource.data.month + '_' + request.resource.data.schoolCode &&
+        request.resource.data.keys().hasOnly(['month', 'schoolCode', 'sessionsCreated', 'classes', 'updatedAt']) &&
+        request.resource.data.get('classes', {})
+          .diff(resource == null ? {} : resource.data.get('classes', {}))
+          .affectedKeys().hasOnly([getTeacherIdFromEmail()]) &&
+        request.resource.data.get('sessionsCreated', 0) >= (resource == null ? 0 : resource.data.get('sessionsCreated', 0)) &&
+        request.resource.data.get('sessionsCreated', 0) <= (resource == null ? 0 : resource.data.get('sessionsCreated', 0)) + 1;
+    }
+    
     // schools 컬렉션: 학교 정보 (선택사항)
     // 학교 목록은 로그인 전에도 조회 가능해야 하므로 공개 읽기 허용
     match /schools/{schoolCode} {

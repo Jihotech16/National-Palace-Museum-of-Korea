@@ -173,6 +173,45 @@
 }
 
 /* 학교 목록 헤더 */
+.admin-usage-summary {
+  flex-shrink: 0;
+  margin: 16px var(--gutter) 0;
+  padding: 16px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+}
+
+.admin-usage-summary-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-3);
+}
+
+.admin-usage-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin-top: 8px;
+}
+
+.admin-usage-summary-grid > div {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.admin-usage-summary-number {
+  font-family: var(--font-serif);
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.admin-usage-summary-label {
+  font-size: 13px;
+  color: var(--ink-3);
+}
+
 .admin-schools-header {
   flex-shrink: 0;
   display: flex;

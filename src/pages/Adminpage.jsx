@@ -10,13 +10,15 @@ import {
   deleteSchool,
   getSchoolInfo,
   verifySchoolPassword,
-  migratePlaintextPasswords
+  migratePlaintextPasswords,
+  getUsageStats
 } from '../firebase/firestore'
 import './Adminpage.css'
 
 function Adminpage() {
   const navigate = useNavigate()
   const [schools, setSchools] = useState([])
+  const [usage, setUsage] = useState({ stats: [], currentMonth: '' })
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [searchQuery, setSearchQuery] = useState('')
@@ -87,7 +89,8 @@ function Adminpage() {
     setLoading(true)
     setError('')
     try {
-      const result = await getAllSchools()
+      const [result, usageResult] = await Promise.all([getAllSchools(), getUsageStats()])
+      setUsage({ stats: usageResult.stats, currentMonth: usageResult.currentMonth })
       if (result.success) {
         setSchools(result.schools)
       } else {
@@ -406,6 +409,18 @@ function Adminpage() {
     )
   })
 
+  // 이용 현황 계산 (usageStats는 숫자만 담긴 학교·월별 문서)
+  const thisMonthStats = usage.stats.filter((row) => row.month === usage.currentMonth)
+  const monthSummary = {
+    schools: thisMonthStats.filter((row) => row.classCount > 0 || row.sessionsCreated > 0).length,
+    classes: thisMonthStats.reduce((sum, row) => sum + row.classCount, 0),
+    students: thisMonthStats.reduce((sum, row) => sum + row.students, 0)
+  }
+  const schoolUsage = selectedSchool
+    ? usage.stats.filter((row) => row.schoolCode === selectedSchool.schoolCode)
+    : []
+  const schoolThisMonth = schoolUsage.find((row) => row.month === usage.currentMonth)
+
   if (loading) {
     return (
       <div className="admin-loading">
@@ -449,6 +464,24 @@ function Adminpage() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
+            </div>
+          </div>
+
+          <div className="admin-usage-summary">
+            <p className="admin-usage-summary-title">이번 달 이용 ({usage.currentMonth})</p>
+            <div className="admin-usage-summary-grid">
+              <div>
+                <span className="admin-usage-summary-number">{monthSummary.schools}</span>
+                <span className="admin-usage-summary-label">학교</span>
+              </div>
+              <div>
+                <span className="admin-usage-summary-number">{monthSummary.classes}</span>
+                <span className="admin-usage-summary-label">반</span>
+              </div>
+              <div>
+                <span className="admin-usage-summary-number">{monthSummary.students}</span>
+                <span className="admin-usage-summary-label">학생</span>
+              </div>
             </div>
           </div>
 
@@ -540,16 +573,37 @@ function Adminpage() {
 
                 <div className="admin-detail-stats">
                   <div className="admin-detail-stat">
-                    <span className="admin-detail-stat-number">-</span>
-                    <span className="admin-detail-stat-label">등록된 학생</span>
+                    <span className="admin-detail-stat-number">{schoolThisMonth?.students ?? 0}</span>
+                    <span className="admin-detail-stat-label">이번 달 참여 학생</span>
                   </div>
                   <div className="admin-detail-stat">
-                    <span className="admin-detail-stat-number">-</span>
-                    <span className="admin-detail-stat-label">진행 중인 반</span>
+                    <span className="admin-detail-stat-number">{schoolThisMonth?.classCount ?? 0}</span>
+                    <span className="admin-detail-stat-label">이번 달 참여 반</span>
                   </div>
                 </div>
 
                 <div className="admin-detail-sections">
+                  <div className="admin-detail-section">
+                    <h3 className="admin-detail-section-title">
+                      <span className="material-symbols-outlined">bar_chart</span>
+                      월별 이용 현황
+                    </h3>
+                    <div className="admin-detail-info-card">
+                      {schoolUsage.length === 0 ? (
+                        <div className="admin-detail-info-row">
+                          <span className="admin-detail-info-label">아직 이용 기록이 없습니다</span>
+                        </div>
+                      ) : schoolUsage.map((row) => (
+                        <div className="admin-detail-info-row" key={row.id}>
+                          <span className="admin-detail-info-label">{row.month}</span>
+                          <span className="admin-detail-info-value">
+                            반 {row.classCount} · 학생 {row.students} · 푼 문제 {row.completed}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
                   <div className="admin-detail-section">
                     <h3 className="admin-detail-section-title">
                       <span className="material-symbols-outlined">info</span>

@@ -636,6 +636,11 @@ export const getStudentsProgress = async (schoolCode, grade, classNum) => {
       }
     }))
     
+    // 이용 현황 기록 (실패해도 화면에는 영향 없음)
+    const completedTotal = Object.values(progressData).reduce((sum, p) => sum + p.completed, 0)
+    recordClassUsage(schoolCode, grade, classNum, students.length, completedTotal)
+      .catch((error) => console.error('이용 현황 기록 오류:', error))
+    
     // 평균 진행률 계산
     const progressValues = Object.values(progressData).map(p => p.progress)
     const averageProgress = progressValues.length > 0
@@ -779,6 +784,72 @@ export const getActiveStudentsCount = async (schoolCode, grade, classNum) => {
   }
 }
 
+// ========== 이용 현황 집계 (개인정보 없음, 자동 삭제 대상 아님) ==========
+// usageStats/{YYYY-MM}_{schoolCode}: { month, schoolCode, sessionsCreated, classes: { classId: { students, completed } } }
+
+const currentMonth = () => {
+  const now = new Date()
+  return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`
+}
+
+const usageStatsRef = (schoolCode) => {
+  const month = currentMonth()
+  return { ref: doc(db, 'usageStats', `${month}_${schoolCode}`), month }
+}
+
+// 교사가 수업 코드를 만들 때 +1
+const recordSessionCreated = async (schoolCode) => {
+  const { ref, month } = usageStatsRef(schoolCode)
+  await setDoc(ref, {
+    month,
+    schoolCode: String(schoolCode),
+    sessionsCreated: increment(1),
+    updatedAt: serverTimestamp()
+  }, { merge: true })
+}
+
+// 교사 화면을 열 때 우리 반 참여 학생 수·푼 문제 수를 기록 (같은 값이면 다시 쓰지 않음)
+let lastClassUsage = ''
+const recordClassUsage = async (schoolCode, grade, classNum, students, completed) => {
+  if (!students) return // 활동 종료로 기록을 지운 뒤에는 덮어쓰지 않음
+  const classId = `${schoolCode}-${grade}-${classNum}`
+  const { ref, month } = usageStatsRef(schoolCode)
+  const key = `${month}|${classId}|${students}|${completed}`
+  if (key === lastClassUsage) return
+  lastClassUsage = key
+  await setDoc(ref, {
+    month,
+    schoolCode: String(schoolCode),
+    classes: { [classId]: { students, completed, updatedAt: serverTimestamp() } },
+    updatedAt: serverTimestamp()
+  }, { merge: true })
+}
+
+// 관리자: 전체 이용 현황
+export const getUsageStats = async () => {
+  try {
+    const snapshot = await getDocs(collection(db, 'usageStats'))
+    const stats = snapshot.docs.map((d) => {
+      const data = d.data()
+      const classes = Object.values(data.classes || {})
+      return {
+        id: d.id,
+        month: data.month,
+        schoolCode: data.schoolCode,
+        sessionsCreated: data.sessionsCreated || 0,
+        classCount: classes.length,
+        students: classes.reduce((sum, c) => sum + (c.students || 0), 0),
+        completed: classes.reduce((sum, c) => sum + (c.completed || 0), 0)
+      }
+    })
+    stats.sort((a, b) => (a.month < b.month ? 1 : a.month > b.month ? -1 : 0))
+    return { success: true, stats, currentMonth: currentMonth() }
+  } catch (error) {
+    console.error('이용 현황 조회 오류:', error)
+    return { success: false, error: error.message, stats: [], currentMonth: currentMonth() }
+  }
+}
+
 // ========== 수업 코드 (교사가 만들고 학생이 입력) ==========
 
 // 헷갈리기 쉬운 글자(0/O, 1/I/L)는 뺀 6자리 코드
@@ -844,6 +915,7 @@ export const createClassSession = async (schoolCode, grade, classNum) => {
         return true
       })
       if (created) {
+        recordSessionCreated(schoolCode).catch((error) => console.error('이용 현황 기록 오류:', error))
         const snap = await getDoc(sessionRef)
         return { success: true, session: snap.data() }
       }

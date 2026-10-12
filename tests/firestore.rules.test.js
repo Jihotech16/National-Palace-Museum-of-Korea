@@ -20,6 +20,7 @@ import {
   orderBy,
   writeBatch,
   arrayUnion,
+  increment,
   serverTimestamp,
   Timestamp
 } from 'firebase/firestore'
@@ -87,7 +88,7 @@ beforeEach(async () => {
   await testEnv.withSecurityRulesDisabled(async (context) => {
     const db = context.firestore()
     for (const classId of [CLASS_ID, OTHER_CLASS_ID]) {
-      await setDoc(doc(db, 'teachers', classId), { teacherId: classId, passwordHash: 'hash' })
+      await setDoc(doc(db, 'teachers', classId), { teacherId: classId, schoolCode: 'S1', passwordHash: 'hash' })
     }
     await setDoc(doc(db, 'sessions', CODE), { code: CODE, classId: CLASS_ID, active: true, expiresAt: days(7) })
     await setDoc(doc(db, 'sessions', CLOSED_CODE), { code: CLOSED_CODE, classId: CLASS_ID, active: false, expiresAt: days(7) })
@@ -313,4 +314,51 @@ test('학생은 자기 반 공지만 읽고, 자기 읽음 표시만 할 수 있
   await assertFails(updateDoc(ref, { [`readBy.${CLASS_ID}-9`]: true }))
   await assertFails(updateDoc(ref, { content: '바꿈' }))
   await assertFails(deleteDoc(ref))
+})
+
+// ---------- 이용 현황 ----------
+
+const MONTH = '2026-10'
+const STAT_ID = `${MONTH}_S1`
+const admin = () =>
+  testEnv.authenticatedContext('admin', { email: 'admin@admin.local', firebase: { sign_in_provider: 'password' } }).firestore()
+
+test('교사는 자기 학교 이용 현황에 자기 반 숫자만 기록할 수 있다', async () => {
+  const t = teacher()
+  await assertSucceeds(setDoc(doc(t, 'usageStats', STAT_ID), {
+    month: MONTH, schoolCode: 'S1', sessionsCreated: increment(1), updatedAt: serverTimestamp()
+  }, { merge: true }))
+  await assertSucceeds(setDoc(doc(t, 'usageStats', STAT_ID), {
+    month: MONTH, schoolCode: 'S1', classes: { [CLASS_ID]: { students: 28, completed: 900 } }, updatedAt: serverTimestamp()
+  }, { merge: true }))
+  // 다른 반 숫자, 다른 학교, 숫자 부풀리기, 다른 필드는 불가
+  await assertFails(setDoc(doc(t, 'usageStats', STAT_ID), {
+    month: MONTH, schoolCode: 'S1', classes: { [OTHER_CLASS_ID]: { students: 99 } }
+  }, { merge: true }))
+  await assertFails(setDoc(doc(t, 'usageStats', `${MONTH}_S2`), {
+    month: MONTH, schoolCode: 'S2', sessionsCreated: increment(1)
+  }, { merge: true }))
+  await assertFails(setDoc(doc(t, 'usageStats', STAT_ID), {
+    month: MONTH, schoolCode: 'S1', sessionsCreated: increment(5)
+  }, { merge: true }))
+  await assertFails(setDoc(doc(t, 'usageStats', STAT_ID), {
+    month: MONTH, schoolCode: 'S1', studentNames: ['홍길동']
+  }, { merge: true }))
+  // 다른 반 교사는 자기 반 키로만 추가 가능
+  await assertSucceeds(setDoc(doc(teacher(OTHER_CLASS_ID), 'usageStats', STAT_ID), {
+    month: MONTH, schoolCode: 'S1', classes: { [OTHER_CLASS_ID]: { students: 25, completed: 300 } }
+  }, { merge: true }))
+})
+
+test('이용 현황은 관리자만 볼 수 있고 학생은 기록할 수 없다', async () => {
+  await setDoc(doc(teacher(), 'usageStats', STAT_ID), {
+    month: MONTH, schoolCode: 'S1', sessionsCreated: increment(1)
+  }, { merge: true })
+  await assertFails(getDoc(doc(teacher(), 'usageStats', STAT_ID)))
+  await assertSucceeds(getDocs(collection(admin(), 'usageStats')))
+  await joinBatch(anon('dev1'), 'dev1')
+  await assertFails(getDoc(doc(anon('dev1'), 'usageStats', STAT_ID)))
+  await assertFails(setDoc(doc(anon('dev1'), 'usageStats', STAT_ID), {
+    month: MONTH, schoolCode: 'S1', sessionsCreated: increment(1)
+  }, { merge: true }))
 })
