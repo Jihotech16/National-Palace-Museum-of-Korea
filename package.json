@@ -6,6 +6,7 @@
   "private": true,
   "scripts": {
     "dev": "vite",
+    "dev:test": "sh scripts/dev-test.sh",
     "build": "vite build",
     "build:app": "vite build --mode app",
     "preview": "vite preview",
