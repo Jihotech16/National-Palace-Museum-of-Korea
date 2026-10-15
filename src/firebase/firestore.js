@@ -366,10 +366,20 @@ export const getSchoolInfo = async (schoolCode) => {
 }
 
 // 학교 등록
-export const createSchool = async (schoolName, schoolCode, password) => {
+// 학교 코드는 영문 소문자·숫자만 사용
+// (교사 계정 이메일 {코드}-{학년}-{반}@teacher.local은 Firebase가 소문자로 저장하고 '-'로 나눠 읽기 때문)
+export const normalizeSchoolCode = (code) => String(code || '').trim().toLowerCase()
+export const isValidSchoolCode = (code) => /^[a-z0-9]{3,20}$/.test(code)
+
+export const createSchool = async (schoolName, rawSchoolCode, password) => {
   try {
     if (!db) {
       return { success: false, error: 'Firestore가 초기화되지 않았습니다.' }
+    }
+    
+    const schoolCode = normalizeSchoolCode(rawSchoolCode)
+    if (!isValidSchoolCode(schoolCode)) {
+      return { success: false, error: '학교 코드는 영문 소문자와 숫자 3~20자로 입력해주세요. (하이픈·한글 불가)' }
     }
     
     // 학교 코드 중복 확인

@@ -394,11 +394,11 @@ function Adminpage() {
     }
   }
 
+  // 영문 소문자 + 숫자 6자리 (교사 계정 이메일에 그대로 쓰이므로 하이픈·한글 없이)
   const generateSchoolCode = () => {
-    const prefix = newSchool.schoolName.substring(0, 1).toUpperCase()
-    const year = new Date().getFullYear()
-    const random = Math.floor(Math.random() * 100).toString().padStart(2, '0')
-    return `${prefix}-${year}-${random}`
+    const chars = 'abcdefghjkmnpqrstuvwxyz23456789'
+    const values = crypto.getRandomValues(new Uint32Array(6))
+    return Array.from(values, (v) => chars[v % chars.length]).join('')
   }
 
   const filteredSchools = schools.filter(school => {
@@ -800,8 +800,8 @@ function Adminpage() {
                       className="admin-modal-input admin-modal-code-input"
                       type="text"
                       value={newSchool.schoolCode}
-                      onChange={(e) => setNewSchool({ ...newSchool, schoolCode: e.target.value })}
-                      placeholder="자동 생성 또는 직접 입력"
+                      onChange={(e) => setNewSchool({ ...newSchool, schoolCode: e.target.value.toLowerCase().replace(/[^a-z0-9]/g, '') })}
+                      placeholder="영문 소문자·숫자 (자동 생성 가능)"
                       required
                     />
                     <button

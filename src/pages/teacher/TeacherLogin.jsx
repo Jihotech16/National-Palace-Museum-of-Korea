@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { signInAsTeacher, signInAsAdmin } from '../../firebase/auth'
+import { normalizeSchoolCode } from '../../firebase/firestore'
 import './TeacherLogin.css'
 
 const GROUP_CLASSROOM = 'classroom'
@@ -24,7 +25,7 @@ function TeacherLogin() {
     setError('')
     
     // 관리자 로그인 체크 (학교 코드: Admin, 비밀번호: 관리자 계정 비밀번호)
-    if (schoolCode === 'Admin') {
+    if (schoolCode.trim() === 'Admin') {
       // 앱에는 관리자 페이지가 없음 (웹에서만 관리)
       if (import.meta.env.VITE_APP_BUILD === 'true') {
         setError('관리자 페이지는 웹에서만 이용할 수 있습니다.')
@@ -92,12 +93,14 @@ function TeacherLogin() {
     setLoading(true)
     
     try {
-      const result = await signInAsTeacher(schoolCode, gradeNum, classNumNum, password)
+      // 학교 코드는 소문자로 통일 (대문자로 입력해도 로그인되도록)
+      const code = normalizeSchoolCode(schoolCode)
+      const result = await signInAsTeacher(code, gradeNum, classNumNum, password)
       
       if (result.success) {
         // 교사 정보 저장 (동아리: grade 0, classNum = 동아리 번호)
         const teacherData = {
-          schoolCode,
+          schoolCode: code,
           grade: gradeNum,
           classNum: classNumNum
         }
