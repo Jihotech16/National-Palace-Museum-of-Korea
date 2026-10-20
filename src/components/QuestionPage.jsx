@@ -30,7 +30,6 @@ function QuestionPage({ user, questionData }) {
     inputType = 'single',
     multipleCount = 5,
     multipleLabels = [],
-    imageStyle = {}
   } = questionData
 
   const [answer, setAnswer] = useState(inputType === 'multiple' ? Array(multipleCount).fill('') : '')
@@ -212,26 +211,6 @@ function QuestionPage({ user, questionData }) {
     return 'activity-image-wrapper'
   }
 
-  const getImageClass = () => {
-    if (customCss) {
-      if (customCss.includes('Seal')) return 'activity-seal-image'
-      if (customCss.includes('Ceiling')) return 'activity-seal-image'
-      if (customCss.includes('Clothing')) return 'activity-clothing-image'
-      if (customCss.includes('Nature')) return 'activity-nature-image'
-    }
-    return 'activity-image'
-  }
-
-  const getOverlayClass = () => {
-    if (customCss) {
-      if (customCss.includes('Seal')) return 'activity-seal-image-overlay'
-      if (customCss.includes('Ceiling')) return 'activity-seal-image-overlay'
-      if (customCss.includes('Clothing')) return 'activity-clothing-image-overlay'
-      if (customCss.includes('Nature')) return 'activity-nature-image-overlay'
-    }
-    return 'activity-image-overlay'
-  }
-
   const getBadgeClass = () => {
     if (customCss) {
       if (customCss.includes('Seal')) return 'activity-seal-badge'
@@ -347,18 +326,11 @@ function QuestionPage({ user, questionData }) {
 
       <main className={contentClass} style={{ paddingBottom }}>
         <article className={getCardClass()}>
+          {/* 사진은 잘리지 않도록 원본 비율 그대로 표시 */}
           <div className={getImageWrapperClass()}>
-            <div 
-              className={getImageClass()}
-              style={{ 
-                backgroundImage: `url(${image})`,
-                ...imageStyle
-              }}
-            >
-              <div className={getOverlayClass()}></div>
-              <div className={getBadgeClass()}>
-                <span>문제 {questionNumber}</span>
-              </div>
+            <img className="activity-photo" src={image} alt={title} />
+            <div className={getBadgeClass()}>
+              <span>문제 {questionNumber}</span>
             </div>
           </div>
 

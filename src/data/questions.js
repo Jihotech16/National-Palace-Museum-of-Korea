@@ -250,8 +250,7 @@ export const QUESTION_DATA = {
     answerPlaceholder: '답을 입력하세요',
     explanation: '경회루에 청동으로 만든 용 한 쌍을 가라앉힌 것은 화재를 예방하기 위함이었습니다. 용은 물을 다스리는 신령으로 여겨져 화재 방지의 상징으로 사용되었습니다.',
     customCss: null,
-    inputType: 'single',
-    imageStyle: { backgroundPosition: 'left center' }
+    inputType: 'single'
   },
   queenSymbol: {
     activityId: 'queenSymbol',

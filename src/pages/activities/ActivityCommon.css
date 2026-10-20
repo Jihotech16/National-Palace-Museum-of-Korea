@@ -104,7 +104,8 @@ main > article:is(.activity-problem-card, .activity-seal-problem-card, .activity
   :is(.activity-image-wrapper, .activity-seal-image-wrapper, .activity-clothing-image-wrapper, .activity-nature-image-wrapper) {
   position: relative;
   width: 100%;
-  aspect-ratio: 4 / 3;
+  display: flex;
+  justify-content: center;
   border-radius: 0;
   overflow: hidden;
   box-shadow: none;
@@ -112,31 +113,18 @@ main > article:is(.activity-problem-card, .activity-seal-problem-card, .activity
   border-bottom: 1px solid var(--line);
 }
 
-:is(.activity-problem-card, .activity-seal-problem-card, .activity-clothing-problem-card, .activity-nature-problem-card)
-  :is(.activity-image, .activity-seal-image, .activity-clothing-image, .activity-nature-image) {
-  position: absolute;
-  inset: 0;
-  background-size: cover;
-  background-repeat: no-repeat;
-  transition: none;
+/* 문제 사진: 잘리지 않게 원본 비율로, 세로로 긴 사진은 화면 높이에 맞춰 줄임 */
+.activity-photo {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: min(48vh, 440px);
+  object-fit: contain;
 }
 
-:is(.activity-problem-card, .activity-seal-problem-card, .activity-clothing-problem-card, .activity-nature-problem-card)
-  :is(.activity-image-wrapper, .activity-seal-image-wrapper, .activity-clothing-image-wrapper, .activity-nature-image-wrapper):hover
-  :is(.activity-image, .activity-seal-image, .activity-clothing-image, .activity-nature-image) {
-  transform: none;
-}
 
-/* 기본 사진 위치 (문제별 CSS나 imageStyle이 있으면 그 값을 따릅니다) */
-.activity-image {
-  background-position: center;
-}
 
-/* 사진 위에 글자가 없으므로 어두운 오버레이는 쓰지 않습니다 */
-:is(.activity-problem-card, .activity-seal-problem-card, .activity-clothing-problem-card, .activity-nature-problem-card)
-  :is(.activity-image-overlay, .activity-seal-image-overlay, .activity-clothing-image-overlay, .activity-nature-image-overlay) {
-  display: none;
-}
+
 
 /* "문제 N" 칩 */
 :is(.activity-problem-card, .activity-seal-problem-card, .activity-clothing-problem-card, .activity-nature-problem-card)

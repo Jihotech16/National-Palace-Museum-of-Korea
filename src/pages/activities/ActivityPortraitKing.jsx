@@ -118,14 +118,9 @@ function ActivityPortraitKing({ user }) {
       <main className="activity-main">
         <article className="activity-problem-card">
           <div className="activity-image-wrapper">
-            <div 
-              className="activity-image"
-              style={{ backgroundImage: `url(${portraitImage})` }}
-            >
-              <div className="activity-image-overlay"></div>
-              <div className="activity-badge">
-                <span>문제</span>
-              </div>
+            <img className="activity-photo" src={portraitImage} alt="어진" />
+            <div className="activity-badge">
+              <span>문제</span>
             </div>
           </div>
 
