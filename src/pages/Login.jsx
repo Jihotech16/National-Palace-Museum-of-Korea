@@ -83,7 +83,7 @@ function Login() {
         </div>
 
         {/* Form Section */}
-        <form onSubmit={handleSubmit} className="login-form-new">
+        <form id="student-login-form" onSubmit={handleSubmit} className="login-form-new">
           {/* Class Code Input */}
           <label className="login-form-field-new">
             <span className="login-form-label-new">수업 코드</span>
@@ -133,9 +133,10 @@ function Login() {
       {/* Bottom Action Bar */}
       <div className="login-bottom-bar">
         <div className="login-bottom-bar-content">
+          {/* 폼 밖에 있지만 form 속성으로 연결해 키보드 '완료/엔터'로도 입장 가능 */}
           <button 
-            type="button"
-            onClick={handleSubmit}
+            type="submit"
+            form="student-login-form"
             className="login-submit-button-new"
             disabled={loading}
           >
